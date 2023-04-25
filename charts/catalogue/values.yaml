@@ -1,0 +1,1275 @@
+################################################################################
+## Default deployed api
+################################################################################
+
+catalogue:
+  # -- Condition to enable and deploy catalogue-akeneo-api
+  akeneo-api: false
+  # -- Condition to enable and deploy catalogue-backoffice
+  backoffice: false
+  # -- Condition to enable and deploy catalogue-backoffice2
+  backoffice2: true
+  # -- Condition to enable and deploy catalogue-cms-api
+  cms-api: true
+  # -- Condition to enable and deploy catalogue-export-api
+  export-api: true
+  # -- Condition to enable and deploy catalogue-import-api
+  import-api: true
+  # -- Condition to enable and deploy catalogue-jobs-api
+  jobs-api: true
+  # -- Condition to enable and deploy catalogue-live-api
+  live-api: true
+  # -- Condition to enable and deploy catalogue-live-api as an internal worker
+  internal-live-api: true
+  # -- Condition to enable and deploy catalogue-master-api
+  master-api: true
+  # -- Condition to enable and deploy catalogue-media-api
+  media-api: true
+  # -- Condition to enable and deploy catalogue-merchandising-api
+  merchandising-api: false
+  # -- Condition to enable and deploy catalogue-metrics-api
+  metrics-api: false
+  # -- Condition to enable and deploy catalogue-mirakl-api
+  mirakl-api: false
+  # -- Condition to enable and deploy catalogue-mock-api
+  mock-api: false
+  # -- Condition to enable and deploy catalogue-mock-backoffice
+  mock-backoffice: false
+  # -- Condition to enable and deploy catalogue-publication-api
+  publication-api: true
+  # -- Condition to enable and deploy catalogue-scheduler-api
+  scheduler-api: true
+  # -- Condition to enable and deploy catalogue-search-admin-api
+  search-admin-api: true
+  # -- Condition to enable and deploy catalogue-users-api
+  users-api: true
+  # -- Condition to enable and deploy catalogue-web-api
+  web-api: true
+
+################################################################################
+## Values shared between all charts
+################################################################################
+
+## Globally enable feature in each n9-api subchart
+global:
+  # -- For each app, override the release namespace value for env var sent to pod (development, integration, validation, preproduction, production)
+  deployedEnv: ""
+  # -- For each app, set loglevel https://github.com/neo9/n9-node-log
+  logLevel: ""
+  # -- Pull secrets that can be used for all sub-charts
+  imagePullSecrets: []
+  istio:
+    # -- For each app, enable istio virtual service
+    enabled: false
+
+################################################################################
+## Catalogue-api subcharts values
+################################################################################
+
+akeneo-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 3
+    minReplicas: 1
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/akeneo-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-akeneo-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 200M
+    requests:
+      cpu: 100m
+      memory: 200M
+  service:
+    port: 8030
+  logging:
+    enabled: true
+
+backoffice:
+  api:
+    type: nginx
+  healthCheck:
+    path: /
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/backoffice
+    tag: 2.32.0
+  name:
+    appNameOverride: catalogue-backoffice
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - nginx
+      - "-g"
+      - daemon off;
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+  resources:
+    limits:
+      memory: 50M
+    requests:
+      cpu: 20m
+      memory: 50M
+  service:
+    port: 80
+  logging:
+    enabled: true
+
+backoffice2:
+  api:
+    type: nginx
+  healthCheck:
+    path: /
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/backoffice2
+    tag: 2.33.0
+  name:
+    appNameOverride: catalogue-backoffice2
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - nginx
+      - "-g"
+      - daemon off;
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+  resources:
+    limits:
+      memory: 50M
+    requests:
+      cpu: 20m
+      memory: 50M
+  service:
+    port: 80
+  logging:
+    enabled: true
+
+cms-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/cms-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-cms-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 150M
+    requests:
+      cpu: 100m
+      memory: 150M
+  service:
+    port: 8016
+  logging:
+    enabled: true
+
+export-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 2
+    minReplicas: 1
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/export-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-export-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 150M
+    requests:
+      cpu: 100m
+      memory: 150M
+  service:
+    port: 8031
+  logging:
+    enabled: true
+
+import-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 2
+    minReplicas: 1
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/import-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-import-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 300M
+    requests:
+      cpu: 300m
+      memory: 300M
+  service:
+    port: 8019
+  logging:
+    enabled: true
+
+jobs-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 2
+    minReplicas: 1
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/jobs-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-jobs-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 300M
+    requests:
+      cpu: 300m
+      memory: 300M
+  service:
+    port: 8018
+  logging:
+    enabled: true
+
+live-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 4
+    minReplicas: 2
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/live-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-live-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 200M
+    requests:
+      cpu: 100m
+      memory: 200M
+  service:
+    port: 8032
+  logging:
+    enabled: true
+
+internal-live-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 4
+    minReplicas: 2
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/live-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    hookDeletionPolicy: before-hook-creation
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-internal-live-api
+  pdb:
+    enabled: true
+  pod:
+    env:
+      valuesMap:
+        AMQP_IS_ENABLED: true
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 200M
+    requests:
+      cpu: 100m
+      memory: 200M
+  service:
+    port: 8032
+  logging:
+    enabled: true
+
+master-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 6
+    minReplicas: 3
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/master-api
+    tag: 2.27.1
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-master-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 350M
+    requests:
+      cpu: 500m
+      memory: 350M
+  service:
+    port: 8011
+  logging:
+    enabled: true
+
+media-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 5
+    minReplicas: 2
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/media-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-media-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 250M
+    requests:
+      cpu: 200m
+      memory: 250M
+  service:
+    port: 8013
+  logging:
+    enabled: true
+
+merchandising-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 3
+    minReplicas: 1
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/merchandising-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-merchandising-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 150M
+    requests:
+      cpu: 100m
+      memory: 150M
+  service:
+    port: 8034
+  logging:
+    enabled: true
+
+metrics-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/metrics-api
+    tag: 2.33.0
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-metrics-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+  resources:
+    limits:
+      memory: 200M
+    requests:
+      cpu: 100m
+      memory: 200M
+  service:
+    port: 8035
+  logging:
+    enabled: true
+
+mirakl-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 3
+    minReplicas: 1
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/mirakl-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-mirakl-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 200M
+    requests:
+      cpu: 100m
+      memory: 200M
+  service:
+    port: 8012
+  logging:
+    enabled: true
+
+mock-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/mock-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-mock-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/src/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/src/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 150M
+    requests:
+      cpu: 100m
+      memory: 150M
+  service:
+    port: 8015
+  logging:
+    enabled: true
+
+mock-backoffice:
+  api:
+    type: nginx
+  healthCheck:
+    path: /
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/mock-backoffice
+    tag: 2.33.0
+  name:
+    appNameOverride: catalogue-mock-backoffice
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - nginx
+      - "-g"
+      - daemon off;
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 50M
+    requests:
+      cpu: 20m
+      memory: 50M
+  service:
+    port: 80
+  logging:
+    enabled: true
+
+publication-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 3
+    minReplicas: 1
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/publication-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-publication-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 400M
+    requests:
+      cpu: 500m
+      memory: 400M
+  service:
+    port: 8017
+  logging:
+    enabled: true
+
+scheduler-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/scheduler-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-scheduler-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 150M
+    requests:
+      cpu: 50m
+      memory: 150M
+  service:
+    port: 8010
+  logging:
+    enabled: true
+
+search-admin-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  hpa:
+    enabled: true
+    maxReplicas: 3
+    minReplicas: 1
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/search-admin-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  initJob:
+    enabled: true
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 300M
+      requests:
+        cpu: 35m
+        memory: 300M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-search-admin-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+    workingDir: /home/app
+  resources:
+    limits:
+      memory: 150M
+    requests:
+      cpu: 100m
+      memory: 150M
+  service:
+    port: 8033
+  logging:
+    enabled: true
+
+web-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/web-api
+    tag: 2.33.0
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-web-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+  resources:
+    limits:
+      memory: 150M
+    requests:
+      cpu: 100m
+      memory: 150M
+  service:
+    port: 8014
+  logging:
+    enabled: true
+
+users-api:
+  healthCheck:
+    failureThreshold: 3
+    initialDelaySeconds: 6
+    liveness:
+      tcpSocket: true
+    periodSeconds: 3
+    timeoutSeconds: 10
+  image:
+    repository: eu.gcr.io/neo9-catalogue-259610/users-api
+    tag: 2.33.0
+  initContainer:
+    enabled: false
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 100M
+      requests:
+        cpu: 35m
+        memory: 100M
+  initJob:
+    # -- Should be activated in later version
+    enabled: false
+    hookDeletionPolicy: before-hook-creation
+    command:
+      - npm
+      - run
+      - mongodb-migrate:docker
+    resources:
+      limits:
+        memory: 100M
+      requests:
+        cpu: 35m
+        memory: 100M
+  metrics:
+    enabled: true
+  name:
+    appNameOverride: catalogue-users-api
+  pdb:
+    enabled: true
+  pod:
+    command:
+      - node
+      - /home/app/dist/index.js
+    mounts:
+      configMap:
+        - mountPath: /home/app/dist/conf/env/
+          name: catalogue-conf
+  resources:
+    requests:
+      cpu: 300m
+      memory: 300M
+    limits:
+      memory: 300M
+  service:
+    port: 8037
+  logging:
+    enabled: true

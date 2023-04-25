@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "akeneo.fullname" . }}-test-connection"
+  labels:
+    {{- include "akeneo.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "akeneo.fullname" . }}:{{ .Values.akeneo.service.port }}']
+  restartPolicy: Never

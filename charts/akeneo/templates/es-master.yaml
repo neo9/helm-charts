@@ -1,0 +1,86 @@
+{{- if not .Values.elasticsearch.external }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "akeneo.fullname" . }}-es-statefulset
+  labels:
+    {{- include "akeneo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.elasticsearch.replicas }}
+  serviceName: {{ include "akeneo.fullname" . }}-es-service
+  selector:
+    matchLabels:
+      {{- include "akeneo.selectorLabels" . | nindent 6 }}
+      role: es-master
+  template:
+    metadata:
+      labels:
+        {{- include "akeneo.selectorLabels" . | nindent 8 }}
+        role: es-master
+    spec:
+      {{- with .Values.elasticsearch.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.elasticsearch.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.elasticsearch.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+      - name: init-sysctl
+        image: busybox:1.27.2
+        command:
+        - sysctl
+        - -w
+        - vm.max_map_count=262144
+        securityContext:
+          privileged: true
+      containers:
+      - name: elasticsearch
+        resources:
+          {{- toYaml .Values.elasticsearch.resources | nindent 12 }}
+        image: {{ .Values.elasticsearch.image }}
+        env:
+        - name: "cluster.name"
+          value: {{ include "akeneo.fullname" . }}-es-cluster
+        - name: "network.host"
+          value: 0.0.0.0
+        - name: "discovery.type"
+          value: single-node
+        - name: ES_JAVA_OPTS
+          value: "-Xms{{ .Values.elasticsearch.memory }} -Xmx{{ .Values.elasticsearch.memory }}"
+        - name: TAKE_FILE_OWNERSHIP
+          value: "1"
+        readinessProbe:
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          httpGet:
+            port: 9200
+        livenessProbe:
+          initialDelaySeconds: 90
+          periodSeconds: 10
+          httpGet:
+            port: 9200
+            path: /_search?size=0
+        ports:
+        - containerPort: 9300
+          name: transport
+        - containerPort: 9200
+          name: http
+        volumeMounts:
+        - name: storage
+          mountPath: /usr/share/elasticsearch/data
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      storageClassName: {{ .Values.elasticsearch.storage.class }}
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: {{ .Values.elasticsearch.storage.size }}
+{{- end }}

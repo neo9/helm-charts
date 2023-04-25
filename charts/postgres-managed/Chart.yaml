@@ -1,0 +1,8 @@
+apiVersion: v2
+name: postgres-managed
+description: A Helm chart to create postgresql ressource for zalando operator
+
+type: application
+version: 0.2.3
+# Postgres-operator version
+appVersion: "1.8.2"

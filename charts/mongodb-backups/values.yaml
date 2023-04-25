@@ -1,0 +1,16 @@
+tag: v0.1.0
+secrets: []
+memory: 500M
+cpu: 10m
+config: {}
+#   name: example
+#   schedule: "0 0 * * *"
+#   mongodb:
+#     host: mongodb
+#     port: 27017
+#   retention: 1w
+#   timeout: 15m
+#   bucket:
+#     s3:
+#       name: example
+#       region: eu-west-1

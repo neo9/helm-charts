@@ -1,0 +1,68 @@
+{{- if .Values.objectStorage.minio.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "akeneo.fullname" . }}-minio-deployment
+  labels:
+    {{- include "akeneo.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "akeneo.selectorLabels" . | nindent 6 }}
+      role: minio
+  template:
+    metadata:
+      labels:
+        {{- include "akeneo.selectorLabels" . | nindent 8 }}
+        role: minio
+    spec:
+      {{- with .Values.objectStorage.minio.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.objectStorage.minio.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.objectStorage.minio.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: minio
+        resources:
+          {{- toYaml .Values.objectStorage.minio.resources | nindent 12 }}
+        image: {{ .Values.objectStorage.minio.image }}
+        args: ["server", "/data"]
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        envFrom:
+          - secretRef:
+              name:  {{ include "akeneo.fullname" . }}-minio-secret
+        ports:
+        - containerPort: {{ .Values.objectStorage.minio.port }}
+          name: http
+        readinessProbe:
+          initialDelaySeconds: 3
+          tcpSocket:
+            port: {{ .Values.objectStorage.minio.port }}
+        livenessProbe:
+          initialDelaySeconds: 3
+          httpGet:
+            path: /minio/health/live
+            port: {{ .Values.objectStorage.minio.port }}
+        volumeMounts:
+          - mountPath: /data
+            name: data
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - mkdir
+                - -p
+                - /data/{{ .Values.objectStorage.bucket }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "akeneo.fullname" . }}-minio-pvc
+{{- end }}

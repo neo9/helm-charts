@@ -1,0 +1,125 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: pods-cleanup-policy.neo9.io
+spec:
+  scope: Cluster
+  group: neo9.io
+  names:
+    kind: PodCleanupPolicy
+    listKind: PodsCleanupPolicy
+    plural: pods-cleanup-policy
+    singular: pod-cleanup-policy
+    shortNames:
+      - pcp
+      - pcps
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          description: Pods Cleanup Policy. Delete pods based on custom policy
+          type: object
+          properties:
+            spec:
+              description: >-
+                Desired policy rules
+              type: object
+              properties:
+                namespaces:
+                  description: >-
+                    List of namespace to be monitored
+                  type: array
+                  items:
+                    type: string
+                excludeNamespaces:
+                  description: List of namespace to be excluded from cleaning
+                  type: array
+                  items:
+                    type: string
+                interval:
+                  description: >-
+                    Delay between every scan to find resource to cleanup
+                  type: string
+                selector:
+                  description: >-
+                    List of labels to match resources containing only those labels
+                  type: object
+                  additionalProperties:
+                    type: string
+                pods:
+                  description: >-
+                    Configuration of cleanup rules for pods
+                  type: object
+                  properties:
+                    enabled:
+                      description: >-
+                        Whether or not to enable cleanup of pod
+                      type: boolean
+                      default: false
+                    reasons:
+                      description: >-
+                        List of pods state reason to be deleted
+                      type: array
+                      items:
+                        type: string
+                constainers:
+                  description: >-
+                    Configuration of cleanup rules for containers
+                  type: object
+                  properties:
+                    sameContainersStatuses:
+                      description: >-
+                        If set to true, pod will not be delete if their container
+                        have different statuses, even if all of those status match
+                        the policy
+                      type: boolean
+                      default: true
+                    waiting:
+                      type: object
+                      properties:
+                        enabled:
+                          description: >-
+                            Whether or not to enable cleanup of pod in waiting state
+                          type: boolean
+                          default: false
+                        reasons:
+                          description: >-
+                            List of container status reason to be deleted
+                          type: array
+                          items:
+                            type: string
+                    running:
+                      type: object
+                      properties:
+                        enabled:
+                          description: >-
+                            Whether or not to enable cleanup of pod in running state
+                          type: boolean
+                          default: false
+                        reasons:
+                          description: >-
+                            List of container status reason to be deleted
+                          type: array
+                          items:
+                            type: string
+                    terminated:
+                      type: object
+                      properties:
+                        enabled:
+                          description: >-
+                            Whether or not to enable cleanup of pod in terminated state
+                          type: boolean
+                          default: false
+                        reasons:
+                          description: >-
+                            List of container status reason to be deleted
+                          type: array
+                          items:
+                            type: string
+              x-kubernetes-preserve-unknown-fields: true
+            status:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true

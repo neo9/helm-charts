@@ -1,0 +1,72 @@
+nameOverride: ""
+fullnameOverride: ""
+
+ingress:
+  enabled: false
+  className:
+  annotations: {}
+  labels: {}
+  # -- Define the hostname to use.
+  host: "example.test"
+  tls:
+    # -- Enable TLS, with a default secret reference
+    enabled: true
+    # -- Specify an existing secret if not automatically provisionned
+    customSecretName: ""
+
+cluster:
+  # -- Configure number of rabbitmq replicas (should be an odd numbers)
+  replicaCount: 3
+  # -- Specify an image to use if different from operator default
+  image: ""
+  # -- Inject rabbitmq conf, which are under RabbitmqCluster.spec.rabbitmq
+  rabbitmqConf: {}
+  # -- Set value to override the templated statefulset by the operator
+  override: {}
+  resources:
+    # -- Define rabbitmq cluster container limits.
+    limits: {}
+      # cpu: "2"
+      # memory: 2G
+    # -- Define rabbitmq cluster container requests.
+    requests: {}
+      # cpu: "1"
+      # memory: 2G
+
+  # -- Inject values directly into .spec of RabbitmqCluster manifests
+  extraSpec: {}
+
+
+# -- The default vhost (`/`) is automatically created
+vhosts: []
+
+# -- Define the list of users, assigned vhosts and corresponding permissions
+users: []
+  # - name: admin
+  #   tags: ["administrator"] # (optional)
+  #   importCredentialsSecret: # This will simply import credentials into `{release-name}-user-{user}-user-credentials` (optional)
+  #     name: my-secret-name # (optional)
+  #   permissions:
+  #     - vhost: custom-vhost
+  #       write: ".*"     # (optional)
+  #       configure: ".*" # (optional)
+  #       read: ".*"      # (optional)
+
+  # - name: admin
+  #   tags: ["administrator"]
+  #   permissions:
+  #     - vhost: /
+
+  # - name: catalogue-cms-api
+  #   permissions:
+  #     - vhost: catalogue
+
+# -- Create rabbitmq policy to apply automatically
+policies: []
+  # - name: "ha"
+  #   vhosts: "catalogue"
+  #   pattern: ".*"
+  #   applyTo: "all"
+  #   definition:
+  #     ha-mode: all
+  #     ha-sync-mode: automatic

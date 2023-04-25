@@ -1,0 +1,124 @@
+imagePullPolicy: Always
+
+akeneo:
+  version: 5.0
+  # Replicas >= 2 require a shared session storage (ie. DB, Redis)
+  replicas: 1
+  # Use an Ingress (requires an Ingress Controller)
+  ingress:
+    enabled: false
+    className: ""
+    labels: {}
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  # Port the container is listening on
+  service:
+    type: ClusterIP
+    port: 80
+
+  livenessProbe:
+    failureThreshold: 50
+    httpGet:
+      path: /user/login
+      port: 80
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 10
+  readinessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 3
+    periodSeconds: 10
+    successThreshold: 1
+    tcpSocket:
+      port: 80
+    timeoutSeconds: 1
+
+  resources:
+    requests:
+      memory: 400M
+      cpu: 250m
+
+  queueConsumer:
+    enabled: true
+
+  nodeSelector:
+  affinity:
+  tolerations:
+
+mysql:
+  external: false
+  image: mysql:8.0
+  user: akeneo
+  password: akeneo
+  # Specify when external
+  # host: mysql
+  port: 3306
+  database: akeneo
+  storage:
+    size: 20Gi
+    class: standard
+  resources:
+    requests:
+      memory: 800M
+      cpu: 250m
+  nodeSelector:
+  affinity:
+  tolerations:
+
+
+elasticsearch:
+  external: false
+  image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.5.2
+  # Specify when external
+  # host: elasticsearch
+  port: 9200
+  replicas: 1
+  minMasterNodes: 1
+  memory: 512m
+  storage:
+    size: 10Gi
+    class: standard
+  resources:
+    requests:
+      memory: 800M
+      cpu: 800m
+  nodeSelector:
+  affinity:
+  tolerations:
+
+objectStorage:
+  enabled: true
+  bucket: akeneo
+  # Specify region when using AWS S3
+  region: region-id
+  adapter: s3
+  minio:
+    image: minio/minio:RELEASE.2022-10-15T19-57-03Z
+    enabled: true
+    port: 9000
+    # Override this value with any string
+    username: b02a9587ea6bdd29979084250b6dd8d79e7cbaf73db1b248f66247ce8aa05d3f
+    # Override this value with any string
+    password: 39967b6f175585c3d2914577dde1256a2cc992eebf5964552b7567067cafb910
+    storage:
+      size: 10Gi
+      class: standard
+    resources:
+      requests:
+        memory: 600M
+        cpu: 50m
+    nodeSelector:
+    affinity:
+    tolerations:

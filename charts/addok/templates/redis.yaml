@@ -1,0 +1,93 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: {{ .Release.Namespace }}
+spec:
+  clusterIP: None
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: redis
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  serviceName: redis
+  replicas: {{ .Values.etalab.redis.replicas }}
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: redis
+          image: {{ .Values.etalab.redis.image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+              name: redis
+          livenessProbe:
+            tcpSocket:
+              port: redis
+            initialDelaySeconds: 15
+          readinessProbe:
+            exec:
+              command:
+              - redis-cli
+              - ping
+            initialDelaySeconds: 5
+          volumeMounts:
+            - name: addok-redis-data
+              mountPath: /data
+          resources: {{ toYaml .Values.redis.resources | nindent 12 }}
+      initContainers:
+        - name: init-redis-data
+          image: busybox:1.33
+          env:
+            - name: CURRENT_VERSION
+              value: {{ .Values.addok.data.currentVersionFlag | quote }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              FLAG_FILE=/data-data/${CURRENT_VERSION}.already_installed
+              if [ -e ${FLAG_FILE} ]; then
+                echo "Flag file (${FLAG_FILE}) already present, wont re-download data"
+              else
+                cd /data-init
+                echo "Downloading data"
+                wget https://adresse.data.gouv.fr/data/ban/adresses-odbl/latest/addok/addok-france-bundle.zip
+                mkdir addok-data
+                unzip -d addok-data addok-france-bundle.zip
+                cp -v addok-data/dump.rdb /data-data/dump.rdb
+                touch ${FLAG_FILE}
+              fi
+          volumeMounts:
+            - name: addok-redis-data
+              mountPath: /data-data
+            - name: addok-redis-init-data
+              mountPath: /data-init
+      volumes:
+        - name: addok-redis-init-data
+          emptyDir: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: addok-redis-data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 20Gi

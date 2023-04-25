@@ -1,0 +1,108 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: addok
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - port: 7878
+    protocol: TCP
+    targetPort: 7878
+  selector:
+    app: addok
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: addok
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: addok
+  serviceName: addok
+  replicas: {{ .Values.etalab.addok.replicas }}
+  template:
+    metadata:
+      labels:
+        app: addok
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: addok
+          image: {{ .Values.etalab.addok.image }}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: WORKERS
+              value: "1"
+            - name: WORKER_TIMEOUT
+              value: "30"
+            - name: LOG_QUERIES
+              value: "1"
+            - name: LOG_NOT_FOUND
+              value: "1"
+            - name: SLOW_QUERIES
+              value: "200"
+          ports:
+            - containerPort: 7878
+              name: http
+          livenessProbe: {{ toYaml .Values.addok.livenessProbe | nindent 12 }}
+          volumeMounts:
+            - name: addok-addok-data
+              mountPath: /data
+            - name: addok-addok-config
+              mountPath: /etc/addok
+          resources: {{ toYaml .Values.addok.resources | nindent 12 }}
+
+      initContainers:
+        - name: init-addok-data
+          image: busybox:1.33
+          env:
+            - name: CURRENT_VERSION
+              value: {{ .Values.addok.data.currentVersionFlag | quote }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              FLAG_FILE=/data-data/${CURRENT_VERSION}.already_installed
+              if [ -e ${FLAG_FILE} ]; then
+                echo "Flag file (${FLAG_FILE}) already present, wont re-download data"
+              else
+                cd /data-init
+                echo "Downloading data"
+                wget https://adresse.data.gouv.fr/data/ban/adresses-odbl/latest/addok/addok-france-bundle.zip
+                mkdir addok-data
+                unzip -d addok-data addok-france-bundle.zip
+                cp -v addok-data/addok.db /data-data/addok.db
+                cp -v addok-data/addok.conf /data-config/addok.conf
+                touch ${FLAG_FILE}
+              fi
+          volumeMounts:
+            - name: addok-addok-data
+              mountPath: /data-data
+            - name: addok-addok-config
+              mountPath: /data-config
+            - name: addok-addok-init-data
+              mountPath: /data-init
+      volumes:
+        - name: addok-addok-init-data
+          emptyDir: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: addok-addok-data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 20Gi
+  - metadata:
+      name: addok-addok-config
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi

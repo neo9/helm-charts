@@ -1,0 +1,118 @@
+# Default values for eck-managed.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+fullnameOverride: eck
+
+elasticsearch:
+  enabled: true
+  replicaCount: 2
+  labels: {}
+  annotations: {}
+  service:
+    annotations:
+      ingress.neo9.io/expose-hostname: "catalogue-elasticsearch.{{namespace}}.{{domain}}"
+      ingress.neo9.io/expose-annotations: |-
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: letsencrypt-dns-production-gcp
+        external-dns.alpha.kubernetes.io/ttl: "5"
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        forecastle.stakater.com/expose: true
+        nginx.ingress.kubernetes.io/proxy-body-size: 200m
+        nginx.org/client-max-body-size: 200m
+        ingress.neo9.io/access-operator-enabled: "true"
+        ingress.neo9.io/allowed-visitors: self,neo9,neo9-sf
+      ingress.neo9.io/expose-labels: |-
+        ingress.neo9.io/access-operator-enabled: "true"
+    labels:
+      ingress.neo9.io/expose: "true"
+  resources:
+    limits:
+      cpu: 2
+      memory: 8Gi
+    requests:
+      cpu: 2
+      memory: 8Gi
+  pod:
+    elasticsearch:
+      env:
+        - name: ES_JAVA_OPTS
+          value: -Xms4g -Xmx4g
+  volumeClaim:
+    spec:
+      storageClassName: gcp-sc-retain-wait-ssd
+  config:
+    node.master: true
+    node.data: true
+    node.ingest: true
+    node.store.allow_mmap: false
+    xpack.security.authc:
+      anonymous:
+        username: anonymous
+        roles: superuser
+        authz_exception: false
+
+################################################################################
+# ES exporter configuration.
+################################################################################
+
+es-exporter:
+  enabled: true
+  es:
+    uri: http://catalogue-elasticsearch-es-default:9200
+
+################################################################################
+# Kibana configuration.
+################################################################################
+
+kibana:
+  enabled: true
+
+  # Define the Kibana version.
+  version: 7.16.2
+
+  # Configure pod resources.
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 0.1
+    limits:
+      memory: 1Gi
+      cpu: 1
+
+  # Define a node selector.
+  #
+  nodeSelector:
+    # type: main
+
+  # By default, this property is empty. When empty, the chart will fetch the value specified into
+  # `.Values.elasticsearch.fullnameOverride` automatically.
+  #
+  # elasticsearchRef:
+
+  # Define the number of replicas.
+  replicaCount: 1
+
+  # Configure the HTTP service.
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+    service:
+      metadata:
+        annotations:
+          ingress.neo9.io/expose-hostname: "catalogue-kibana.{{namespace}}.{{domain}}"
+          ingress.neo9.io/expose-annotations: |-
+            kubernetes.io/ingress.class: nginx
+            cert-manager.io/cluster-issuer: letsencrypt-dns-production-gcp
+            external-dns.alpha.kubernetes.io/ttl: "5"
+            nginx.ingress.kubernetes.io/ssl-redirect: "true"
+            forecastle.stakater.com/expose: true
+            nginx.ingress.kubernetes.io/proxy-body-size: 200m
+            nginx.org/client-max-body-size: 200m
+            ingress.neo9.io/access-operator-enabled: "true"
+            ingress.neo9.io/allowed-visitors: self,neo9,neo9-sf
+          ingress.neo9.io/expose-labels: |-
+            ingress.neo9.io/access-operator-enabled: "true"
+        labels:
+          ingress.neo9.io/expose: "true"

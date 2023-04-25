@@ -1,0 +1,10 @@
+{{ if (index $.Values "eck-managed" "es-exporter" "es" "uri") }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: catalogue-eck-uri
+type: Opaque
+## Currently required, as for externalsecret with only this shared value directly into template, it won't trigger an update of the corresponding secret. Thus requiring this intermediate secret
+stringData:
+  ELASTICSEARCH_URI: {{ (index $.Values "eck-managed" "es-exporter" "es" "uri") }}
+{{ end }}

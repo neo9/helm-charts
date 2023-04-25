@@ -1,0 +1,86 @@
+---
+{{- $controller := default "Deployment" .Values.controller.kind -}}
+{{- if or (eq $controller "Deployment") (eq $controller "Both") }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "privatebin.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "privatebin.name" . }}
+    helm.sh/chart: {{ include "privatebin.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- if .Values.additionalLabels }}
+      {{ toYaml .Values.additionalLabels | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "privatebin.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "privatebin.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- if .Values.additionalLabels }}
+          {{ toYaml .Values.additionalLabels | nindent 8 }}
+        {{- end }}
+      {{- if .Values.podAnnotations }}
+      annotations:
+        {{ toYaml .Values.podAnnotations | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "privatebin.serviceAccountName" . }}
+      securityContext:
+        fsGroup: 1234
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: configs
+              mountPath: /srv/cfg
+            - name: data
+              mountPath: /srv/data
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: configs
+          configMap:
+            name: {{ include "privatebin.fullname" . }}-configs
+        {{- if .Values.persistence.enabled }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "privatebin.fullname" . }}{{- end }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+{{- end }}

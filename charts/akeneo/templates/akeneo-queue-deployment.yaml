@@ -1,0 +1,54 @@
+{{ if .Values.akeneo.queueConsumer.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "akeneo.fullname" . }}-queue-consumer-deployment
+  labels:
+  {{- include "akeneo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.akeneo.replicas }}
+  selector:
+    matchLabels:
+      {{- include "akeneo.selectorLabels" . | nindent 6 }}
+      role: queue-consumer
+  template:
+    metadata:
+      labels:
+        {{- include "akeneo.selectorLabels" . | nindent 8 }}
+        role: queue-consumer
+    spec:
+      {{- with .Values.akeneo.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.akeneo.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.akeneo.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: php
+          resources:
+            {{- toYaml .Values.akeneo.queueConsumer.resources | nindent 12 }}
+          image: {{ include "akeneo.image" . }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          command: ["/app/bin/console"]
+          args: ["akeneo:batch:job-queue-consumer-daemon"]
+          envFrom:
+            - configMapRef:
+                name:  {{ include "akeneo.fullname" . }}-configmap
+            - secretRef:
+                name:  {{ include "akeneo.fullname" . }}-secret
+          volumeMounts:
+            - mountPath: /app/config/packages/prod/oneup_flysystem.yml
+              name: config-files
+              subPath: oneup_flysystem.yml
+      volumes:
+        - name: config-files
+          configMap:
+            name: {{ include "akeneo.fullname" . }}-files-configmap
+
+{{ end }}

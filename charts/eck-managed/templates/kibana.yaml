@@ -1,0 +1,49 @@
+{{- if .Values.kibana.enabled }}
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: {{ include "eck-managed.fullname" . }}-kibana
+spec:
+  version: {{ .Values.kibana.version }}
+  config:
+    xpack.security.enabled: false
+    xpack.security.authc.providers:
+      anonymous.anonymous1:
+        order: 0
+        description: "Continue as guest"
+        icon: "globe"
+        credentials:
+          username: "anonymous"
+          password: "anonymous"
+  podTemplate:
+    metadata:
+      labels: {{ toYaml .Values.elasticsearch.labels | nindent 8 }}
+      annotations: {{ toYaml .Values.elasticsearch.annotations | nindent 8 }}
+    spec:
+      {{- if .Values.elasticsearch.affinity }}
+      affinity: {{ toYaml .Values.elasticsearch.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.elasticsearch.nodeSelector }}
+      nodeSelector: {{ toYaml .Values.elasticsearch.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.elasticsearch.tolerations}}
+      tolerations: {{ toYaml .Values.elasticsearch.tolerations | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: kibana
+        resources: {{- toYaml ((.Values.kibana).resources | default dict) | nindent 10 }}
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 5601
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+  http: {{- toYaml ((.Values.kibana).http | default dict) | nindent 4 }}
+  elasticsearchRef:
+    name: {{ (.Values.kibana).elasticsearchRef | default (printf "%s-%s" (include "eck-managed.fullname" .) "elasticsearch") }}
+  count: {{ (.Values.kibana).replicaCount | default 1 }}
+{{- end }}

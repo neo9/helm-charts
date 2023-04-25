@@ -1,0 +1,29 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  name: addok
+  namespace: {{ .Release.Namespace }}
+spec:
+  backend:
+    serviceName: addok
+    servicePort: 7878
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - backend:
+          serviceName: addok
+          servicePort: 7878
+        path: {{ .Values.ingress.path }}
+  {{- if .Values.ingress.tls }}
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host }}
+    secretName: addok
+  {{- end }}
+{{- end }}

@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ default .Chart.Name .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+    name: {{ default "mongodb-backups" .Release.Name }}
+    chart: {{ template "chart.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      name: {{ default "mongodb-backups" .Release.Name }}
+      release: {{ .Release.Name }}
+      heritage: {{ .Release.Service }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        name: {{ default "mongodb-backups" .Release.Name }}
+        release: {{ .Release.Name }}
+        heritage: {{ .Release.Service }}
+    spec:
+      containers:
+        - name: {{ default "mongodb-backups" .Release.Name }}
+          image: neo9sas/mongodb-backups:{{ .Values.tag }}
+          command:
+            - /bin/mongodb-backups
+            - --config
+            - /etc/config/config.yaml
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+          resources:
+            limits:
+              memory: {{ .Values.memory }}
+            requests:
+              memory: {{ .Values.memory }}
+              cpu: {{ .Values.cpu }}
+          env:
+{{- range .Values.secrets }}
+            - name: {{ .key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .name }}
+                  key: {{ .key }}
+{{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ default "mongodb-backups" .Release.Name }}

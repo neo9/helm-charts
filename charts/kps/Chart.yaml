@@ -1,0 +1,32 @@
+apiVersion: v2
+type: application
+
+name: kps
+description: Neo9 monitoring stack (kps+thanos+minio+robusta)
+icon: https://neo9.fr/assets/images/neo9-logo-baseline.svg
+
+version: 1.1.1
+appVersion: 0.63.0
+kubeVersion: ">=1.22.0-0"
+
+dependencies:
+- name: kube-prometheus-stack
+  alias: kps
+  condition: kps.enabled
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 45.1.1
+- name: thanos
+  alias: kps-thanos
+  condition: kps-thanos.enabled
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.0.4
+- name: minio
+  alias: kps-minio
+  condition: kps-minio.enabled
+  repository: https://helm.min.io
+  version: 8.0.10
+- name: robusta
+  alias: kps-robusta
+  condition: kps-robusta.enabled
+  repository: https://robusta-charts.storage.googleapis.com
+  version: 0.10.11

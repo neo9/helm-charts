@@ -1,0 +1,69 @@
+{{- if .Values.elasticsearch.enabled }}
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ include "eck-managed.fullname" . }}-elasticsearch
+spec:
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+    service:
+      metadata:
+        {{- if .Values.elasticsearch.service.annotations }}
+        annotations:
+          {{- toYaml .Values.elasticsearch.service.annotations | nindent 12 }}
+        {{- end }}
+        {{- if .Values.elasticsearch.service.labels }}
+        labels:
+          {{- toYaml .Values.elasticsearch.service.labels | nindent 12 }}
+        {{- end }}
+  version: {{ .Chart.AppVersion }}
+  nodeSets:
+  - name: default
+    count: {{ .Values.elasticsearch.replicaCount }}
+    podTemplate:
+      metadata:
+        labels: {{ toYaml .Values.elasticsearch.labels | nindent 10 }}
+        annotations: {{ toYaml .Values.elasticsearch.annotations | nindent 10 }}
+      spec:
+        containers:
+        - name: elasticsearch
+          {{- if .Values.elasticsearch.resources }}
+          resources: {{- toYaml .Values.elasticsearch.resources | nindent 14 }}
+          {{- end }}
+
+          {{- if .Values.elasticsearch.pod.elasticsearch.env }}
+          env: {{- toYaml .Values.elasticsearch.pod.elasticsearch.env | nindent 14 }}
+          {{- end }}
+        initContainers:
+        - name: sysctl
+          securityContext:
+            privileged: true
+          # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode
+          command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+        - name: increase-ulimit
+          image: busybox
+          # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_notes_for_production_use_and_defaults
+          command: ['sh', '-c', 'ulimit -n 65536']
+          securityContext:
+            privileged: true
+
+        {{- if .Values.elasticsearch.affinity }}
+        affinity: {{ toYaml .Values.elasticsearch.affinity | nindent 12 }}
+        {{- end }}
+
+        {{- if .Values.elasticsearch.nodeSelector }}
+        nodeSelector: {{ toYaml .Values.elasticsearch.nodeSelector | nindent 12 }}
+        {{- end }}
+
+        {{- if .Values.elasticsearch.tolerations}}
+        tolerations: {{ toYaml .Values.elasticsearch.tolerations | nindent 12 }}
+        {{- end }}
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec: {{ toYaml .Values.elasticsearch.volumeClaim.spec | nindent 8 }}
+    config:
+      {{- toYaml .Values.elasticsearch.config | nindent 6 }}
+{{- end }}

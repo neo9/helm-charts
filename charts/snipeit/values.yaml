@@ -1,0 +1,125 @@
+# Default values for snipeit.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: linuxserver/snipe-it
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "v5.2.0-ls144"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+snipeit:
+  NGINX_APP_URL: localhost
+  MYSQL_PORT_3306_TCP_ADDR: snipeit-mariadb
+  MYSQL_PORT_3306_TCP_PORT: 3306
+  MYSQL_DATABASE: snipeit
+  MYSQL_USER: snipeit
+# Will seek MYSQL_PASSWORD in {{ .Release.Name }}-mariadb secret
+
+# Add other docker env directly if needed
+  # MAIL_DRIVER: 
+  # MAIL_HOST: 
+  # MAIL_PORT: 
+  # MAIL_USERNAME: 
+  # MAIL_PASSWORD: 
+  # MAIL_ENCRYPTION: 
+  # MAIL_FROM_ADDR:
+  # MAIL_FROM_NAME: 
+  # MAIL_REPLYTO_ADDR: 
+  # MAIL_REPLYTO_NAME: 
+  # MAIL_AUTO_EMBED: true
+  # MAIL_AUTO_EMBED_METHOD:
+
+# Database (dependency:mariadb)
+mariadb:
+  architecture: standalone
+  auth:
+    database: snipeit
+    username: snipeit
+    # password: snipeit
+    # rootPassword: snipeit
+    # existingSecret:
+  primary:
+    service:
+      port: "3306"
+
+persistence:
+  enabled: true
+  annotations: {}
+  accessMode: ReadWriteOnce
+  existingClaim: ""
+  ## database data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  size: 2Gi
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  #   memory: 128Mi
+  # maxReplicas: 100
+  # targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

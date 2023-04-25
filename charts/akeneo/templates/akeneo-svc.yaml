@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "akeneo.fullname" . }}-service
+  labels:
+    {{- include "akeneo.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.akeneo.service.type }}
+  ports:
+    - port: {{ .Values.akeneo.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "akeneo.selectorLabels" . | nindent 4 }}
+    role: web

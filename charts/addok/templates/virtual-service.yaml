@@ -1,0 +1,16 @@
+{{ if .Values.global.istio.enabled -}}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: addok
+  namespace: {{ .Release.Namespace }}
+spec:
+  hosts:
+  - addok
+  http:
+  - route:
+    - destination:
+        host: addok
+        port:
+          number: 7878
+{{- end }}

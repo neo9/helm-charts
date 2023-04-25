@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "apprise.fullname" . }}
+  labels:
+    {{- include "apprise.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "apprise.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "apprise.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "apprise.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env: 
+            - name: APPRISE_STATEFUL_MODE
+              value: {{ .Values.apprise.statefulMode | quote }}
+            - name: APPRISE_CONFIG_LOCK
+              value: {{ .Values.apprise.configLock | quote }}
+            {{- range $key, $value := $.Values.env}}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          {{- if or (.Values.config.existingSecret) (.Values.config.rawYaml) }}
+          volumeMounts:
+          - name: apprise-config
+            mountPath: "/config"
+            readOnly: true
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if or (.Values.config.existingSecret) (.Values.config.rawYaml) }}
+      volumes:
+      {{- if not .Values.config.existingSecret }}
+      - name: apprise-config
+        secret:
+          secretName: {{ include "apprise.fullname" . }}-secret
+          items:
+          {{- range $k, $v := .Values.config.rawYaml }}
+          - key: {{ $k }}
+            path: {{ lower $k }}.yml 
+          {{- end }}
+      {{- else }}
+      - name: apprise-config
+        secret:
+          secretName: {{ .Values.config.existingSecret }}
+          items:
+          {{- range .Values.config.existingSecretKey }}
+          - key: {{ . | quote }}
+            path: {{ lower . | quote }}
+          {{- end }}
+      {{- end }}
+      {{- end }}
+

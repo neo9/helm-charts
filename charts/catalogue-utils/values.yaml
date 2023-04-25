@@ -1,0 +1,629 @@
+catalogue:
+  # -- Condition to enable and deploy catalogue-akeneo-api
+  akeneo-api: false
+  # -- Condition to enable and deploy catalogue-backoffice
+  backoffice: true
+  # -- Condition to enable and deploy catalogue-backoffice2
+  backoffice2: true
+  # -- Condition to enable and deploy catalogue-cms-api
+  cms-api: true
+  # -- Condition to enable and deploy catalogue-export-api
+  export-api: true
+  # -- Condition to enable and deploy catalogue-import-api
+  import-api: true
+  # -- Condition to enable and deploy catalogue-jobs-api
+  jobs-api: true
+  # -- Condition to enable and deploy catalogue-live-api
+  live-api: true
+  # -- Condition to enable and deploy catalogue-master-api
+  master-api: true
+  # -- Condition to enable and deploy catalogue-media-api
+  media-api: true
+  # -- Condition to enable and deploy catalogue-merchandising-api
+  merchandising-api: false
+  # -- Condition to enable and deploy catalogue-metrics-api
+  metrics-api: false
+  # -- Condition to enable and deploy catalogue-mirakl-api
+  mirakl-api: false
+  # -- Condition to enable and deploy catalogue-mock-api
+  mock-api: false
+  # -- Condition to enable and deploy catalogue-mock-backoffice
+  mock-backoffice: false
+  # -- Condition to enable and deploy catalogue-publication-api
+  publication-api: true
+  # -- Condition to enable and deploy catalogue-scheduler-api
+  scheduler-api: true
+  # -- Condition to enable and deploy catalogue-search-admin-api
+  search-admin-api: true
+  # -- Condition to enable and deploy catalogue-users-api
+  users-api: true
+  # -- Condition to enable and deploy catalogue-web-api
+  web-api: true
+
+################################################################################
+# MongoDB configuration.
+################################################################################
+
+mongodb:
+  enabled: false
+  fullnameOverride: catalogue-mongodb
+  mongodb:
+    version: 6.0.5
+    featureCompatibilityVersion: "6.0"
+
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: "1"
+      memory: 2G
+    requests:
+      cpu: 500m
+      memory: 1G
+  mongodbAgent:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 500M
+      requests:
+        cpu: 50m
+        memory: 50M
+
+  users:
+    - name: n9-catalogue
+      db: admin
+      roles:
+      - name: clusterAdmin
+      - name: userAdminAnyDatabase
+      - name: readWriteAnyDatabase
+      - name: dbAdminAnyDatabase
+
+    - name: catalogue-akeneo-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-cms-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-export-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-import-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-jobs-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-master-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-media-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-merchandising-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-mirakl-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-mock-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-scheduler-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-search-admin-api
+      roles:
+      - name: readWrite
+
+    - name: catalogue-users-api
+      roles:
+      - name: readWrite
+
+  #########################################################################
+  # Mongodb-Prometheus-Exporter configuration
+  #########################################################################
+
+  mongodbMonitoring:
+    user:
+      create: true
+
+  mongodb-exporter:
+    enabled: true
+    existingSecret:
+      name: "catalogue-mongodb-admin-monitoring"
+    serviceMonitor:
+      enabled: false
+
+################################################################################
+# RabbitMQ configuration.
+################################################################################
+
+rabbitmq:
+  enabled: false
+  fullnameOverride: catalogue-rabbitmq
+
+  cluster:
+    image: docker.io/bitnami/rabbitmq:3.10.8-debian-11-r7
+    replicaCount: 3
+    resources:
+      limits:
+        cpu: 500m
+        memory: 750M
+      requests:
+        cpu: 100m
+        memory: 250M
+    rabbitmqConf:
+      additionalPlugins:
+        - rabbitmq_consistent_hash_exchange
+        - rabbitmq_delayed_message_exchange
+      additionalConfig: |
+        consumer_timeout = 10800000
+    override:
+      statefulSet:
+        spec:
+          template:
+            spec:
+              containers:
+                - name: rabbitmq
+                  env: 
+                  - name: RABBITMQ_COMMUNITY_PLUGINS
+                    value: "https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/3.10.2/rabbitmq_delayed_message_exchange-3.10.2.ez"
+    
+  vhosts:
+    - catalogue
+
+  users:
+    - name: n9-catalogue
+      permissions:
+        - vhost: /
+        - vhost: catalogue
+
+    - name: akeneo-api
+      permissions:
+        - vhost: catalogue
+
+    - name: export-api
+      permissions:
+        - vhost: catalogue
+
+    - name: import-api
+      permissions:
+        - vhost: catalogue
+
+    - name: internal-live-api
+      permissions:
+        - vhost: catalogue
+
+    - name: jobs-api
+      permissions:
+        - vhost: catalogue
+
+    - name: master-api
+      permissions:
+        - vhost: catalogue
+
+    - name: media-api
+      permissions:
+        - vhost: catalogue
+
+    - name: merchandising-api
+      permissions:
+        - vhost: catalogue
+
+    - name: mirakl-api
+      permissions:
+        - vhost: catalogue
+
+    - name: mock-api
+      permissions:
+        - vhost: catalogue
+
+    - name: publication-api
+      permissions:
+        - vhost: catalogue
+
+    - name: scheduler-api
+      permissions:
+        - vhost: catalogue
+
+  policies:
+    - name: "ha"
+      vhost: "catalogue"
+      pattern: ".*"
+      applyTo: "all"
+      definition:
+        ha-mode: all
+        ha-sync-mode: automatic
+
+################################################################################
+# ECK configuration.
+################################################################################
+
+eck-managed:
+  enabled: false
+  fullnameOverride: catalogue-eck
+
+  ################################################################################
+  # Elasticsearch configuration.
+  ################################################################################
+
+  elasticsearch:
+    enabled: false
+    replicaCount: 2
+    service:
+      annotations:
+        ingress.neo9.io/expose-hostname: "catalogue-elasticsearch.{{namespace}}.{{domain}}"
+        ingress.neo9.io/expose-annotations: |-
+          kubernetes.io/ingress.class: nginx
+          cert-manager.io/cluster-issuer: letsencrypt-dns-production-gcp
+          external-dns.alpha.kubernetes.io/ttl: "5"
+          nginx.ingress.kubernetes.io/ssl-redirect: "true"
+          forecastle.stakater.com/expose: true
+          nginx.ingress.kubernetes.io/proxy-body-size: 200m
+          ingress.neo9.io/access-operator-enabled: "true"
+          ingress.neo9.io/allowed-visitors: self,neo9,neo9-sf
+        ingress.neo9.io/expose-labels: |-
+          ingress.neo9.io/access-operator-enabled: "true"
+      labels:
+        ingress.neo9.io/expose: "true"
+    resources:
+      limits:
+        cpu: 1
+        memory: 2Gi
+      requests:
+        cpu: 1
+        memory: 2Gi
+    pod:
+      elasticsearch:
+        env:
+          - name: ES_JAVA_OPTS
+            value: -Xms1g -Xmx1g
+
+    volumeClaim:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+    config:
+      node.master: true
+      node.data: true
+      node.ingest: true
+      node.store.allow_mmap: false
+      xpack.security.authc:
+        anonymous:
+          username: anonymous
+          roles: superuser
+          authz_exception: false
+
+  ################################################################################
+  # ES exporter configuration.
+  ################################################################################
+
+  es-exporter:
+    enabled: false
+    es:
+      uri: http://catalogue-eck-elasticsearch-es-default:9200
+    serviceMonitor:
+      enabled: false
+
+################################################################################
+# Kibana configuration.
+################################################################################
+
+  kibana:
+    enabled: false
+
+    # Define the Kibana version.
+    version: 7.16.2
+
+    # Configure pod resources.
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 0.1
+      limits:
+        memory: 1Gi
+        cpu: 1
+
+    # Define a node selector.
+    #
+    nodeSelector:
+      type: main
+
+    # By default, this property is empty. When empty, the chart will fetch the value specified into
+    # `.Values.elasticsearch.fullnameOverride` automatically.
+    #
+    # elasticsearchRef:
+
+    # Define the number of replicas.
+    replicaCount: 1
+
+    # Configure the HTTP service.
+    http:
+      tls:
+        selfSignedCertificate:
+          disabled: true
+      service:
+        metadata:
+          annotations:
+            ingress.neo9.io/expose-hostname: "catalogue-kibana.{{namespace}}.{{domain}}"
+            ingress.neo9.io/expose-annotations: |-
+              kubernetes.io/ingress.class: nginx
+              cert-manager.io/cluster-issuer: letsencrypt-dns-production-gcp
+              external-dns.alpha.kubernetes.io/ttl: "5"
+              nginx.ingress.kubernetes.io/ssl-redirect: "true"
+              forecastle.stakater.com/expose: true
+              nginx.ingress.kubernetes.io/proxy-body-size: 200m
+              ingress.neo9.io/access-operator-enabled: "true"
+              ingress.neo9.io/allowed-visitors: self,neo9,neo9-sf
+            ingress.neo9.io/expose-labels: |-
+              ingress.neo9.io/access-operator-enabled: "true"
+          labels:
+            ingress.neo9.io/expose: "true"
+
+################################################################################
+# External secrets configuration.
+################################################################################
+
+external-secrets:
+  enabled: false
+
+  bucketName:
+    # -- Set bucket name to use for desired api
+    media-api: "example"
+
+  # Define the schema to use to generate the list of external secrets (with template and secrets). 4 possibles services
+  # are currently available :
+  #
+  #   - `elasticsearch`
+  #   - `rabbitmq`
+  #   - `mongodb`
+  #   - `google_service_account`
+  #   - `bucket` (also require to set bucketName values)
+  #
+  # The schema has to handle every possible APIs, even if there's not activated (from `.Values.catalogue`).
+  schema:
+    akeneo-api: ["rabbitmq", "mongodb"]
+    cms-api: ["mongodb"]
+    export-api: ["rabbitmq", "mongodb"]
+    internal-live-api: ["elasticsearch","rabbitmq"]
+    import-api: ["rabbitmq", "mongodb"]
+    jobs-api: ["rabbitmq", "mongodb"]
+    live-api: ["elasticsearch"]
+    master-api: ["rabbitmq", "mongodb", "elasticsearch"]
+    merchandising-api: ["mongodb","rabbitmq"]
+    media-api: ["rabbitmq", "mongodb", "google_service_account", "bucket"]
+    mirakl-api: ["rabbitmq", "mongodb"]
+    mock-api: ["rabbitmq", "mongodb"]
+    publication-api: ["elasticsearch", "rabbitmq"]
+    scheduler-api: ["rabbitmq", "mongodb"]
+    search-admin-api: ["mongodb"]
+    users-api: ["mongodb"]
+
+  # secretStoreRef:
+  #   name: k8s-integration
+  #   kind: ClusterSecretStore
+
+  # secrets:
+    # catalogue-akeneo-api:
+    #   mongodb_username:
+    #     key: catalogue-mongodb-catalogue-akeneo-api-catalogue-akeneo-api
+    #     property: username
+    #   mongodb_password:
+    #     key: catalogue-mongodb-catalogue-akeneo-api-catalogue-akeneo-api
+    #     property: password
+    #   rabbitmq_username:
+    #     key: catalogue-rabbitmq-user-akeneo-api-user-credentials
+    #     property: username
+    #   rabbitmq_password:
+    #     key: catalogue-rabbitmq-user-akeneo-api-user-credentials
+    #     property: password
+    #
+    # catalogue-cms-api:
+    #   mongodb_username:
+    #     key: catalogue-mongodb-catalogue-cms-api-catalogue-cms-api
+    #     property: username
+    #   mongodb_password:
+    #     key: catalogue-mongodb-catalogue-cms-api-catalogue-cms-api
+    #     property: password
+    #   google_service_account:
+    #     key: crossplane-catalogue-integration-service-account-key
+    #     property: privateKey
+    #
+    # catalogue-export-api:
+    #   mongodb_username:
+    #     key: catalogue-mongodb-catalogue-export-api-catalogue-export-api
+    #     property: username
+    #   mongodb_password:
+    #     key: catalogue-mongodb-catalogue-export-api-catalogue-export-api
+    #     property: password
+    #   rabbitmq_username:
+    #     key: catalogue-rabbitmq-user-export-api-user-credentials
+    #     property: username
+    #   rabbitmq_password:
+    #     key: catalogue-rabbitmq-user-export-api-user-credentials
+    #     property: password
+    #
+    # catalogue-import-api:
+    #   mongodb_username:
+    #     key: catalogue-mongodb-catalogue-import-api-catalogue-import-api
+    #     property: username
+    #   mongodb_password:
+    #     key: catalogue-mongodb-catalogue-import-api-catalogue-import-api
+    #     property: password
+    #   rabbitmq_username:
+    #     key: catalogue-rabbitmq-user-import-api-user-credentials
+    #     property: username
+    #   rabbitmq_password:
+    #     key: catalogue-rabbitmq-user-import-api-user-credentials
+    #     property: password
+    #
+    # catalogue-jobs-api:
+    #   mongodb_username:
+    #     key: catalogue-mongodb-catalogue-jobs-api-catalogue-jobs-api
+    #     property: username
+    #   mongodb_password:
+    #     key: catalogue-mongodb-catalogue-jobs-api-catalogue-jobs-api
+    #     property: password
+    #   rabbitmq_username:
+    #     key: catalogue-rabbitmq-user-jobs-api-user-credentials
+    #     property: username
+    #   rabbitmq_password:
+    #     key: catalogue-rabbitmq-user-jobs-api-user-credentials
+    #     property: password
+    #
+    # catalogue-master-api:
+    #   mongodb_username:
+    #     key: catalogue-mongodb-catalogue-master-api-catalogue-master-api
+    #     property: username
+    #   mongodb_password:
+    #     key: catalogue-mongodb-catalogue-master-api-catalogue-master-api
+    #     property: password
+    #   rabbitmq_username:
+    #     key: catalogue-rabbitmq-user-master-api-user-credentials
+    #     property: username
+    #   rabbitmq_password:
+    #     key: catalogue-rabbitmq-user-master-api-user-credentials
+    #     property: password
+    #
+    # catalogue-media-api:
+    #   mongodb_username:
+    #     key: catalogue-mongodb-catalogue-media-api-catalogue-media-api
+    #     property: username
+    #   mongodb_password:
+    #     key: catalogue-mongodb-catalogue-media-api-catalogue-media-api
+    #     property: password
+    #   rabbitmq_username:
+    #     key: catalogue-rabbitmq-user-media-api-user-credentials
+    #     property: username
+    #   rabbitmq_password:
+    #     key: catalogue-rabbitmq-user-media-api-user-credentials
+    #     property: password
+    #   google_service_account:
+    #     key: crossplane-catalogue-service-account-key
+    #     property: privateKey
+    #
+    # catalogue-mock-api:
+    #   mongodb_username:
+    #     key: catalogue-mongodb-catalogue-mock-api-catalogue-mock-api
+    #     property: username
+    #   mongodb_password:
+    #     key: catalogue-mongodb-catalogue-mock-api-catalogue-mock-api
+    #     property: password
+    #   rabbitmq_username:
+    #     key: catalogue-rabbitmq-user-mock-api-user-credentials
+    #     property: username
+    #   rabbitmq_password:
+    #     key: catalogue-rabbitmq-user-mock-api-user-credentials
+    #     property: password
+    #
+    # catalogue-publication-api:
+    #   rabbitmq_username:
+    #     key: catalogue-rabbitmq-user-publication-api-user-credentials
+    #     property: username
+    #   rabbitmq_password:
+    #     key: catalogue-rabbitmq-user-publication-api-user-credentials
+    #     property: password
+    #
+    # catalogue-scheduler-api:
+    #   mongodb_username:
+    #     key: catalogue-mongodb-catalogue-scheduler-api-catalogue-scheduler-api
+    #     property: username
+    #   mongodb_password:
+    #     key: catalogue-mongodb-catalogue-scheduler-api-catalogue-scheduler-api
+    #     property: password
+    #   rabbitmq_username:
+    #     key: catalogue-rabbitmq-user-scheduler-api-user-credentials
+    #     property: username
+    #   rabbitmq_password:
+    #     key: catalogue-rabbitmq-user-scheduler-api-user-credentials
+    #     property: password
+    #
+    # catalogue-search-admin-api:
+    #   mongodb_username:
+    #     key: catalogue-mongodb-catalogue-search-admin-api-catalogue-search-admin-api
+    #     property: username
+    #   mongodb_password:
+    #     key: catalogue-mongodb-catalogue-search-admin-api-catalogue-search-admin-api
+    #     property: password
+
+################################################################################
+# Minio configuration.
+#
+# @link https://github.com/minio/minio/tree/master/helm/minio
+################################################################################
+
+minio:
+  enabled: false
+  fullnameOverride: catalogue-minio
+  mode: standalone
+  persistence:
+    size: 20Gi
+    storageClass: gcp-sc-retain-wait-ssd
+  ingress:
+    enabled: true
+    annotations:
+      ingress.neo9.io/expose-annotations: |-
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: letsencrypt-dns-production-gcp
+        external-dns.alpha.kubernetes.io/ttl: "5"
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        forecastle.stakater.com/expose: true
+        nginx.ingress.kubernetes.io/proxy-body-size: 200m
+        ingress.neo9.io/access-operator-enabled: "true"
+        ingress.neo9.io/allowed-visitors: self,neo9,neo9-sf
+      ingress.neo9.io/expose-labels: |-
+        ingress.neo9.io/access-operator-enabled: "true"
+    labels:
+      ingress.neo9.io/expose: "true"
+  resources:
+    requests:
+      memory: 1Gi
+  buckets:
+    - name: catalogue-integration-media-api-bucket
+      policy: public
+
+################################################################################
+# Crossplane configuration.
+################################################################################
+
+crossplane-buckets:
+  enabled: false
+
+  mode: simple
+
+  shareServiceAccount:
+    enabled: true
+    name: "namespace-catalogue-gcs"
+    defaultRoles:
+    - roles/storage.objectAdmin
+
+  prefix: "clustername-namespace"
+
+  cloud:
+    default:
+      location: "EU"
+
+  # outputSecretMetadata:
+  #   annotations:
+  #     replicator.v1.mittwald.de/replication-allowed: "true"
+  #     replicator.v1.mittwald.de/replication-allowed-namespaces: "*"
+  #     # replicator.v1.mittwald.de/replicate-to: "NAMESPACE"
+
+  buckets:
+  - name: cat-media
+    hasPrefix: true
+    deletionPolicy: Orphan
+    uniformPolicy: true

@@ -1,0 +1,55 @@
+global:
+  istio:
+    enabled: false
+
+etalab:
+  redis:
+    image: etalab/addok-redis:latest
+    replicas: 1
+  addok:
+    image: etalab/addok:latest
+    replicas: 1
+
+ingress:
+  enabled: false
+  tls: true
+  host: addok.foncia.neo9.pro
+  path: "/"
+  #annotations:
+  #  cert-manager.io/cluster-issuer: letsencrypt-dns-production-gcp
+  #  exposeIngressUrl: globally
+  #  external-dns.alpha.kubernetes.io/ttl: "300"
+  #  kubernetes.io/ingress.class: nginx-istio
+  #  nginx.ingress.kubernetes.io/proxy-body-size: 200m
+  #  nginx.ingress.kubernetes.io/whitelist-source-range: 10.113.0.0/16,35.240.53.4/32,78.193.215.55/32,80.28.115.188/32,77.196.142.114/32,52.47.163.232/32,176.124.43.162/32,35.195.18.169/32,90.102.12.65/32,90.102.12.129/32
+  #  nginx.org/client-max-body-size: 200m
+
+
+addok:
+  data:
+    currentVersionFlag: 2021-04-27
+  livenessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /search?q=paris
+      port: 7878
+      scheme: HTTP
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+redis:
+  resources:
+    requests:
+      cpu: 1
+      memory: 8Gi
+    limits:
+      cpu: 1
+      memory: 8Gi

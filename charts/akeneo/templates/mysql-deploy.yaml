@@ -1,0 +1,66 @@
+{{- if not .Values.mysql.external }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "akeneo.fullname" . }}-mysql-deployment
+  labels:
+  {{- include "akeneo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.akeneo.replicas }}
+  selector:
+    matchLabels:
+      {{- include "akeneo.selectorLabels" . | nindent 6 }}
+      role: mysql
+  template:
+    metadata:
+      labels:
+        {{- include "akeneo.selectorLabels" . | nindent 8 }}
+        role: mysql
+    spec:
+      {{- with .Values.mysql.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.mysql.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.mysql.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - image: {{ .Values.mysql.image }}
+        resources:
+          {{- toYaml .Values.mysql.resources | nindent 12 }}
+        imagePullPolicy: Always
+        name: mysql
+        args:
+          - --default-authentication-plugin=mysql_native_password
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: akeneo
+          - name: MYSQL_DATABASE
+            value: akeneo
+          - name: MYSQL_USER
+            value: akeneo
+          - name: MYSQL_PASSWORD
+            value: akeneo
+          - name: DB_AUTHENTICATION_PLUGIN
+            value: mysql_native_password
+        readinessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          tcpSocket:
+            port: 3306
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: {{ include "akeneo.fullname" . }}-mysql-pvc
+{{- end }}
