@@ -1,0 +1,542 @@
+apiVersion: v1
+entries:
+  addok:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-05-02T14:15:13.685922934Z"
+    description: addok geoserver
+    digest: 5e898e6dddaa8e51d2194523015284ac26ef2931c84aee9effaff14e83b5067c
+    name: addok
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/addok-1.4.0/addok-1.4.0.tgz
+    version: 1.4.0
+  akeneo:
+  - apiVersion: v2
+    appVersion: "5.0"
+    created: "2023-05-02T14:15:13.862310105Z"
+    description: Helm chart to deploy a demo of akeneo PIM
+    digest: 5d5a973d6542d7378b9fdc15b6082d8026e6f3fc5387fc234b18dd5498aa4f4c
+    name: akeneo
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/akeneo-1.2.0/akeneo-1.2.0.tgz
+    version: 1.2.0
+  apprise:
+  - apiVersion: v2
+    appVersion: v0.7.0
+    created: "2023-05-02T14:15:14.057620956Z"
+    description: A Helm chart for Kubernetes
+    digest: 9698eca8aa3fd6862ed722f052565e32eff4b9f6f227ee7d5cbd8401d3d4a7de
+    name: apprise
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/apprise-0.1.0/apprise-0.1.0.tgz
+    version: 0.1.0
+  catalogue:
+  - apiVersion: v2
+    appVersion: 2.33.0
+    created: "2023-05-02T14:15:14.261295385Z"
+    dependencies:
+    - alias: backoffice
+      condition: catalogue.backoffice
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: backoffice2
+      condition: catalogue.backoffice2
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: cms-api
+      condition: catalogue.cms-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: import-api
+      condition: catalogue.import-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: jobs-api
+      condition: catalogue.jobs-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: media-api
+      condition: catalogue.media-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: metrics-api
+      condition: catalogue.metrics-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: mirakl-api
+      condition: catalogue.mirakl-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: mock-backoffice
+      condition: catalogue.mock-backoffice
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: mock-api
+      condition: catalogue.mock-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: live-api
+      condition: catalogue.live-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: internal-live-api
+      condition: catalogue.internal-live-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: master-api
+      condition: catalogue.master-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: publication-api
+      condition: catalogue.publication-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: export-api
+      condition: catalogue.export-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: scheduler-api
+      condition: catalogue.scheduler-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: search-admin-api
+      condition: catalogue.search-admin-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: web-api
+      condition: catalogue.web-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: merchandising-api
+      condition: catalogue.merchandising-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: akeneo-api
+      condition: catalogue.akeneo-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: users-api
+      condition: catalogue.users-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    description: Neo9 catalogue global chart
+    digest: 1859864f915dd066a4e865b99f4917c9b80353c01b8a913a2adea8805d78697d
+    icon: https://neo9.fr/assets/images/neo9-logo-baseline.svg
+    name: catalogue
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/catalogue-6.0.0/catalogue-6.0.0.tgz
+    version: 6.0.0
+  catalogue-utils:
+  - apiVersion: v2
+    created: "2023-05-02T14:15:14.440107194Z"
+    dependencies:
+    - alias: mongodb
+      condition: mongodb.enabled
+      name: mongodb-managed
+      repository: https://charts.neo9.pro
+      version: 0.6.3
+    - alias: rabbitmq
+      condition: rabbitmq.enabled
+      name: rabbitmq-managed
+      repository: https://charts.neo9.pro
+      version: 0.4.1
+    - alias: eck-managed
+      condition: eck-managed.enabled
+      name: eck-managed
+      repository: https://charts.neo9.pro
+      version: 0.1.0
+    - condition: crossplane-buckets.enabled
+      name: crossplane-buckets
+      repository: https://charts.neo9.pro
+      version: 0.3.1
+    - condition: minio.enabled
+      name: minio
+      repository: https://helm.min.io
+      version: 8.0.10
+    description: A Helm chart for Kubernetes
+    digest: 3d8228827444872fdbf26f4cf6b851bd6b9d208e75aca989c5ecb1c04b7664fb
+    name: catalogue-utils
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/catalogue-utils-0.8.6/catalogue-utils-0.8.6.tgz
+    version: 0.8.6
+  container-registry-cleaner:
+  - apiVersion: v2
+    appVersion: v0.1.0
+    created: "2023-05-02T14:15:14.61938263Z"
+    description: A Helm chart for Kubernetes
+    digest: 5d9dcfb540cb3a82c4f6af131dc75cb911e19e99a95f8f3ec92b52813c512599
+    name: container-registry-cleaner
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/container-registry-cleaner-0.1.0/container-registry-cleaner-0.1.0.tgz
+    version: 0.1.0
+  container-registry-config:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-05-02T14:15:14.79891848Z"
+    description: A Helm chart for Kubernetes
+    digest: 0d07bd755e10c2007e25e5619c06e326b836a76c533a305515dddb46fdb9171d
+    name: container-registry-config
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/container-registry-config-0.1.0/container-registry-config-0.1.0.tgz
+    version: 0.1.0
+  container-registry-operator:
+  - apiVersion: v2
+    appVersion: v0.1.4
+    created: "2023-05-02T14:15:14.967144785Z"
+    description: A Helm chart for Kubernetes
+    digest: 0a53185c2bcff934b40f2420187795f0175118786bb515dbadcce74bb3346928
+    name: container-registry-operator
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/container-registry-operator-0.1.0/container-registry-operator-0.1.0.tgz
+    version: 0.1.0
+  eck-managed:
+  - apiVersion: v2
+    appVersion: 7.16.2
+    created: "2023-05-02T14:15:15.160923149Z"
+    dependencies:
+    - alias: es-exporter
+      condition: es-exporter.enabled
+      name: prometheus-elasticsearch-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 4.11.1
+    description: A Helm chart for Kubernetes
+    digest: 3131d31eba6ede3aaf8c6712138df33ba27acb916150b8b1a08bfc4a016cdbea
+    name: eck-managed
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/eck-managed-0.1.0/eck-managed-0.1.0.tgz
+    version: 0.1.0
+  estafette-gke-node-pool-shifter:
+  - apiVersion: v1
+    appVersion: 1.2.4
+    created: "2023-05-02T14:15:15.331970815Z"
+    description: Kubernetes controller that can shift nodes from one node pool to
+      another, to favour for example preemptibles over regular vms
+    digest: b3101973972ac2a41c30876f2346256c31e36e7ef03ba735cb21ffd5d4fd20e1
+    home: https://helm.estafette.io
+    icon: https://helm.estafette.io/icon.png
+    name: estafette-gke-node-pool-shifter
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/estafette-gke-node-pool-shifter-0.1.0/estafette-gke-node-pool-shifter-0.1.0.tgz
+    version: 0.1.0
+  estafette-gke-preemptible-killer:
+  - apiVersion: v1
+    appVersion: 1.3.0
+    created: "2023-05-02T14:15:15.488546455Z"
+    description: Kubernetes controller to spread preemption for preemtible VMs in
+      GKE to avoid mass deletion after 24 hours
+    digest: 139e6ec47519b8df07c8d9571b39b22642ca8ebf55cdfe4c9293ecc30322ca85
+    home: https://helm.estafette.io
+    icon: https://helm.estafette.io/icon.png
+    name: estafette-gke-preemptible-killer
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/estafette-gke-preemptible-killer-0.1.0/estafette-gke-preemptible-killer-0.1.0.tgz
+    version: 0.1.0
+  ingress-access-operator:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-05-02T14:15:15.666558419Z"
+    description: A Helm chart for Kubernetes
+    digest: 022cb48ad20d3358336227701735d1784f84d6670a5e744fb673fa1bfc135c13
+    name: ingress-access-operator
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/ingress-access-operator-0.1.0/ingress-access-operator-0.1.0.tgz
+    version: 0.1.0
+  istio-rules-external-services:
+  - apiVersion: v2
+    appVersion: 1.12.0
+    created: "2023-05-02T14:15:15.860610498Z"
+    description: Configure external service for tls origination
+    digest: 45bbd288dc5629336799dc1ab6497015aa56f4f96fc029c970ddde2b8bc89c2e
+    name: istio-rules-external-services
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/istio-rules-external-services-1.12.1/istio-rules-external-services-1.12.1.tgz
+    version: 1.12.1
+  kps:
+  - apiVersion: v2
+    appVersion: 0.63.0
+    created: "2023-05-02T14:15:16.229704871Z"
+    dependencies:
+    - alias: kps
+      condition: kps.enabled
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 45.1.1
+    - alias: kps-thanos
+      condition: kps-thanos.enabled
+      name: thanos
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.0.4
+    - alias: kps-minio
+      condition: kps-minio.enabled
+      name: minio
+      repository: https://helm.min.io
+      version: 8.0.10
+    - alias: kps-robusta
+      condition: kps-robusta.enabled
+      name: robusta
+      repository: https://robusta-charts.storage.googleapis.com
+      version: 0.10.11
+    description: Neo9 monitoring stack (kps+thanos+minio+robusta)
+    digest: 7b8e6deb1532e48419427ebf04205f60131c0900751cdd3a10117f0b3ec9701e
+    icon: https://neo9.fr/assets/images/neo9-logo-baseline.svg
+    kubeVersion: '>=1.22.0-0'
+    name: kps
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/kps-1.1.1/kps-1.1.1.tgz
+    version: 1.1.1
+  minio-operator:
+  - apiVersion: v2
+    appVersion: v4.3.7
+    created: "2023-05-02T14:15:16.392361558Z"
+    description: A Helm chart for Kubernetes
+    digest: 397fd1c0b7eb764b7e4b95f78a03c09159876fc3ff4a41c4a88d47b97d9e5c8e
+    name: minio-operator
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/minio-operator-0.1.0/minio-operator-0.1.0.tgz
+    version: 0.1.0
+  minio-tenants:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-05-02T14:15:16.577030302Z"
+    description: A Helm chart for Kubernetes
+    digest: d6ff21c7a7304606c4cda717dcf2788309217a44749fab432345cfca2e2c8d1e
+    name: minio-tenants
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/minio-tenants-0.1.0/minio-tenants-0.1.0.tgz
+    version: 0.1.0
+  mongodb-backups:
+  - apiVersion: v1
+    appVersion: 0.1.0
+    created: "2023-05-02T14:15:16.995406989Z"
+    description: MongoDB backups
+    digest: 48e6b87cb8f397893c4c86e85fcc333268ed641c5db6c12b0ca12e61efa0d309
+    name: mongodb-backups
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/mongodb-backups-0.2.1/mongodb-backups-0.2.1.tgz
+    version: 0.2.1
+  mongodb-managed:
+  - apiVersion: v2
+    created: "2023-05-02T14:15:17.224753684Z"
+    dependencies:
+    - alias: mongodb-exporter
+      condition: mongodb-exporter.enabled
+      name: prometheus-mongodb-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 3.1.2
+    description: A Helm chart to manage mongodbcommunity cluster
+    digest: 820ce81a17cc849f64acebc1001c82acac0e2d1e7e93fbe6c7dcce2efb76963e
+    name: mongodb-managed
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/mongodb-managed-0.6.3/mongodb-managed-0.6.3.tgz
+    version: 0.6.3
+  mysql-backup:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-05-02T14:15:17.403056264Z"
+    description: Chart for kubernetes cronjob to do mysql-backup
+    digest: c58cf7d2205e2c6f16d05f7c04157d723cd82bfacae59063ff36cd3a33c99e10
+    name: mysql-backup
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/mysql-backup-0.1.0/mysql-backup-0.1.0.tgz
+    version: 0.1.0
+  n9-api:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2023-05-02T14:15:17.569761382Z"
+    description: Neo9 standard API chart
+    digest: b0ad8e025f849c26ef4be376d65d26d59b3271ac453e35701bef1e1f5aef106d
+    icon: https://neo9.fr/assets/images/neo9-logo-baseline.svg
+    name: n9-api
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/n9-api-1.3.11/n9-api-1.3.11.tgz
+    version: 1.3.11
+  opencost:
+  - apiVersion: v2
+    appVersion: "1.99"
+    created: "2023-05-02T14:15:17.736960728Z"
+    description: A Helm chart for Kubernetes
+    digest: 40d7b7668cdb081bdc1139518ca32067420e875844e0e321c25d13d0b55d7fde
+    name: opencost
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/opencost-0.1.0/opencost-0.1.0.tgz
+    version: 0.1.0
+  passbolt:
+  - apiVersion: v2
+    appVersion: 3.2.1-2-ce
+    created: "2023-05-02T14:15:17.928191547Z"
+    dependencies:
+    - name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.0.0
+    description: Passbolt Helm Chart
+    digest: bb1c19912146c85bc556fefcddc5e3a45e1390cbf6f7b276c293df4420b2a865
+    icon: https://www.passbolt.com/img/logo/logo.svg
+    name: passbolt
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/passbolt-3.0.0/passbolt-3.0.0.tgz
+    version: 3.0.0
+  postgres-managed:
+  - apiVersion: v2
+    appVersion: 1.8.2
+    created: "2023-05-02T14:15:18.07537345Z"
+    description: A Helm chart to create postgresql ressource for zalando operator
+    digest: 320196d311d928481da56b1492a18723845b97d1294564d8d0c5755175554b18
+    name: postgres-managed
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/postgres-managed-0.2.3/postgres-managed-0.2.3.tgz
+    version: 0.2.3
+  privatebin:
+  - apiVersion: v1
+    appVersion: 1.3.5
+    created: "2023-05-02T14:15:18.25401855Z"
+    description: A Helm chart for installing PrivateBin
+    digest: 40072b0407585940c84bcc76e47ca391e99036c17805b5bdc785aee92e463cb9
+    home: https://privatebin.info/
+    icon: https://raw.githubusercontent.com/PrivateBin/assets/master/images/preview/icon.png
+    keywords:
+    - pastebin
+    - PrivateBin
+    - ZeroBin
+    name: privatebin
+    sources:
+    - https://github.com/PrivateBin/PrivateBin
+    - https://github.com/PrivateBin/docker-nginx-fpm-alpine
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/privatebin-0.9.0/privatebin-0.9.0.tgz
+    version: 0.9.0
+  rabbitmq-managed:
+  - apiVersion: v2
+    appVersion: "3.10"
+    created: "2023-05-02T14:15:18.422125748Z"
+    description: A Helm chart to manage RabbitmqCluster & typology
+    digest: 86cacbd36a975ac59f64847bb5ea7a2243e37c7ad22e146ac073e6cac806fb86
+    name: rabbitmq-managed
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/rabbitmq-managed-0.4.1/rabbitmq-managed-0.4.1.tgz
+    version: 0.4.1
+  raw:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-05-02T14:15:18.597850081Z"
+    description: A helm chart for deploying raw manifests
+    digest: d7437a2e7b75822138da70783ade29cebbc8a4c9f35867c8519827e94c64d85b
+    home: https://tech.paulcz.net/charts
+    maintainers:
+    - email: username.taken@gmail.com
+      name: paulczar
+    name: raw
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/raw-0.1.0/raw-0.1.0.tgz
+    version: 0.1.0
+  resource-cleanup-policy:
+  - apiVersion: v2
+    appVersion: v2.0.2
+    created: "2023-05-02T14:15:18.766800327Z"
+    description: A Helm chart for Kubernetes
+    digest: 1a291485f2f1dcc97c7e76074fb5a43212868fa953efdfc960eb29139f663ac6
+    name: resource-cleanup-policy
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/resource-cleanup-policy-1.0.0/resource-cleanup-policy-1.0.0.tgz
+    version: 1.0.0
+  sloop:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-05-02T14:15:18.962685645Z"
+    description: Sloop is a kubernetes history visualization tool.
+    digest: 6cd094b098f8c6e4f46f616b2427b36bb378477032bddc9dfd219e5599bef871
+    icon: https://raw.githubusercontent.com/salesforce/sloop/master/other/sloop_logo_color.png
+    name: sloop
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/sloop-0.1.0/sloop-0.1.0.tgz
+    version: 0.1.0
+  snipeit:
+  - apiVersion: v2
+    appVersion: v5.2.0-ls144
+    created: "2023-05-02T14:15:19.145625246Z"
+    dependencies:
+    - name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.0.0
+    description: A Helm chart for SnipeIT
+    digest: 92dcbe176350124922d5ef763e2026bfc38ebaebbba4c434a325bd5814370fd8
+    name: snipeit
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/snipeit-0.6.0/snipeit-0.6.0.tgz
+    version: 0.6.0
+  tekton:
+  - apiVersion: v2
+    appVersion: 0.1.1
+    created: "2023-05-02T14:15:19.30179541Z"
+    description: A Helm chart for Kubernetes
+    digest: 37f5f90cc77b57cdf7b2ca58aa8ef57c1c033b1843d84c870d18466c48ae2dee
+    name: tekton
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/tekton-0.1.1/tekton-0.1.1.tgz
+    version: 0.1.1
+  tekton-catalog:
+  - apiVersion: v2
+    appVersion: 0.1.1
+    created: "2023-05-02T14:15:19.475067055Z"
+    description: A Helm chart for Kubernetes
+    digest: 6ee4d3987a4fd07c36514fc246b499c56eea3555e1d8d6679e9c36de1ce704e2
+    name: tekton-catalog
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/tekton-catalog-0.1.1/tekton-catalog-0.1.1.tgz
+    version: 0.1.1
+  tekton-logging:
+  - apiVersion: v2
+    appVersion: v0.1.1
+    created: "2023-05-02T14:15:19.62115074Z"
+    description: A Helm chart for Kubernetes
+    digest: b3b4eee4f056837a49d02fdab9511e98a5b06c15f819766f3156497e0cde2aa2
+    name: tekton-logging
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
+    version: 0.1.1
+generated: "2023-05-02T14:15:19.621161141Z"
