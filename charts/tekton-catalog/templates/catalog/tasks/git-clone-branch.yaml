@@ -48,7 +48,7 @@ spec:
           cd $(workspaces.source.path)
 
           # Clone PR Repo
-          git clone -b $(params.branch) $(params.repository)
+          git clone -b $(params.branch) $(params.repository) || exit 1
           git_output=$?
 
           if [ "$(params.use-vendir)" == "true" ]; then
