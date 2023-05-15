@@ -40,11 +40,16 @@ spec:
     - name: TRIVY_SERVER
       description: The trivy server 
       type: string
+    - name: TRIVY_IGNORE_LOCATION
+      description: TRIVY_IGNORE_LOCATION
+      type: string
+      default: "."
 
   steps:
     - name: trivy-scan
       image: $(params.TRIVY_IMAGE)
-      workingDir: $(workspaces.manifest-dir.path)
+      workingDir: $(workspaces.manifest-dir.path)/$(params.TRIVY_IGNORE_LOCATION)
+      onError: continue
       volumeMounts:
         - name: tekton
           mountPath: /tmp/tekton
@@ -53,13 +58,7 @@ spec:
           value: /tmp/tekton/tekton.json
       script: |
         #!/usr/bin/env sh
-          cmd="trivy $(params.TRIVY_COMMAND) --trace --no-progress --severity HIGH,CRITICAL --ignore-unfixed --security-checks vuln --server $(params.TRIVY_SERVER) $(params.IMAGE_PATH)"
+          cmd="trivy $(params.TRIVY_COMMAND) --trace --no-progress --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed --security-checks vuln --server $(params.TRIVY_SERVER) $(params.IMAGE_PATH)"
           echo "Running trivy task with command below"
           echo "$cmd"
           eval "$cmd"
-      args:
-        - "$(params.TRIVY_COMMAND)"
-        - "--no-progress --severity HIGH,CRITICAL --ignore-unfixed --trace --security-checks vuln"
-        - "--server $(params.TRIVY_SERVER)"
-        - "--timeout 15m0s"
-        - "$(params.IMAGE_PATH)"

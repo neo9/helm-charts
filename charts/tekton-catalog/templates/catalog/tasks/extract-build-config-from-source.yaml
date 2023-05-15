@@ -37,6 +37,8 @@ spec:
       description: specify an override chart name to use
     - name: chart-version-override
       description: specify an override chart version to use
+    - name: deploy-enabled
+      description: Whether or not to deploy 
   results:
     - name: CNB_BUILDER
       description: The detected CNB builder to use
@@ -60,6 +62,8 @@ spec:
       description: Pipeline name
     - name: PREINSTALL
       description: if we should run a preinstall script
+    - name: POSTINSTALL
+      description: if we should run a POSTINSTALL script
     - name: SHOULD_DEPLOY
       description: check if we need to deploy using helm
     - name: LIGHTHOUSE_CI
@@ -100,6 +104,7 @@ spec:
         detectedBranch=""
         dockerfile="Dockerfile"
         preinstall="false"
+        postinstall="false"
         detectedBuildToolToo=""
         shouldBeDeployed="false"
         detectedLhci="false"
@@ -173,6 +178,9 @@ spec:
             if grep -q "ci:preinstall" package.json; then
                 preinstall="true"
             fi
+            if grep -q "ci:postinstall" package.json; then
+                postinstall="true"
+            fi
         fi
 
         if [ ! -z "$(params.build-format-override)" ]; then
@@ -191,8 +199,10 @@ spec:
             detectedLhci="true"
         fi
 
-        if [ -d values ]; then
+        if [ $(params.deploy-enabled) = "true" ]; then
+          if [ -d values ]; then
             shouldBeDeployed="true"
+          fi
         fi
         
         regexVersion='^v([0-9]+\.){0,2}(\*|[0-9]+)([-,a-z,0-9]*)$'
@@ -219,6 +229,7 @@ spec:
         echo -n "${detectedBranch}" > $(results.BRANCH.path)
         echo -n "${piplinerunName}" > $(results.PIPELINERUN_NAME.path)
         echo -n "${preinstall}" > $(results.PREINSTALL.path)
+        echo -n "${postinstall}" > $(results.POSTINSTALL.path)
         echo -n "${shouldBeDeployed}" > $(results.SHOULD_DEPLOY.path)
         echo -n "${detectedLhci}" > $(results.LIGHTHOUSE_CI.path)
 

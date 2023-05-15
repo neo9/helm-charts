@@ -1,0 +1,135 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: override-dependencies
+  labels:
+    app.kubernetes.io/version: "0.0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: override-dependencies
+    tekton.dev/displayName: "override-dependencies project"
+spec:
+  description: >-
+    This task override dependencies basing on branch and configuration from package.json
+  workspaces:
+    - name: source
+  params:
+    - name: image
+      description: The image used by the task
+      type: string
+      default: neo9sas/devops-tools:v1.5.0
+    - name: directory
+      description: The directory containing the app, relative to the source repository root
+      default: .
+   
+  steps:
+    - name: run-script
+      image: $(params.image)
+      workingDir: $(workspaces.source.path)/$(params.directory)
+      command: ["/bin/bash"]
+      args:
+        - -c
+        - |
+          cat <<EOF > override-script.mjs
+          #!/usr/bin/env zx
+
+          const branchPrefix = (
+            await $\`(cat package.json | jq -r '.buildDependencies."branch-prefix"') || echo ""\`
+          ).stdout.trim();
+
+          const gitCurrentBranch = (await $\`git branch --show-current\`).stdout.trim();
+          let branch;
+
+          if (!gitCurrentBranch) {
+            const branches = (await $\`git branch -a --format='%(refname:short)' --points-at HEAD\`).stdout
+              .trim()
+              .split('\n');
+
+            const branchesFiltered = [
+              ...new Set(
+                branches
+                  .map((branch) => branch.replace(/origin\//, ''))
+                  .filter((branch) => {
+                    return !branch.startsWith('(HEAD');
+                  }),
+              ),
+            ];
+            if (branchesFiltered.length) {
+              const notJiraBranches = branchesFiltered.filter((branch) => !branch.startsWith(branchPrefix));
+              // give priority to not JIRA branches
+              if (notJiraBranches.length) {
+                branch = notJiraBranches[0];
+              } else {
+                branch = branchesFiltered[0];
+              }
+            }
+          } else {
+            branch = gitCurrentBranch;
+          }
+
+          echo\`Currently on branch \${branch}\`;
+
+          if (branch.startsWith(branchPrefix)) {
+            await buildBranchDependencies(branch, await $\`pwd\`);
+          }
+
+          async function buildBranchDependencies(branch, targetPath) {
+            const projectPrefix = (
+              await $\`(cat package.json | jq -r '.buildDependencies."project-prefix"') || echo ""\`
+            ).stdout.trim();
+            const repositoryPrefix = (
+              await $\`(cat package.json | jq -r '.buildDependencies."repository-prefix-template"') || echo ""\`
+            ).stdout.trim();
+            const projectLibraries = (await $\`cat yarn.lock | grep \${projectPrefix} || true\`).stdout
+              .split('\n')
+              .filter((dependencyName) => dependencyName.startsWith(projectPrefix))
+              .map((dependencyName) => dependencyName.split('@')[0]);
+
+            echo\`Librairies to build : \${projectLibraries.join(', ')}\`;
+
+                for (const libraryFullName of projectLibraries) {
+              echo\`START \${libraryFullName}\`;
+              const library = libraryFullName.replace(projectPrefix, '');
+              const ssh = repositoryPrefix.replace('**NAME**', library);
+              const doesBranchExists = (await $\`git ls-remote --heads \${ssh} \${branch}\`).stdout;
+
+              if (doesBranchExists) {
+                echo(\`CLONING \${library}\`);
+                await fs.ensureDir(\`/tmp/libs\`);
+
+                // if the dependency is already there it means that it was already built
+                if (!(await fs.pathExists(\`/tmp/libs/\${library}\`))) {
+                  cd(\`/tmp/libs\`);
+                  echo(await $\`git clone \${ssh}\`);
+                  cd(library);
+                  await $\`git checkout \${branch}\`;
+
+                  await $\`cp \${targetPath}/.npmrc ./\`;
+                  await $\`yarn install\`;
+                  await buildBranchDependencies(branch, \`/tmp/libs/\${library}\`);
+
+                  cd(\`/tmp/libs/\${library}\`);
+                  await $\`yarn run build\`;
+                } else {
+                  echo\`\${library} already built, using the one built.\`;
+                  cd(\`/tmp/libs/\${library}\`);
+                }
+
+                echo\`REPLACING \${libraryFullName} INSTALLED\`;
+                await $\`pwd\`;
+                await $\`rm -rf \${targetPath}/node_modules/\${libraryFullName} && cp -r dist \${targetPath}/node_modules/\${libraryFullName}/\`;
+                await $\`rm -rf \${targetPath}/.deps/\${libraryFullName} && mkdir -p \${targetPath}/.deps && cp -r dist \${targetPath}/.deps/\${libraryFullName}/\`;
+              } else {
+                echo\`No branch \${branch} exists on remote \${library}, skipping commons override.\`;
+              }
+
+              echo\`END \${library}\`;
+            }
+          }
+
+          EOF
+
+          npm install -g zx
+
+          zx ./override-script.mjs
+          rm ./override-script.mjs

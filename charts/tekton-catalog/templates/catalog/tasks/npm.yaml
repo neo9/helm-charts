@@ -22,20 +22,29 @@ spec:
       default: "."
       description: The path where package.json of the project is defined.
     - name: ARGS
-      type: array
-      default: ["version"]
+      type: string
+      default: ""
       description: The npm goals you want to run.
     - name: IMAGE
       type: string
       default: "docker.io/library/node:12-alpine@sha256:12048cdfd75d944df35f3144132d9bdeee78015fbd6df765edad1be46599b110"
       description: The node image you want to use.
+    - name: COMMAND
+      type: string
+      default: "npm"
   steps:
     - name: npm-run
       image: $(params.IMAGE)
-      command:
-        - "npm"
-      args:
-        - $(params.ARGS)
+      resources:
+        requests:
+          memory: 500m
+          cpu: 500m
+        limits:
+          memory: 2Gi
+          cpu: 800m
+      script: |
+        #!/bin/sh
+        $(params.COMMAND) $(params.ARGS)
       workingDir: $(workspaces.source.path)/$(params.PATH_CONTEXT)
       env:
         - name: CI

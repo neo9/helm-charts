@@ -89,14 +89,40 @@ spec:
   - name: chart-version
     type: string
     description: The chart helm version to use for continuous deployment
-  - default: ""
+  - name: deploy-enabled
+    description: Whether or not to deploy 
+    default: "true"
+  - name: container-images-repository-namespace
+    default: ""
     description: Container images repository namespace to add in built image tag
-    name: container-images-repository-namespace
     type: string
+  - name: gitlab-notify
+    description: Whether or not to notify gitlab of pipeline status
+  - name: script-test
+    description: test script 
+    default: "npm test -- --watch=false --if-present"
+  - name: build-image-only
+    description: a boolean to activate when you want to only build the image and skip all previous steps
+    default: "false"
+  - name: build-extra-args
+    description: extra args used when build
+    default: ""
+  
   workspaces:
   - name: ws
 
   tasks:
+
+#################################################
+################  _       _ _    ################
+################ (_)     (_) |   ################
+################  _ _ __  _| |_  ################
+################ | | '_ \| | __| ################
+################ | | | | | | |_  ################
+################ |_|_| |_|_|\__| ################
+################                 ################
+#################################################
+
   - name: init
     taskRef:
       name: devops-tools
@@ -128,6 +154,9 @@ spec:
           echo "run-tests: $(params.run-tests)"
           echo "chart-name: $(params.chart-name)"
           echo "chart-version: $(params.chart-version)"
+          echo "deploy-enabled: $(params.deploy-enabled)"
+          echo "build-image-only: $(params.build-image-only)"
+
     workspaces:
       - name: input
         workspace: ws
@@ -137,6 +166,8 @@ spec:
         workspace: ws
       - name: data
         workspace: ws
+
+#################################################
 
   - name: detect-tag-to-build
     params:
@@ -162,9 +193,16 @@ spec:
       - name: data
         workspace: ws
 
+#################################################
+
   - name: notify-build-running
     taskRef:
       name: gitlab-notify-build
+    when:
+      - input: $(params.gitlab-notify)
+        operator: in
+        values:
+          - "true"
     params:
       - name: git-sha
         value: $(params.git-sha)
@@ -186,9 +224,9 @@ spec:
         - name: data
           workspace: ws
 
+#################################################
+
   - name: clone-projet
-    runAfter:
-      - notify-build-running
     taskRef:
       name: git-clone-branch
     params:
@@ -205,6 +243,8 @@ spec:
         workspace: ws
       - name: data
         workspace: ws
+
+#################################################
 
   - name: extract-build-config-from-source
     runAfter:
@@ -229,6 +269,8 @@ spec:
       value: $(params.chart-name)
     - name: chart-version-override
       value: $(params.chart-version)
+    - name: deploy-enabled
+      value: $(params.deploy-enabled)
 
 ######################################################
 
@@ -250,9 +292,17 @@ spec:
     - name: build-tool
       value: $(tasks.extract-build-config-from-source.results.BUILD_TOOL_TOO)
 
-######################################################
+################################################
+################################################
+###########  _ __   ___   __| | ___  ###########
+########### | '_ \ / _ \ / _` |/ _ \ ###########
+########### | | | | (_) | (_| |  __/ ###########
+########### |_| |_|\___/ \__,_|\___| ###########
+###########                          ###########
+################################################
+################################################
 
-  - name: npm-install-dependencies
+  - name: yarn-install-dependencies
     runAfter:
       - setup-project
     when:
@@ -260,6 +310,10 @@ spec:
         operator: in
         values:
           - "npm"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "false"
     taskRef:
       name: yarn
     workspaces:
@@ -273,14 +327,43 @@ spec:
     - name: ARGS
       value: ["install"]
 
-  - name: npm-run-lint
+######################################################
+
+  - name: override-dependencies
     runAfter:
-      - npm-install-dependencies
+      - yarn-install-dependencies
     when:
       - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL_TOO)
         operator: in
         values:
           - "npm"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "false"
+    taskRef:
+      name: override-dependencies
+    workspaces:
+    - name: source
+      workspace: ws
+    params:
+    - name: directory
+      value: $(params.git-project-name)
+
+######################################################
+
+  - name: npm-run-lint
+    runAfter:
+      - override-dependencies
+    when:
+      - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL_TOO)
+        operator: in
+        values:
+          - "npm"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "false"
     taskRef:
       name: npm
     workspaces:
@@ -292,7 +375,9 @@ spec:
     - name: PATH_CONTEXT
       value: $(params.git-project-name)
     - name: ARGS
-      value: ["run", "lint", "--if-present"]
+      value: "run lint --if-present"
+
+######################################################
 
   - name: npm-run-tests
     # when:
@@ -305,11 +390,14 @@ spec:
         operator: in
         values:
           - "npm"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "false"
     runAfter:
       - npm-run-lint
     taskRef:
       name: npm
-    retries: 1
     workspaces:
     - name: source
       workspace: ws
@@ -318,8 +406,10 @@ spec:
       value: $(params.node-tests-image)
     - name: PATH_CONTEXT
       value: $(params.git-project-name)
-    - name: ARGS
-      value: ["test", "-- --watch=false", "--if-present"]
+    - name: COMMAND
+      value: $(params.script-test)
+
+######################################################
 
   - name: npm-generate-code-coverage
     runAfter:
@@ -329,6 +419,10 @@ spec:
         operator: in
         values:
           - "npm"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "false"
     taskRef:
       name: npm
     workspaces:
@@ -340,8 +434,55 @@ spec:
     - name: PATH_CONTEXT
       value: $(params.git-project-name)
     - name: ARGS
-      value: ["run", "code-coverage", "--if-present"]
+      value: "run code-coverage --if-present"
 
+######################################################
+
+  - name: npm-publish-on-nexus
+    runAfter:
+    - setup-project
+    when:
+    - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
+      operator: in
+      values:
+      - "npm"
+    - input: $(params.publish)
+      operator: in
+      values:
+      - "true"
+    - input: $(params.git-branch)
+      operator: in
+      values:
+      - "$(params.continuous-delivery-branch)"
+      - "main"
+      - "master"
+    - input: $(params.build-image-only)
+      operator: in
+      values:
+        - "false"
+    taskRef:
+      name: npm-publish
+    params:
+    - name: PATH_CONTEXT
+      value: $(params.git-project-name)
+    - name: NPM_PUBLISHER
+      value: npm-publisher
+    workspaces:
+    - name: source
+      workspace: ws
+
+######################################################
+######################################################
+###########                      _ _       ###########
+###########                     | | |      ###########
+###########   __ _ _ __ __ _  __| | | ___  ###########
+###########  / _` | '__/ _` |/ _` | |/ _ \ ###########
+########### | (_| | | | (_| | (_| | |  __/ ###########
+###########  \__, |_|  \__,_|\__,_|_|\___| ###########
+###########   __/ |                        ###########
+###########  |___/                         ###########
+###########                                ###########
+######################################################
 ######################################################
 
   - name: gradle-build-and-tests
@@ -350,6 +491,10 @@ spec:
         operator: in
         values:
           - "gradle"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "false"
     runAfter:
       - setup-project
     taskRef:
@@ -373,108 +518,6 @@ spec:
 
 ######################################################
 
-  - name: maven-compile-and-tests
-    when:
-      - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL_TOO)
-        operator: in
-        values:
-          - "maven"
-    runAfter:
-      - setup-project
-    taskRef:
-      name: maven
-    workspaces:
-    - name: source
-      workspace: ws
-    - name: maven-settings
-      workspace: ws
-    params:
-    - name: CONTEXT_DIR
-      value: $(params.git-project-name)
-    - name: GOALS
-      value: ["clean", "verify"]
-
-######################################################
-
-  - name: npm-code-analysis
-    taskRef:
-      name: sonarqube-scanner-edited
-    runAfter:
-      - npm-generate-code-coverage
-    when:
-      - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL_TOO)
-        operator: in
-        values:
-          - "npm"
-    params:
-      - name: SONAR_HOST_URL
-        value: $(params.sonar-url)
-      - name: SONAR_PROJECT_KEY
-        value: $(params.git-project-name)
-      - name: DIRECTORY
-        value: $(params.git-project-name)
-      - name: BRANCH
-        value: $(params.git-branch)
-    workspaces:
-      - name: source-dir
-        workspace: ws
-      - name: sonar-settings
-        workspace: ws
-
-
-  - name: gradle-code-analysis
-    taskRef:
-      name: sonarqube-scanner-edited
-    runAfter:
-      - gradle-build-and-tests
-    when:
-      - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
-        operator: in
-        values:
-          - gradle
-    params:
-      - name: SONAR_HOST_URL
-        value: $(params.sonar-url)
-      - name: SONAR_PROJECT_KEY
-        value: $(params.git-project-name)
-      - name: DIRECTORY
-        value: $(params.git-project-name)
-      - name: BRANCH
-        value: $(params.git-branch)
-    workspaces:
-      - name: source-dir
-        workspace: ws
-      - name: sonar-settings
-        workspace: ws
-
-
-  - name: maven-code-analysis
-    taskRef:
-      name: sonarqube-scanner-edited
-    runAfter:
-      - maven-compile-and-tests
-    when:
-      - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
-        operator: in
-        values:
-          - maven
-    params:
-      - name: SONAR_HOST_URL
-        value: $(params.sonar-url)
-      - name: SONAR_PROJECT_KEY
-        value: $(params.git-project-name)
-      - name: DIRECTORY
-        value: $(params.git-project-name)
-      - name: BRANCH
-        value: $(params.git-branch)
-    workspaces:
-      - name: source-dir
-        workspace: ws
-      - name: sonar-settings
-        workspace: ws
-
-######################################################
-
   - name: gradle-build-container-image
     when:
     - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
@@ -489,6 +532,10 @@ spec:
       operator: in
       values:
         - "image"
+    - input: $(params.build-image-only)
+      operator: in
+      values:
+        - "true"
     runAfter:
     - gradle-build-and-tests
     taskRef:
@@ -506,6 +553,83 @@ spec:
 
 ######################################################
 
+  - name: gradle-publish-on-nexus
+    runAfter:
+    - gradle-build-and-tests
+    when:
+    - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
+      operator: in
+      values:
+        - "gradle"
+    - input: $(tasks.extract-build-config-from-source.results.BUILD_FORMAT)
+      operator: in
+      values:
+      - "package"
+    - input: $(tasks.extract-build-config-from-source.results.BRANCH)
+      operator: in
+      values:
+      - "$(params.continuous-delivery-branch)"
+      - "tag"
+    - input: $(params.build-image-only)
+      operator: in
+      values:
+        - "false"
+    taskRef:
+      name: gradle
+    params:
+    - name: goals
+      value: [currentVersion, publish]
+    - name: git-project-name
+      value: $(params.git-project-name)
+    - name: nexus-secret
+      value: {{ index .Values.releases "tekton" "secrets" "nexus" "secretRef" "name" }}
+    workspaces:
+    - name: input
+      workspace: ws
+    - name: output
+      workspace: ws
+    - name: source
+      workspace: ws
+    - name: data
+      workspace: ws
+
+#######################################################
+#######################################################
+##########  _ __ ___   __ ___   _____ _ __   ##########
+########## | '_ ` _ \ / _` \ \ / / _ \ '_ \  ##########
+########## | | | | | | (_| |\ V /  __/ | | | ##########
+########## |_| |_| |_|\__,_| \_/ \___|_| |_| ##########
+##########                                   ##########
+#######################################################
+#######################################################
+
+  - name: maven-compile-and-tests
+    when:
+      - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL_TOO)
+        operator: in
+        values:
+          - "maven"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "false"
+    runAfter:
+      - setup-project
+    taskRef:
+      name: maven
+    workspaces:
+    - name: source
+      workspace: ws
+    - name: maven-settings
+      workspace: ws
+    params:
+    - name: CONTEXT_DIR
+      value: $(params.git-project-name)
+    - name: GOALS
+      value: ["clean", "verify"]
+
+######################################################
+
   - name: maven-build-container-image
     when:
     - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
@@ -520,6 +644,10 @@ spec:
       operator: in
       values:
         - "image"
+    - input: $(params.build-image-only)
+      operator: in
+      values:
+        - "true"
     runAfter:
     - maven-compile-and-tests
     taskRef:
@@ -536,6 +664,56 @@ spec:
         workspace: ws
 
 ######################################################
+######################################################
+#                                        _           #
+#  ___  ___  _ __   __ _ _ __ __ _ _   _| |__   ___  #
+# / __|/ _ \| '_ \ / _` | '__/ _` | | | | '_ \ / _ \ #
+# \__ \ (_) | | | | (_| | | | (_| | |_| | |_) |  __/ #
+# |___/\___/|_| |_|\__,_|_|  \__, |\__,_|_.__/ \___| #
+#                               |_|                  #
+#                                                    #
+######################################################
+######################################################
+######################################################
+
+  - name: sonarqube-code-analysis
+    taskRef:
+      name: sonarqube-scanner-edited
+    runAfter:
+      - npm-generate-code-coverage
+      - gradle-build-and-tests
+      - maven-compile-and-tests
+    when:
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "false"
+    params:
+      - name: SONAR_HOST_URL
+        value: $(params.sonar-url)
+      - name: SONAR_PROJECT_KEY
+        value: $(params.git-project-name)
+      - name: DIRECTORY
+        value: $(params.git-project-name)
+      - name: BRANCH
+        value: $(params.git-branch)
+    workspaces:
+      - name: source-dir
+        workspace: ws
+      - name: sonar-settings
+        workspace: ws
+
+######################################################
+######################################################
+######  _           _ _     _ _              _  ######
+###### | |         (_) |   | | |            | | ######
+###### | |__  _   _ _| | __| | |_ ___   ___ | | ######
+###### | '_ \| | | | | |/ _` | __/ _ \ / _ \| | ######
+###### | |_) | |_| | | | (_| | || (_) | (_) | | ######
+###### |_.__/ \__,_|_|_|\__,_|\__\___/ \___/|_| ######
+######                                          ######
+######################################################
+######################################################
 
   - name: builpack-build
     when:
@@ -547,7 +725,12 @@ spec:
         operator: in
         values:
           - "image"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "true"
     runAfter:
+      - override-dependencies
       - setup-project
     taskRef:
       name: buildpacks
@@ -578,7 +761,12 @@ spec:
         operator: in
         values:
           - "image"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "true"
     runAfter:
+      - override-dependencies
       - setup-project
     taskRef:
       name: buildah-edited
@@ -591,142 +779,35 @@ spec:
         value: $(params.dockerfile)
       - name : FORMAT
         value: docker
+      - name: BUILD_EXTRA_ARGS
+        value: $(params.build-extra-args)
+      - name: CONTAINER-IMAGES-REPOSITORY
+        value: "$(params.container-images-repository)"
     workspaces:
       - name: source
         workspace: ws
 
-######################################################
+#######################################################
+#######################################################
+########      _      _ _                       ########
+########     | |    | (_)                      ########
+########   __| | ___| |___   _____ _ __ _   _  ########
+########  / _` |/ _ \ | \ \ / / _ \ '__| | | | ########
+######## | (_| |  __/ | |\ V /  __/ |  | |_| | ########
+########  \__,_|\___|_|_| \_/ \___|_|   \__, | ########
+########                                 __/ | ########
+########                                |___/  ########
+########                                       ########
+#######################################################
+#######################################################
 
-  # TODO: see to refactor this copy/paste
-
-  - name: continuous-delivery-gradle-jib-deploy
+  - name: continuous-delivery-deploy
     runAfter:
     - gradle-build-container-image
-    when:
-    - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
-      operator: in
-      values:
-        - "gradle"
-    - input: $(tasks.extract-build-config-from-source.results.IMAGE_BUILD_BUILD_TOOL)
-      operator: in
-      values:
-        - "jib"
-    - input: $(tasks.extract-build-config-from-source.results.BUILD_FORMAT)
-      operator: in
-      values:
-        - "image"
-    - input: $(params.git-branch)
-      operator: in
-      values:
-      - "$(params.continuous-delivery-branch)"
-    taskRef:
-      name: helm-deployment
-    workspaces:
-    - name: source
-      workspace: ws
-    params:
-    - name: release_name
-      value: $(params.git-project-name)
-    - name: release_namespace
-      value: $(params.continuous-delivery-namespace)
-    - name: overwrite_values
-      value: "image.tag=$(tasks.detect-tag-to-build.results.TARGET_IMAGE_TAG)"
-    - name: helm_values_param
-      value: "--values ./values/default.yaml --values ./values/$(params.continuous-delivery-namespace).yaml"
-    - name: subpath
-      value: $(params.git-project-name)
-    - name: chart_name
-      value: $(tasks.extract-build-config-from-source.results.HELM_CHART_NAME)
-    - name: chart_version
-      value: $(tasks.extract-build-config-from-source.results.HELM_CHART_VERSION)
-
-  - name: continuous-delivery-maven-jib-deploy
-    runAfter:
     - maven-build-container-image
-    when:
-    - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
-      operator: in
-      values:
-        - "maven"
-    - input: $(tasks.extract-build-config-from-source.results.IMAGE_BUILD_BUILD_TOOL)
-      operator: in
-      values:
-        - "jib"
-    - input: $(tasks.extract-build-config-from-source.results.BUILD_FORMAT)
-      operator: in
-      values:
-        - "image"
-    - input: $(params.git-branch)
-      operator: in
-      values:
-      - "$(params.continuous-delivery-branch)"
-    taskRef:
-      name: helm-deployment
-    workspaces:
-    - name: source
-      workspace: ws
-    params:
-    - name: release_name
-      value: $(params.git-project-name)
-    - name: release_namespace
-      value: $(params.continuous-delivery-namespace)
-    - name: overwrite_values
-      value: "image.tag=$(tasks.detect-tag-to-build.results.TARGET_IMAGE_TAG)"
-    - name: helm_values_param
-      value: "--values ./values/default.yaml --values ./values/$(params.continuous-delivery-namespace).yaml"
-    - name: subpath
-      value: $(params.git-project-name)
-    - name: chart_name
-      value: $(tasks.extract-build-config-from-source.results.HELM_CHART_NAME)
-    - name: chart_version
-      value: $(tasks.extract-build-config-from-source.results.HELM_CHART_VERSION)
-
-
-  - name: continuous-delivery-cnb-deploy
-    runAfter:
     - builpack-build
-    when:
-    - input: $(tasks.extract-build-config-from-source.results.IMAGE_BUILD_BUILD_TOOL)
-      operator: in
-      values:
-        - "cnb"
-    - input: $(tasks.extract-build-config-from-source.results.BUILD_FORMAT)
-      operator: in
-      values:
-        - "image"
-    - input: $(params.git-branch)
-      operator: in
-      values:
-      - "$(params.continuous-delivery-branch)"
-    taskRef:
-      name: helm-deployment
-    workspaces:
-    - name: source
-      workspace: ws
-    params:
-    - name: release_name
-      value: $(params.git-project-name)
-    - name: release_namespace
-      value: $(params.continuous-delivery-namespace)
-    - name: overwrite_values
-      value: "image.tag=$(tasks.detect-tag-to-build.results.TARGET_IMAGE_TAG)"
-    - name: helm_values_param
-      value: "--values ./values/default.yaml --values ./values/$(params.continuous-delivery-namespace).yaml"
-    - name: subpath
-      value: $(params.git-project-name)
-    - name: chart_name
-      value: $(tasks.extract-build-config-from-source.results.HELM_CHART_NAME)
-    - name: chart_version
-      value: $(tasks.extract-build-config-from-source.results.HELM_CHART_VERSION)
-
-  - name: continuous-delivery-buildah-deploy
-    runAfter:
     - buildah-build
     when:
-    - input: $(tasks.extract-build-config-from-source.results.IMAGE_BUILD_BUILD_TOOL)
-      operator: in
-      values:
-        - "buildah"
     - input: $(tasks.extract-build-config-from-source.results.BUILD_FORMAT)
       operator: in
       values:
@@ -739,6 +820,10 @@ spec:
       operator: in
       values:
       - "true"
+    - input: $(params.build-image-only)
+      operator: in
+      values:
+        - "false"
     taskRef:
       name: helm-deployment
     workspaces:
@@ -759,80 +844,108 @@ spec:
       value: $(tasks.extract-build-config-from-source.results.HELM_CHART_NAME)
     - name: chart_version
       value: $(tasks.extract-build-config-from-source.results.HELM_CHART_VERSION)
+    
+#######################################################
 
-######################################################
-
-  - name: deploy-nexus-gradle
+{{ if .Values.cluster.delivery.additonalEnvs }}
+  {{- range $key, $value := .Values.cluster.delivery.additonalEnvs }}
+  - name: continuous-delivery-deploy-{{ $value.namespace }}
     runAfter:
-    - gradle-build-and-tests
+    - gradle-build-container-image
+    - maven-build-container-image
+    - builpack-build
+    - buildah-build
     when:
-    - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
-      operator: in
-      values:
-        - "gradle"
     - input: $(tasks.extract-build-config-from-source.results.BUILD_FORMAT)
       operator: in
       values:
-      - "package"
-    - input: $(tasks.extract-build-config-from-source.results.BRANCH)
-      operator: in
-      values:
-      - "$(params.continuous-delivery-branch)"
-      - "tag"
-    taskRef:
-      name: gradle
-    params:
-    - name: goals
-      value: [currentVersion, publish]
-    - name: git-project-name
-      value: $(params.git-project-name)
-    - name: nexus-secret
-      value: {{ index .Values.releases "tekton" "secrets" "nexus" "secretRef" "name" }}
-    workspaces:
-    - name: input
-      workspace: ws
-    - name: output
-      workspace: ws
-    - name: source
-      workspace: ws
-    - name: data
-      workspace: ws
-
-  - name: deploy-nexus-npm
-    runAfter:
-    - setup-project
-    when:
-    - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
-      operator: in
-      values:
-      - "npm"
-    - input: $(params.publish)
-      operator: in
-      values:
-      - "true"
+        - "image"
     - input: $(params.git-branch)
       operator: in
       values:
-      - "$(params.continuous-delivery-branch)"
-      - "main"
-      - "master"
+      - "{{ $value.branch }}"
+    - input: $(tasks.extract-build-config-from-source.results.SHOULD_DEPLOY)
+      operator: in
+      values:
+      - "true"
+    - input: $(params.build-image-only)
+      operator: in
+      values:
+        - "false"
     taskRef:
-      name: npm-publish
-    params:
-    - name: PATH_CONTEXT
-      value: $(params.git-project-name)
-    - name: NPM_PUBLISHER
-      value: npm-publisher
+      name: helm-deployment
     workspaces:
     - name: source
       workspace: ws
+    params:
+    - name: release_name
+      value: $(params.git-project-name)
+    - name: release_namespace
+      value: {{ $value.namespace }}
+    - name: overwrite_values
+      value: "image.tag=$(tasks.detect-tag-to-build.results.TARGET_IMAGE_TAG)"
+    - name: helm_values_param
+      value: "--values ./values/default.yaml --values ./values/{{ $value.namespace }}.yaml"
+    - name: subpath
+      value: $(params.git-project-name)
+    - name: chart_name
+      value: $(tasks.extract-build-config-from-source.results.HELM_CHART_NAME)
+    - name: chart_version
+      value: $(tasks.extract-build-config-from-source.results.HELM_CHART_VERSION)
+  {{- end }}
+{{ end }}
 
+################################################
+################################################
+###########  _        _              ###########
+########### | |      (_)             ###########
+########### | |_ _ __ ___   ___   _  ###########
+########### | __| '__| \ \ / / | | | ###########
+########### | |_| |  | |\ V /| |_| | ###########
+###########  \__|_|  |_| \_/  \__, | ###########
+###########                    __/ | ###########
+###########                   |___/  ###########
+###########                          ###########
+################################################
+################################################
 
-######################################################
+{{ if .Values.cluster.delivery.config.trivy.enabled }}
 
-  - name: lighthouse-benchmarks
+  - name: scan-vulnerabilities
+    taskRef:
+      name: trivy-scanner
     runAfter:
-    - npm-install-dependencies
+    - gradle-build-container-image
+    - maven-build-container-image
+    - builpack-build
+    - buildah-build
+    params:
+      - name: IMAGE_PATH
+        value: $(tasks.detect-tag-to-build.results.TARGET_IMAGE)
+      - name: TRIVY_SERVER
+        value: {{ .Values.cluster.delivery.config.trivy.url }}
+      - name: TRIVY_IGNORE_LOCATION
+        value: $(params.git-project-name)
+    workspaces:
+      - name: manifest-dir
+        workspace: ws
+
+{{ end }}
+
+#####################################################
+#####################################################
+##########        _   _                    ##########
+##########   ___ | |_| |__   ___ _ __ ___  ##########
+##########  / _ \| __| '_ \ / _ \ '__/ __| ##########
+########## | (_) | |_| | | |  __/ |  \__ \ ##########
+##########  \___/ \__|_| |_|\___|_|  |___/ ##########
+##########                                 ##########
+#####################################################
+#####################################################
+
+  - name: run-lighthouse-benchmarks
+    runAfter:
+    - override-dependencies
     when:
       - input: $(tasks.extract-build-config-from-source.results.LIGHTHOUSE_CI)
         operator: in
@@ -846,6 +959,10 @@ spec:
         operator: in
         values:
           - "npm"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "false"
     taskRef:
       name: npm
     workspaces:
@@ -857,11 +974,11 @@ spec:
     - name: PATH_CONTEXT
       value: $(params.git-project-name)
     - name: ARGS
-      value: ["run", "ci:lighthouse", "--if-present"]
+      value: "run ci:lighthouse --if-present"
 
-  - name: upload-benchmarks-report
+  - name: upload-lighthouse-benchmarks-report
     runAfter:
-    - lighthouse-benchmarks
+    - run-lighthouse-benchmarks
     when:
       - input: $(tasks.extract-build-config-from-source.results.LIGHTHOUSE_CI)
         operator: in
@@ -875,6 +992,10 @@ spec:
         operator: in
         values:
           - "npm"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "false"
     taskRef:
       name: gcs-upload-custom
     workspaces:
@@ -896,7 +1017,7 @@ spec:
 
   - name: run-cypress-ti
     runAfter:
-      - npm-install-dependencies
+      - override-dependencies
     when:
       - input: $(tasks.extract-build-config-from-source.results.CYPRESS_TI)
         operator: in
@@ -906,9 +1027,12 @@ spec:
         operator: in
         values:
           - "npm"
+      - input: $(params.build-image-only)
+        operator: in
+        values:
+          - "false"
     taskRef:
       name: devops-tools
-    retries: 1
     params:
       - name: image
         value: cypress/included:8.4.0
@@ -927,7 +1051,18 @@ spec:
       - name: data
         workspace: ws
 
-
+######################################################
+######################################################
+###########      _      _                  ###########
+###########     | |    | |                 ###########
+###########   __| | ___| |__  _   _  __ _  ###########
+###########  / _` |/ _ \ '_ \| | | |/ _` | ########### 
+########### | (_| |  __/ |_) | |_| | (_| | ###########
+###########  \__,_|\___|_.__/ \__,_|\__, | ###########
+###########                          __/ | ###########
+###########                         |___/  ###########
+###########                                ###########
+######################################################
 ######################################################
 
   - name: debug-sleep
@@ -954,35 +1089,29 @@ spec:
       - name: data
         workspace: ws
 
-######################################################
-
-{{ if .Values.cluster.delivery.config.trivy.enabled }}
-
-  - name: scan-vulnerabilities
-    taskRef:
-      name: trivy-scanner
-    runAfter:
-    - gradle-build-container-image
-    - maven-build-container-image
-    - builpack-build
-    - buildah-build
-    params:
-      - name: IMAGE_PATH
-        value: $(tasks.detect-tag-to-build.results.TARGET_IMAGE)
-      - name: TRIVY_SERVER
-        value: {{ .Values.cluster.delivery.config.trivy.url }}
-    workspaces:
-      - name: manifest-dir
-        workspace: ws
-
-{{ end }}
-
-######################################################
+#####################################################
+#####################################################
+###########   __ _             _ _        ###########
+###########  / _(_)           | | |       ###########
+########### | |_ _ _ __   __ _| | |_   _  ###########
+########### |  _| | '_ \ / _` | | | | | | ###########
+########### | | | | | | | (_| | | | |_| | ###########
+########### |_| |_|_| |_|\__,_|_|_|\__, | ###########
+###########                         __/ | ###########
+###########                        |___/  ###########
+###########                               ###########
+#####################################################
+#####################################################
 
   finally:
       - name: notify-build-status
         taskRef:
           name: gitlab-notify-build
+        when:
+          - input: $(params.gitlab-notify)
+            operator: in
+            values:
+              - "true"
         params:
           - name: git-sha
             value: $(params.git-sha)

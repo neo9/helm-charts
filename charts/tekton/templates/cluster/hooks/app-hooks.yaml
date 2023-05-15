@@ -65,6 +65,16 @@ spec:
               expression: "requestURL.parseURL().rawQuery.contains('chartVersion=') ? requestURL.parseURL().query['chartVersion'] : ''"
             - key: container-images-repository-namespace
               expression: "requestURL.parseURL().rawQuery.contains('repositoryNamespace=') ? requestURL.parseURL().query['repositoryNamespace'] : ''"
+            - key: gitlab-notify
+              expression: "requestURL.parseURL().rawQuery.contains('gitlabNotify=') ? requestURL.parseURL().query['gitlabNotify'] : 'true'"
+              #used to override if it should deploy project. default: true
+            - key: deploy-enabled
+              expression: "requestURL.parseURL().rawQuery.contains('deployEnabled=') ? requestURL.parseURL().query['deployEnabled'] : 'true'"
+              #used to skip install deps and tests, go directly to build image. default: false
+            - key: build-image-only
+              expression: "requestURL.parseURL().rawQuery.contains('BuildImageOnly=') ? requestURL.parseURL().query['BuildImageOnly'] : 'false'"
+            - key: build-extra-args
+              expression: "requestURL.parseURL().rawQuery.contains('BuildExtraArgs=') ? requestURL.parseURL().query['BuildExtraArgs'] : ''"
       bindings:
         - ref: parse-gitlab-push-hook
         - ref: parse-gitlab-push-hook-extensions
@@ -76,5 +86,6 @@ spec:
         - ref: parse-param-notify-slack-extensions
         - ref: parse-param-dockerfile-extensions
         - ref: parse-param-chart-extensions
+        - ref: parse-custom-hook-param-extensions
       template:
         ref: {{ .Values.tekton.config.hooks.appPushDevelop.templateRef }}

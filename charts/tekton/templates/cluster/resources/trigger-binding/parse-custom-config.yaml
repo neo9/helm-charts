@@ -67,3 +67,6 @@ spec:
 
   - name: apply-dry-run
     value: {{ .Values.cluster.delivery.config.apply.dry | quote }}
+
+  - name: script-test
+    value: {{ .Values.cluster.delivery.node.tests.script | quote }}

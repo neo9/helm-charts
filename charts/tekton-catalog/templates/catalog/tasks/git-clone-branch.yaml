@@ -32,11 +32,6 @@ spec:
       type: string
       default: "false"
   steps:
-    - name: initialize
-      image: $(params.image)
-      script: |
-        #!/usr/bin/env bash
-        echo "I am supposed to clone this repository: $(params.repository)!"
     - name: git-clone-branch
       image: $(params.image)
       # command: ["git", "clone", "$(params.repository)"]
@@ -48,12 +43,17 @@ spec:
           # tekton and docker container
           cp -rfp ~/.ssh /root
 
+          echo "I am supposed to clone this repository: $(params.repository)!"
+
           cd $(workspaces.source.path)
 
           # Clone PR Repo
           git clone -b $(params.branch) $(params.repository)
+          git_output=$?
 
           if [ "$(params.use-vendir)" == "true" ]; then
               cd projects
               ./sync.sh
           fi
+          sync_output=$?
+          ! (( $git_output || $sync_output ))

@@ -1,0 +1,15 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: parse-custom-hook-param-extensions
+  namespace: tekton-pipelines
+spec:
+  params:
+  - name: gitlab-notify
+    value: $(extensions.gitlab-notify)
+  - name: deploy-enabled
+    value: $(extensions.deploy-enabled)
+  - name: build-image-only
+    value: $(extensions.build-image-only)
+  - name: build-extra-args
+    value: $(extensions.build-extra-args)

@@ -58,6 +58,5 @@ spec:
               BRANCH=$(params.branch) yarn run ci:preinstall
           fi
 
-          if [[ $(params.build-tool) == "npm" ]]; then
-              cp /tmp/npm-publisher/.npmrc .npmrc
-          fi
+          cp /tmp/npm-publisher/.npmrc .npmrc
+

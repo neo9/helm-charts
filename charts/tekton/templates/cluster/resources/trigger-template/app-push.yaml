@@ -33,6 +33,10 @@ spec:
   # - name: run-name-template
   - name: run-storage-requests
   - name: run-service-account
+  - name: deploy-enabled
+  - name: script-test
+  - name: build-image-only
+  - name: build-extra-args
   resourcetemplates:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
@@ -103,3 +107,13 @@ spec:
         value: $(tt.params.chart-name)
       - name: chart-version
         value: $(tt.params.chart-version)
+      - name: deploy-enabled
+        value: $(tt.params.deploy-enabled)
+      - name: script-test
+        value: $(tt.params.script-test)
+      - name: gitlab-notify
+        value: $(tt.params.gitlab-notify)
+      - name: build-image-only
+        value: $(tt.params.build-image-only)
+      - name: build-extra-args
+        value: $(tt.params.build-extra-args)
