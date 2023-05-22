@@ -34,6 +34,7 @@ spec:
   - name: run-storage-requests
   - name: run-service-account
   - name: deploy-enabled
+  - name: gitlab-notify
   - name: script-test
   - name: build-image-only
   - name: build-extra-args

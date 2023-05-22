@@ -68,6 +68,8 @@ spec:
       description: check if we need to deploy using helm
     - name: LIGHTHOUSE_CI
       description: If the project have lighthouseci configuration file
+    - name: OVERRIDE_DEPS
+      description: check if we need to run override-dependencies
   
   volumes:
     - name: podinfo
@@ -108,6 +110,7 @@ spec:
         detectedBuildToolToo=""
         shouldBeDeployed="false"
         detectedLhci="false"
+        buildDependencies="false"
 
         if [ ! -z "$(params.dockerfile-override)" ]; then
             dockerfile=$(params.dockerfile-override)
@@ -181,6 +184,9 @@ spec:
             if grep -q "ci:postinstall" package.json; then
                 postinstall="true"
             fi
+            if grep -q "buildDependencies" package.json; then
+                buildDependencies="true"
+            fi
         fi
 
         if [ ! -z "$(params.build-format-override)" ]; then
@@ -232,4 +238,5 @@ spec:
         echo -n "${postinstall}" > $(results.POSTINSTALL.path)
         echo -n "${shouldBeDeployed}" > $(results.SHOULD_DEPLOY.path)
         echo -n "${detectedLhci}" > $(results.LIGHTHOUSE_CI.path)
+        echo -n "${buildDependencies}" > $(results.OVERRIDE_DEPS.path)
 

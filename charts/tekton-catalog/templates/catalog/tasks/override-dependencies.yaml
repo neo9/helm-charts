@@ -90,7 +90,7 @@ spec:
                 for (const libraryFullName of projectLibraries) {
               echo\`START \${libraryFullName}\`;
               const library = libraryFullName.replace(projectPrefix, '');
-              const ssh = repositoryPrefix.replace('**NAME**', library);
+              const ssh = repositoryPrefix.replace('{{"{{NAME}}"}}', library);
               const doesBranchExists = (await $\`git ls-remote --heads \${ssh} \${branch}\`).stdout;
 
               if (doesBranchExists) {
