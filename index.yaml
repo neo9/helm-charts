@@ -35,6 +35,118 @@ entries:
     version: 0.1.0
   catalogue:
   - apiVersion: v2
+    appVersion: 2.34.0
+    created: "2023-05-25T17:32:09.319595386Z"
+    dependencies:
+    - alias: backoffice
+      condition: catalogue.backoffice
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: cms-api
+      condition: catalogue.cms-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: import-api
+      condition: catalogue.import-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: jobs-api
+      condition: catalogue.jobs-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: media-api
+      condition: catalogue.media-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: metrics-api
+      condition: catalogue.metrics-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: mirakl-api
+      condition: catalogue.mirakl-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: mock-backoffice
+      condition: catalogue.mock-backoffice
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: mock-api
+      condition: catalogue.mock-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: live-api
+      condition: catalogue.live-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: internal-live-api
+      condition: catalogue.internal-live-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: master-api
+      condition: catalogue.master-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: publication-api
+      condition: catalogue.publication-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: export-api
+      condition: catalogue.export-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: scheduler-api
+      condition: catalogue.scheduler-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: search-admin-api
+      condition: catalogue.search-admin-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: web-api
+      condition: catalogue.web-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: merchandising-api
+      condition: catalogue.merchandising-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: akeneo-api
+      condition: catalogue.akeneo-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    - alias: users-api
+      condition: catalogue.users-api
+      name: n9-api
+      repository: https://charts.neo9.pro
+      version: 1.3.10
+    description: Neo9 catalogue global chart
+    digest: a8c57c43724a5a7cac2e09618b6f7a6cbd669fa42c1e93b76b74af6022c0c8cc
+    icon: https://neo9.fr/assets/images/neo9-logo-baseline.svg
+    name: catalogue
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/catalogue-6.1.0/catalogue-6.1.0.tgz
+    version: 6.1.0
+  - apiVersion: v2
     appVersion: 2.33.0
     created: "2023-05-02T14:15:14.261295385Z"
     dependencies:
@@ -539,4 +651,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-05-02T14:15:19.621161141Z"
+generated: "2023-05-25T17:32:13.246440203Z"
