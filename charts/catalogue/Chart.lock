@@ -59,8 +59,5 @@ dependencies:
 - name: n9-api
   repository: https://charts.neo9.pro
   version: 1.3.10
-- name: n9-api
-  repository: https://charts.neo9.pro
-  version: 1.3.10
-digest: sha256:a43c0a328b581cc40dbd3874fc4dbbc13209cf42ca5c196e380228987a5c8155
-generated: "2023-04-07T16:14:20.33038916+02:00"
+digest: sha256:0bc120fc8a6d8edeed7ea9684a9a0e531ffbe09e690d72954d7fd7638a1cdb15
+generated: "2023-05-25T19:28:48.168960107+02:00"

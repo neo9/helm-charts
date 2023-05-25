@@ -7,8 +7,6 @@ catalogue:
   akeneo-api: false
   # -- Condition to enable and deploy catalogue-backoffice
   backoffice: false
-  # -- Condition to enable and deploy catalogue-backoffice2
-  backoffice2: true
   # -- Condition to enable and deploy catalogue-cms-api
   cms-api: true
   # -- Condition to enable and deploy catalogue-export-api
@@ -80,7 +78,7 @@ akeneo-api:
     minReplicas: 1
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/akeneo-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -163,38 +161,29 @@ backoffice:
     port: 80
   logging:
     enabled: true
-
-backoffice2:
-  api:
-    type: nginx
-  healthCheck:
-    path: /
-  image:
-    repository: eu.gcr.io/neo9-catalogue-259610/backoffice2
-    tag: 2.33.0
-  name:
-    appNameOverride: catalogue-backoffice2
-  pdb:
-    enabled: true
-  pod:
-    command:
-      - nginx
-      - "-g"
-      - daemon off;
-    mounts:
-      configMap:
-        - mountPath: /home/app/dist/conf/env/
-          name: catalogue-conf
-  resources:
-    limits:
-      memory: 50M
-    requests:
-      cpu: 20m
-      memory: 50M
-  service:
-    port: 80
-  logging:
-    enabled: true
+  ingress:
+    enabled: false
+    className: default-nginx
+    annotations:
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        rewrite ^/catalogue2/?(.*) $scheme://$host/catalogue$1;
+    hosts:
+      - host: backoffice.tld
+        paths:
+          - path: /?(.*)
+            svcName: catalogue-backoffice
+          - path: /api/?(.*)
+            svcName: catalogue-web-api
+            svcPort: 8014
+          - path: /catalogue/?(.*)
+            svcName: catalogue-backoffice
+          - path: /catalogue/api/?(.*)
+            svcName: catalogue-web-api
+            svcPort: 8014
+    tls: []
+    #  - secretName: backoffice-tld-tls
+    #    hosts:
+    #      - backoffice.tld
 
 cms-api:
   healthCheck:
@@ -206,7 +195,7 @@ cms-api:
     timeoutSeconds: 10
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/cms-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -272,7 +261,7 @@ export-api:
     minReplicas: 1
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/export-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -338,7 +327,7 @@ import-api:
     minReplicas: 1
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/import-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -404,7 +393,7 @@ jobs-api:
     minReplicas: 1
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/jobs-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -470,7 +459,7 @@ live-api:
     minReplicas: 2
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/live-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -536,7 +525,7 @@ internal-live-api:
     minReplicas: 2
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/live-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -671,7 +660,7 @@ media-api:
     minReplicas: 2
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/media-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -737,7 +726,7 @@ merchandising-api:
     minReplicas: 1
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/merchandising-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -799,7 +788,7 @@ metrics-api:
     timeoutSeconds: 10
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/metrics-api
-    tag: 2.33.0
+    tag: 2.34.0
   metrics:
     enabled: true
   name:
@@ -839,7 +828,7 @@ mirakl-api:
     minReplicas: 1
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/mirakl-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -901,7 +890,7 @@ mock-api:
     timeoutSeconds: 10
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/mock-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -960,7 +949,7 @@ mock-backoffice:
     path: /
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/mock-backoffice
-    tag: 2.33.0
+    tag: 2.34.0
   name:
     appNameOverride: catalogue-mock-backoffice
   pdb:
@@ -996,7 +985,7 @@ publication-api:
     minReplicas: 1
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/publication-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -1058,7 +1047,7 @@ scheduler-api:
     timeoutSeconds: 10
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/scheduler-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -1124,7 +1113,7 @@ search-admin-api:
     minReplicas: 1
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/search-admin-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:
@@ -1186,7 +1175,7 @@ web-api:
     timeoutSeconds: 10
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/web-api
-    tag: 2.33.0
+    tag: 2.34.0
   metrics:
     enabled: true
   name:
@@ -1222,7 +1211,7 @@ users-api:
     timeoutSeconds: 10
   image:
     repository: eu.gcr.io/neo9-catalogue-259610/users-api
-    tag: 2.33.0
+    tag: 2.34.0
   initContainer:
     enabled: false
     command:

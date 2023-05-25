@@ -1,6 +1,6 @@
 # catalogue
 
-![Version: 6.0.0](https://img.shields.io/badge/Version-6.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.33.0](https://img.shields.io/badge/AppVersion-2.33.0-informational?style=flat-square)
+![Version: 6.1.0](https://img.shields.io/badge/Version-6.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.34.0](https://img.shields.io/badge/AppVersion-2.34.0-informational?style=flat-square)
 
 Neo9 catalogue global chart
 
@@ -9,7 +9,6 @@ Neo9 catalogue global chart
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.neo9.pro | backoffice(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | backoffice2(n9-api) | 1.3.10 |
 | https://charts.neo9.pro | cms-api(n9-api) | 1.3.10 |
 | https://charts.neo9.pro | import-api(n9-api) | 1.3.10 |
 | https://charts.neo9.pro | jobs-api(n9-api) | 1.3.10 |
@@ -36,7 +35,6 @@ Neo9 catalogue global chart
 |-----|------|---------|-------------|
 | catalogue.akeneo-api | bool | `false` | Condition to enable and deploy catalogue-akeneo-api |
 | catalogue.backoffice | bool | `false` | Condition to enable and deploy catalogue-backoffice |
-| catalogue.backoffice2 | bool | `true` | Condition to enable and deploy catalogue-backoffice2 |
 | catalogue.cms-api | bool | `true` | Condition to enable and deploy catalogue-cms-api |
 | catalogue.export-api | bool | `true` | Condition to enable and deploy catalogue-export-api |
 | catalogue.import-api | bool | `true` | Condition to enable and deploy catalogue-import-api |
@@ -68,7 +66,7 @@ Neo9 catalogue global chart
 | akeneo-api.hpa.maxReplicas | int | `3` |  |
 | akeneo-api.hpa.minReplicas | int | `1` |  |
 | akeneo-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/akeneo-api"` |  |
-| akeneo-api.image.tag | string | `"2.33.0"` |  |
+| akeneo-api.image.tag | string | `"2.34.0"` |  |
 | akeneo-api.initContainer.enabled | bool | `false` |  |
 | akeneo-api.initContainer.command[0] | string | `"npm"` |  |
 | akeneo-api.initContainer.command[1] | string | `"run"` |  |
@@ -113,29 +111,28 @@ Neo9 catalogue global chart
 | backoffice.resources.requests.memory | string | `"50M"` |  |
 | backoffice.service.port | int | `80` |  |
 | backoffice.logging.enabled | bool | `true` |  |
-| backoffice2.api.type | string | `"nginx"` |  |
-| backoffice2.healthCheck.path | string | `"/"` |  |
-| backoffice2.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/backoffice2"` |  |
-| backoffice2.image.tag | string | `"2.33.0"` |  |
-| backoffice2.name.appNameOverride | string | `"catalogue-backoffice2"` |  |
-| backoffice2.pdb.enabled | bool | `true` |  |
-| backoffice2.pod.command[0] | string | `"nginx"` |  |
-| backoffice2.pod.command[1] | string | `"-g"` |  |
-| backoffice2.pod.command[2] | string | `"daemon off;"` |  |
-| backoffice2.pod.mounts.configMap[0].mountPath | string | `"/home/app/dist/conf/env/"` |  |
-| backoffice2.pod.mounts.configMap[0].name | string | `"catalogue-conf"` |  |
-| backoffice2.resources.limits.memory | string | `"50M"` |  |
-| backoffice2.resources.requests.cpu | string | `"20m"` |  |
-| backoffice2.resources.requests.memory | string | `"50M"` |  |
-| backoffice2.service.port | int | `80` |  |
-| backoffice2.logging.enabled | bool | `true` |  |
+| backoffice.ingress.enabled | bool | `false` |  |
+| backoffice.ingress.className | string | `"default-nginx"` |  |
+| backoffice.ingress.annotations."nginx.ingress.kubernetes.io/configuration-snippet" | string | `"rewrite ^/catalogue2/?(.*) $scheme://$host/catalogue$1;\n"` |  |
+| backoffice.ingress.hosts[0].host | string | `"backoffice.tld"` |  |
+| backoffice.ingress.hosts[0].paths[0].path | string | `"/?(.*)"` |  |
+| backoffice.ingress.hosts[0].paths[0].svcName | string | `"catalogue-backoffice"` |  |
+| backoffice.ingress.hosts[0].paths[1].path | string | `"/api/?(.*)"` |  |
+| backoffice.ingress.hosts[0].paths[1].svcName | string | `"catalogue-web-api"` |  |
+| backoffice.ingress.hosts[0].paths[1].svcPort | int | `8014` |  |
+| backoffice.ingress.hosts[0].paths[2].path | string | `"/catalogue/?(.*)"` |  |
+| backoffice.ingress.hosts[0].paths[2].svcName | string | `"catalogue-backoffice"` |  |
+| backoffice.ingress.hosts[0].paths[3].path | string | `"/catalogue/api/?(.*)"` |  |
+| backoffice.ingress.hosts[0].paths[3].svcName | string | `"catalogue-web-api"` |  |
+| backoffice.ingress.hosts[0].paths[3].svcPort | int | `8014` |  |
+| backoffice.ingress.tls | list | `[]` |  |
 | cms-api.healthCheck.failureThreshold | int | `3` |  |
 | cms-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | cms-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
 | cms-api.healthCheck.periodSeconds | int | `3` |  |
 | cms-api.healthCheck.timeoutSeconds | int | `10` |  |
 | cms-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/cms-api"` |  |
-| cms-api.image.tag | string | `"2.33.0"` |  |
+| cms-api.image.tag | string | `"2.34.0"` |  |
 | cms-api.initContainer.enabled | bool | `false` |  |
 | cms-api.initContainer.command[0] | string | `"npm"` |  |
 | cms-api.initContainer.command[1] | string | `"run"` |  |
@@ -173,7 +170,7 @@ Neo9 catalogue global chart
 | export-api.hpa.maxReplicas | int | `2` |  |
 | export-api.hpa.minReplicas | int | `1` |  |
 | export-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/export-api"` |  |
-| export-api.image.tag | string | `"2.33.0"` |  |
+| export-api.image.tag | string | `"2.34.0"` |  |
 | export-api.initContainer.enabled | bool | `false` |  |
 | export-api.initContainer.command[0] | string | `"npm"` |  |
 | export-api.initContainer.command[1] | string | `"run"` |  |
@@ -211,7 +208,7 @@ Neo9 catalogue global chart
 | import-api.hpa.maxReplicas | int | `2` |  |
 | import-api.hpa.minReplicas | int | `1` |  |
 | import-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/import-api"` |  |
-| import-api.image.tag | string | `"2.33.0"` |  |
+| import-api.image.tag | string | `"2.34.0"` |  |
 | import-api.initContainer.enabled | bool | `false` |  |
 | import-api.initContainer.command[0] | string | `"npm"` |  |
 | import-api.initContainer.command[1] | string | `"run"` |  |
@@ -249,7 +246,7 @@ Neo9 catalogue global chart
 | jobs-api.hpa.maxReplicas | int | `2` |  |
 | jobs-api.hpa.minReplicas | int | `1` |  |
 | jobs-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/jobs-api"` |  |
-| jobs-api.image.tag | string | `"2.33.0"` |  |
+| jobs-api.image.tag | string | `"2.34.0"` |  |
 | jobs-api.initContainer.enabled | bool | `false` |  |
 | jobs-api.initContainer.command[0] | string | `"npm"` |  |
 | jobs-api.initContainer.command[1] | string | `"run"` |  |
@@ -287,7 +284,7 @@ Neo9 catalogue global chart
 | live-api.hpa.maxReplicas | int | `4` |  |
 | live-api.hpa.minReplicas | int | `2` |  |
 | live-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/live-api"` |  |
-| live-api.image.tag | string | `"2.33.0"` |  |
+| live-api.image.tag | string | `"2.34.0"` |  |
 | live-api.initContainer.enabled | bool | `false` |  |
 | live-api.initContainer.command[0] | string | `"npm"` |  |
 | live-api.initContainer.command[1] | string | `"run"` |  |
@@ -325,7 +322,7 @@ Neo9 catalogue global chart
 | internal-live-api.hpa.maxReplicas | int | `4` |  |
 | internal-live-api.hpa.minReplicas | int | `2` |  |
 | internal-live-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/live-api"` |  |
-| internal-live-api.image.tag | string | `"2.33.0"` |  |
+| internal-live-api.image.tag | string | `"2.34.0"` |  |
 | internal-live-api.initContainer.enabled | bool | `false` |  |
 | internal-live-api.initContainer.command[0] | string | `"npm"` |  |
 | internal-live-api.initContainer.command[1] | string | `"run"` |  |
@@ -402,7 +399,7 @@ Neo9 catalogue global chart
 | media-api.hpa.maxReplicas | int | `5` |  |
 | media-api.hpa.minReplicas | int | `2` |  |
 | media-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/media-api"` |  |
-| media-api.image.tag | string | `"2.33.0"` |  |
+| media-api.image.tag | string | `"2.34.0"` |  |
 | media-api.initContainer.enabled | bool | `false` |  |
 | media-api.initContainer.command[0] | string | `"npm"` |  |
 | media-api.initContainer.command[1] | string | `"run"` |  |
@@ -440,7 +437,7 @@ Neo9 catalogue global chart
 | merchandising-api.hpa.maxReplicas | int | `3` |  |
 | merchandising-api.hpa.minReplicas | int | `1` |  |
 | merchandising-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/merchandising-api"` |  |
-| merchandising-api.image.tag | string | `"2.33.0"` |  |
+| merchandising-api.image.tag | string | `"2.34.0"` |  |
 | merchandising-api.initContainer.enabled | bool | `false` |  |
 | merchandising-api.initContainer.command[0] | string | `"npm"` |  |
 | merchandising-api.initContainer.command[1] | string | `"run"` |  |
@@ -475,7 +472,7 @@ Neo9 catalogue global chart
 | metrics-api.healthCheck.periodSeconds | int | `3` |  |
 | metrics-api.healthCheck.timeoutSeconds | int | `10` |  |
 | metrics-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/metrics-api"` |  |
-| metrics-api.image.tag | string | `"2.33.0"` |  |
+| metrics-api.image.tag | string | `"2.34.0"` |  |
 | metrics-api.metrics.enabled | bool | `true` |  |
 | metrics-api.name.appNameOverride | string | `"catalogue-metrics-api"` |  |
 | metrics-api.pdb.enabled | bool | `true` |  |
@@ -497,7 +494,7 @@ Neo9 catalogue global chart
 | mirakl-api.hpa.maxReplicas | int | `3` |  |
 | mirakl-api.hpa.minReplicas | int | `1` |  |
 | mirakl-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/mirakl-api"` |  |
-| mirakl-api.image.tag | string | `"2.33.0"` |  |
+| mirakl-api.image.tag | string | `"2.34.0"` |  |
 | mirakl-api.initContainer.enabled | bool | `false` |  |
 | mirakl-api.initContainer.command[0] | string | `"npm"` |  |
 | mirakl-api.initContainer.command[1] | string | `"run"` |  |
@@ -532,7 +529,7 @@ Neo9 catalogue global chart
 | mock-api.healthCheck.periodSeconds | int | `3` |  |
 | mock-api.healthCheck.timeoutSeconds | int | `10` |  |
 | mock-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/mock-api"` |  |
-| mock-api.image.tag | string | `"2.33.0"` |  |
+| mock-api.image.tag | string | `"2.34.0"` |  |
 | mock-api.initContainer.enabled | bool | `false` |  |
 | mock-api.initContainer.command[0] | string | `"npm"` |  |
 | mock-api.initContainer.command[1] | string | `"run"` |  |
@@ -564,7 +561,7 @@ Neo9 catalogue global chart
 | mock-backoffice.api.type | string | `"nginx"` |  |
 | mock-backoffice.healthCheck.path | string | `"/"` |  |
 | mock-backoffice.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/mock-backoffice"` |  |
-| mock-backoffice.image.tag | string | `"2.33.0"` |  |
+| mock-backoffice.image.tag | string | `"2.34.0"` |  |
 | mock-backoffice.name.appNameOverride | string | `"catalogue-mock-backoffice"` |  |
 | mock-backoffice.pdb.enabled | bool | `true` |  |
 | mock-backoffice.pod.command[0] | string | `"nginx"` |  |
@@ -585,7 +582,7 @@ Neo9 catalogue global chart
 | publication-api.hpa.maxReplicas | int | `3` |  |
 | publication-api.hpa.minReplicas | int | `1` |  |
 | publication-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/publication-api"` |  |
-| publication-api.image.tag | string | `"2.33.0"` |  |
+| publication-api.image.tag | string | `"2.34.0"` |  |
 | publication-api.initContainer.enabled | bool | `false` |  |
 | publication-api.initContainer.command[0] | string | `"npm"` |  |
 | publication-api.initContainer.command[1] | string | `"run"` |  |
@@ -620,7 +617,7 @@ Neo9 catalogue global chart
 | scheduler-api.healthCheck.periodSeconds | int | `3` |  |
 | scheduler-api.healthCheck.timeoutSeconds | int | `10` |  |
 | scheduler-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/scheduler-api"` |  |
-| scheduler-api.image.tag | string | `"2.33.0"` |  |
+| scheduler-api.image.tag | string | `"2.34.0"` |  |
 | scheduler-api.initContainer.enabled | bool | `false` |  |
 | scheduler-api.initContainer.command[0] | string | `"npm"` |  |
 | scheduler-api.initContainer.command[1] | string | `"run"` |  |
@@ -658,7 +655,7 @@ Neo9 catalogue global chart
 | search-admin-api.hpa.maxReplicas | int | `3` |  |
 | search-admin-api.hpa.minReplicas | int | `1` |  |
 | search-admin-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/search-admin-api"` |  |
-| search-admin-api.image.tag | string | `"2.33.0"` |  |
+| search-admin-api.image.tag | string | `"2.34.0"` |  |
 | search-admin-api.initContainer.enabled | bool | `false` |  |
 | search-admin-api.initContainer.command[0] | string | `"npm"` |  |
 | search-admin-api.initContainer.command[1] | string | `"run"` |  |
@@ -693,7 +690,7 @@ Neo9 catalogue global chart
 | web-api.healthCheck.periodSeconds | int | `3` |  |
 | web-api.healthCheck.timeoutSeconds | int | `10` |  |
 | web-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/web-api"` |  |
-| web-api.image.tag | string | `"2.33.0"` |  |
+| web-api.image.tag | string | `"2.34.0"` |  |
 | web-api.metrics.enabled | bool | `true` |  |
 | web-api.name.appNameOverride | string | `"catalogue-web-api"` |  |
 | web-api.pdb.enabled | bool | `true` |  |
@@ -712,7 +709,7 @@ Neo9 catalogue global chart
 | users-api.healthCheck.periodSeconds | int | `3` |  |
 | users-api.healthCheck.timeoutSeconds | int | `10` |  |
 | users-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/users-api"` |  |
-| users-api.image.tag | string | `"2.33.0"` |  |
+| users-api.image.tag | string | `"2.34.0"` |  |
 | users-api.initContainer.enabled | bool | `false` |  |
 | users-api.initContainer.command[0] | string | `"npm"` |  |
 | users-api.initContainer.command[1] | string | `"run"` |  |
