@@ -1,6 +1,6 @@
 # catalogue-utils
 
-![Version: 0.8.6](https://img.shields.io/badge/Version-0.8.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.9.0](https://img.shields.io/badge/Version-0.9.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -8,11 +8,11 @@ A Helm chart for Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://helm.min.io/ | minio | 4.0.2 |
 | https://charts.neo9.pro | crossplane-buckets | 0.3.1 |
 | https://charts.neo9.pro | eck-managed(eck-managed) | 0.1.0 |
 | https://charts.neo9.pro | mongodb(mongodb-managed) | 0.6.3 |
 | https://charts.neo9.pro | rabbitmq(rabbitmq-managed) | 0.4.1 |
+| https://helm.min.io | minio | 8.0.10 |
 
 ## Values
 
@@ -20,7 +20,6 @@ A Helm chart for Kubernetes
 |-----|------|---------|-------------|
 | catalogue.akeneo-api | bool | `false` | Condition to enable and deploy catalogue-akeneo-api |
 | catalogue.backoffice | bool | `true` | Condition to enable and deploy catalogue-backoffice |
-| catalogue.backoffice2 | bool | `true` | Condition to enable and deploy catalogue-backoffice2 |
 | catalogue.cms-api | bool | `true` | Condition to enable and deploy catalogue-cms-api |
 | catalogue.export-api | bool | `true` | Condition to enable and deploy catalogue-export-api |
 | catalogue.import-api | bool | `true` | Condition to enable and deploy catalogue-import-api |

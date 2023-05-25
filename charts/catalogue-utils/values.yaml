@@ -3,8 +3,6 @@ catalogue:
   akeneo-api: false
   # -- Condition to enable and deploy catalogue-backoffice
   backoffice: true
-  # -- Condition to enable and deploy catalogue-backoffice2
-  backoffice2: true
   # -- Condition to enable and deploy catalogue-cms-api
   cms-api: true
   # -- Condition to enable and deploy catalogue-export-api
@@ -72,62 +70,62 @@ mongodb:
     - name: n9-catalogue
       db: admin
       roles:
-      - name: clusterAdmin
-      - name: userAdminAnyDatabase
-      - name: readWriteAnyDatabase
-      - name: dbAdminAnyDatabase
+        - name: clusterAdmin
+        - name: userAdminAnyDatabase
+        - name: readWriteAnyDatabase
+        - name: dbAdminAnyDatabase
 
     - name: catalogue-akeneo-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-cms-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-export-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-import-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-jobs-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-master-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-media-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-merchandising-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-mirakl-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-mock-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-scheduler-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-search-admin-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
     - name: catalogue-users-api
       roles:
-      - name: readWrite
+        - name: readWrite
 
   #########################################################################
   # Mongodb-Prometheus-Exporter configuration
@@ -175,10 +173,10 @@ rabbitmq:
             spec:
               containers:
                 - name: rabbitmq
-                  env: 
-                  - name: RABBITMQ_COMMUNITY_PLUGINS
-                    value: "https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/3.10.2/rabbitmq_delayed_message_exchange-3.10.2.ez"
-    
+                  env:
+                    - name: RABBITMQ_COMMUNITY_PLUGINS
+                      value: "https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/3.10.2/rabbitmq_delayed_message_exchange-3.10.2.ez"
+
   vhosts:
     - catalogue
 
@@ -318,9 +316,9 @@ eck-managed:
     serviceMonitor:
       enabled: false
 
-################################################################################
-# Kibana configuration.
-################################################################################
+  ################################################################################
+  # Kibana configuration.
+  ################################################################################
 
   kibana:
     enabled: false
@@ -398,12 +396,12 @@ external-secrets:
     akeneo-api: ["rabbitmq", "mongodb"]
     cms-api: ["mongodb"]
     export-api: ["rabbitmq", "mongodb"]
-    internal-live-api: ["elasticsearch","rabbitmq"]
+    internal-live-api: ["elasticsearch", "rabbitmq"]
     import-api: ["rabbitmq", "mongodb"]
     jobs-api: ["rabbitmq", "mongodb"]
     live-api: ["elasticsearch"]
     master-api: ["rabbitmq", "mongodb", "elasticsearch"]
-    merchandising-api: ["mongodb","rabbitmq"]
+    merchandising-api: ["mongodb", "rabbitmq"]
     media-api: ["rabbitmq", "mongodb", "google_service_account", "bucket"]
     mirakl-api: ["rabbitmq", "mongodb"]
     mock-api: ["rabbitmq", "mongodb"]
@@ -417,147 +415,147 @@ external-secrets:
   #   kind: ClusterSecretStore
 
   # secrets:
-    # catalogue-akeneo-api:
-    #   mongodb_username:
-    #     key: catalogue-mongodb-catalogue-akeneo-api-catalogue-akeneo-api
-    #     property: username
-    #   mongodb_password:
-    #     key: catalogue-mongodb-catalogue-akeneo-api-catalogue-akeneo-api
-    #     property: password
-    #   rabbitmq_username:
-    #     key: catalogue-rabbitmq-user-akeneo-api-user-credentials
-    #     property: username
-    #   rabbitmq_password:
-    #     key: catalogue-rabbitmq-user-akeneo-api-user-credentials
-    #     property: password
-    #
-    # catalogue-cms-api:
-    #   mongodb_username:
-    #     key: catalogue-mongodb-catalogue-cms-api-catalogue-cms-api
-    #     property: username
-    #   mongodb_password:
-    #     key: catalogue-mongodb-catalogue-cms-api-catalogue-cms-api
-    #     property: password
-    #   google_service_account:
-    #     key: crossplane-catalogue-integration-service-account-key
-    #     property: privateKey
-    #
-    # catalogue-export-api:
-    #   mongodb_username:
-    #     key: catalogue-mongodb-catalogue-export-api-catalogue-export-api
-    #     property: username
-    #   mongodb_password:
-    #     key: catalogue-mongodb-catalogue-export-api-catalogue-export-api
-    #     property: password
-    #   rabbitmq_username:
-    #     key: catalogue-rabbitmq-user-export-api-user-credentials
-    #     property: username
-    #   rabbitmq_password:
-    #     key: catalogue-rabbitmq-user-export-api-user-credentials
-    #     property: password
-    #
-    # catalogue-import-api:
-    #   mongodb_username:
-    #     key: catalogue-mongodb-catalogue-import-api-catalogue-import-api
-    #     property: username
-    #   mongodb_password:
-    #     key: catalogue-mongodb-catalogue-import-api-catalogue-import-api
-    #     property: password
-    #   rabbitmq_username:
-    #     key: catalogue-rabbitmq-user-import-api-user-credentials
-    #     property: username
-    #   rabbitmq_password:
-    #     key: catalogue-rabbitmq-user-import-api-user-credentials
-    #     property: password
-    #
-    # catalogue-jobs-api:
-    #   mongodb_username:
-    #     key: catalogue-mongodb-catalogue-jobs-api-catalogue-jobs-api
-    #     property: username
-    #   mongodb_password:
-    #     key: catalogue-mongodb-catalogue-jobs-api-catalogue-jobs-api
-    #     property: password
-    #   rabbitmq_username:
-    #     key: catalogue-rabbitmq-user-jobs-api-user-credentials
-    #     property: username
-    #   rabbitmq_password:
-    #     key: catalogue-rabbitmq-user-jobs-api-user-credentials
-    #     property: password
-    #
-    # catalogue-master-api:
-    #   mongodb_username:
-    #     key: catalogue-mongodb-catalogue-master-api-catalogue-master-api
-    #     property: username
-    #   mongodb_password:
-    #     key: catalogue-mongodb-catalogue-master-api-catalogue-master-api
-    #     property: password
-    #   rabbitmq_username:
-    #     key: catalogue-rabbitmq-user-master-api-user-credentials
-    #     property: username
-    #   rabbitmq_password:
-    #     key: catalogue-rabbitmq-user-master-api-user-credentials
-    #     property: password
-    #
-    # catalogue-media-api:
-    #   mongodb_username:
-    #     key: catalogue-mongodb-catalogue-media-api-catalogue-media-api
-    #     property: username
-    #   mongodb_password:
-    #     key: catalogue-mongodb-catalogue-media-api-catalogue-media-api
-    #     property: password
-    #   rabbitmq_username:
-    #     key: catalogue-rabbitmq-user-media-api-user-credentials
-    #     property: username
-    #   rabbitmq_password:
-    #     key: catalogue-rabbitmq-user-media-api-user-credentials
-    #     property: password
-    #   google_service_account:
-    #     key: crossplane-catalogue-service-account-key
-    #     property: privateKey
-    #
-    # catalogue-mock-api:
-    #   mongodb_username:
-    #     key: catalogue-mongodb-catalogue-mock-api-catalogue-mock-api
-    #     property: username
-    #   mongodb_password:
-    #     key: catalogue-mongodb-catalogue-mock-api-catalogue-mock-api
-    #     property: password
-    #   rabbitmq_username:
-    #     key: catalogue-rabbitmq-user-mock-api-user-credentials
-    #     property: username
-    #   rabbitmq_password:
-    #     key: catalogue-rabbitmq-user-mock-api-user-credentials
-    #     property: password
-    #
-    # catalogue-publication-api:
-    #   rabbitmq_username:
-    #     key: catalogue-rabbitmq-user-publication-api-user-credentials
-    #     property: username
-    #   rabbitmq_password:
-    #     key: catalogue-rabbitmq-user-publication-api-user-credentials
-    #     property: password
-    #
-    # catalogue-scheduler-api:
-    #   mongodb_username:
-    #     key: catalogue-mongodb-catalogue-scheduler-api-catalogue-scheduler-api
-    #     property: username
-    #   mongodb_password:
-    #     key: catalogue-mongodb-catalogue-scheduler-api-catalogue-scheduler-api
-    #     property: password
-    #   rabbitmq_username:
-    #     key: catalogue-rabbitmq-user-scheduler-api-user-credentials
-    #     property: username
-    #   rabbitmq_password:
-    #     key: catalogue-rabbitmq-user-scheduler-api-user-credentials
-    #     property: password
-    #
-    # catalogue-search-admin-api:
-    #   mongodb_username:
-    #     key: catalogue-mongodb-catalogue-search-admin-api-catalogue-search-admin-api
-    #     property: username
-    #   mongodb_password:
-    #     key: catalogue-mongodb-catalogue-search-admin-api-catalogue-search-admin-api
-    #     property: password
+  # catalogue-akeneo-api:
+  #   mongodb_username:
+  #     key: catalogue-mongodb-catalogue-akeneo-api-catalogue-akeneo-api
+  #     property: username
+  #   mongodb_password:
+  #     key: catalogue-mongodb-catalogue-akeneo-api-catalogue-akeneo-api
+  #     property: password
+  #   rabbitmq_username:
+  #     key: catalogue-rabbitmq-user-akeneo-api-user-credentials
+  #     property: username
+  #   rabbitmq_password:
+  #     key: catalogue-rabbitmq-user-akeneo-api-user-credentials
+  #     property: password
+  #
+  # catalogue-cms-api:
+  #   mongodb_username:
+  #     key: catalogue-mongodb-catalogue-cms-api-catalogue-cms-api
+  #     property: username
+  #   mongodb_password:
+  #     key: catalogue-mongodb-catalogue-cms-api-catalogue-cms-api
+  #     property: password
+  #   google_service_account:
+  #     key: crossplane-catalogue-integration-service-account-key
+  #     property: privateKey
+  #
+  # catalogue-export-api:
+  #   mongodb_username:
+  #     key: catalogue-mongodb-catalogue-export-api-catalogue-export-api
+  #     property: username
+  #   mongodb_password:
+  #     key: catalogue-mongodb-catalogue-export-api-catalogue-export-api
+  #     property: password
+  #   rabbitmq_username:
+  #     key: catalogue-rabbitmq-user-export-api-user-credentials
+  #     property: username
+  #   rabbitmq_password:
+  #     key: catalogue-rabbitmq-user-export-api-user-credentials
+  #     property: password
+  #
+  # catalogue-import-api:
+  #   mongodb_username:
+  #     key: catalogue-mongodb-catalogue-import-api-catalogue-import-api
+  #     property: username
+  #   mongodb_password:
+  #     key: catalogue-mongodb-catalogue-import-api-catalogue-import-api
+  #     property: password
+  #   rabbitmq_username:
+  #     key: catalogue-rabbitmq-user-import-api-user-credentials
+  #     property: username
+  #   rabbitmq_password:
+  #     key: catalogue-rabbitmq-user-import-api-user-credentials
+  #     property: password
+  #
+  # catalogue-jobs-api:
+  #   mongodb_username:
+  #     key: catalogue-mongodb-catalogue-jobs-api-catalogue-jobs-api
+  #     property: username
+  #   mongodb_password:
+  #     key: catalogue-mongodb-catalogue-jobs-api-catalogue-jobs-api
+  #     property: password
+  #   rabbitmq_username:
+  #     key: catalogue-rabbitmq-user-jobs-api-user-credentials
+  #     property: username
+  #   rabbitmq_password:
+  #     key: catalogue-rabbitmq-user-jobs-api-user-credentials
+  #     property: password
+  #
+  # catalogue-master-api:
+  #   mongodb_username:
+  #     key: catalogue-mongodb-catalogue-master-api-catalogue-master-api
+  #     property: username
+  #   mongodb_password:
+  #     key: catalogue-mongodb-catalogue-master-api-catalogue-master-api
+  #     property: password
+  #   rabbitmq_username:
+  #     key: catalogue-rabbitmq-user-master-api-user-credentials
+  #     property: username
+  #   rabbitmq_password:
+  #     key: catalogue-rabbitmq-user-master-api-user-credentials
+  #     property: password
+  #
+  # catalogue-media-api:
+  #   mongodb_username:
+  #     key: catalogue-mongodb-catalogue-media-api-catalogue-media-api
+  #     property: username
+  #   mongodb_password:
+  #     key: catalogue-mongodb-catalogue-media-api-catalogue-media-api
+  #     property: password
+  #   rabbitmq_username:
+  #     key: catalogue-rabbitmq-user-media-api-user-credentials
+  #     property: username
+  #   rabbitmq_password:
+  #     key: catalogue-rabbitmq-user-media-api-user-credentials
+  #     property: password
+  #   google_service_account:
+  #     key: crossplane-catalogue-service-account-key
+  #     property: privateKey
+  #
+  # catalogue-mock-api:
+  #   mongodb_username:
+  #     key: catalogue-mongodb-catalogue-mock-api-catalogue-mock-api
+  #     property: username
+  #   mongodb_password:
+  #     key: catalogue-mongodb-catalogue-mock-api-catalogue-mock-api
+  #     property: password
+  #   rabbitmq_username:
+  #     key: catalogue-rabbitmq-user-mock-api-user-credentials
+  #     property: username
+  #   rabbitmq_password:
+  #     key: catalogue-rabbitmq-user-mock-api-user-credentials
+  #     property: password
+  #
+  # catalogue-publication-api:
+  #   rabbitmq_username:
+  #     key: catalogue-rabbitmq-user-publication-api-user-credentials
+  #     property: username
+  #   rabbitmq_password:
+  #     key: catalogue-rabbitmq-user-publication-api-user-credentials
+  #     property: password
+  #
+  # catalogue-scheduler-api:
+  #   mongodb_username:
+  #     key: catalogue-mongodb-catalogue-scheduler-api-catalogue-scheduler-api
+  #     property: username
+  #   mongodb_password:
+  #     key: catalogue-mongodb-catalogue-scheduler-api-catalogue-scheduler-api
+  #     property: password
+  #   rabbitmq_username:
+  #     key: catalogue-rabbitmq-user-scheduler-api-user-credentials
+  #     property: username
+  #   rabbitmq_password:
+  #     key: catalogue-rabbitmq-user-scheduler-api-user-credentials
+  #     property: password
+  #
+  # catalogue-search-admin-api:
+  #   mongodb_username:
+  #     key: catalogue-mongodb-catalogue-search-admin-api-catalogue-search-admin-api
+  #     property: username
+  #   mongodb_password:
+  #     key: catalogue-mongodb-catalogue-search-admin-api-catalogue-search-admin-api
+  #     property: password
 
 ################################################################################
 # Minio configuration.
@@ -608,7 +606,7 @@ crossplane-buckets:
     enabled: true
     name: "namespace-catalogue-gcs"
     defaultRoles:
-    - roles/storage.objectAdmin
+      - roles/storage.objectAdmin
 
   prefix: "clustername-namespace"
 
@@ -623,7 +621,7 @@ crossplane-buckets:
   #     # replicator.v1.mittwald.de/replicate-to: "NAMESPACE"
 
   buckets:
-  - name: cat-media
-    hasPrefix: true
-    deletionPolicy: Orphan
-    uniformPolicy: true
+    - name: cat-media
+      hasPrefix: true
+      deletionPolicy: Orphan
+      uniformPolicy: true
