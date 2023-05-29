@@ -1,4 +1,4 @@
-library('pipeline@v11.0.1')_
+library('pipeline@v11.5.2')_
 def devCharts = []
 def commonCharts = [
   "/": [
@@ -170,15 +170,19 @@ def commonCharts = [
   ]
 ]
 
-HelmChartPipeline {
-    museumCredentialsID = "neo9-chartmuseum"
-    branch = "main"
-    helmCharts = commonCharts
+if (env.BRANCH_NAME == "main") {
+  HelmChartPipeline {
+      museumCredentialsID = "neo9-chartmuseum"
+      branch = "main"
+      helmCharts = commonCharts
+  }
 }
 
-HelmChartPipeline {
-    museum = "https://dev.charts.neo9.pro"
-    museumCredentialsID = "neo9-dev-chartmuseum"
-    branch = "dev"
-    helmCharts = commonCharts + devCharts
+if (env.BRANCH_NAME == "dev") {
+  HelmChartPipeline {
+      museum = "https://charts.dev.neo9.pro"
+      museumCredentialsID = "neo9-dev-chartmuseum"
+      branch = "dev"
+      helmCharts = commonCharts + devCharts
+  }
 }
