@@ -91,6 +91,7 @@ spec:
     description: The chart helm version to use for continuous deployment
   - name: deploy-enabled
     description: Whether or not to deploy 
+    type: string
     default: "true"
   - name: container-images-repository-namespace
     default: ""
@@ -408,7 +409,7 @@ spec:
     runAfter:
       - npm-run-lint
     taskRef:
-      name: npm
+      name: npm-with-high-ressources
     workspaces:
     - name: source
       workspace: ws
@@ -449,9 +450,40 @@ spec:
 
 ######################################################
 
+  - name: npm-build
+    runAfter:
+      - npm-run-tests
+    when:
+    - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
+      operator: in
+      values:
+      - "npm"
+    - input: $(params.publish)
+      operator: in
+      values:
+      - "true"
+    - input: $(params.build-image-only)
+      operator: in
+      values:
+        - "false"
+    taskRef:
+      name: npm
+    workspaces:
+    - name: source
+      workspace: ws
+    params:
+    - name: IMAGE
+      value: "node:$(params.node-version)"
+    - name: PATH_CONTEXT
+      value: $(params.git-project-name)
+    - name: ARGS
+      value: "run build --if-present"
+
+######################################################
+
   - name: npm-publish-on-nexus
     runAfter:
-    - setup-project
+    - npm-build
     when:
     - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
       operator: in
@@ -465,12 +497,15 @@ spec:
       operator: in
       values:
       - "$(params.continuous-delivery-branch)"
-      - "main"
-      - "master"
+      - "tag"
     - input: $(params.build-image-only)
       operator: in
       values:
         - "false"
+    - input: $(tasks.extract-build-config-from-source.results.BUILD_FORMAT)
+      operator: in
+      values:
+      - "package"
     taskRef:
       name: npm-publish
     params:
@@ -730,6 +765,10 @@ spec:
         operator: in
         values:
           - "image"
+      - input: $(params.publish)
+        operator: in
+        values:
+        - "false"
     runAfter:
       - override-dependencies
       - setup-project
@@ -911,6 +950,11 @@ spec:
   - name: scan-vulnerabilities
     taskRef:
       name: trivy-scanner
+    when:
+      - input: $(tasks.extract-build-config-from-source.results.BUILD_FORMAT)
+        operator: in
+        values:
+          - "image"
     runAfter:
     - gradle-build-container-image
     - maven-build-container-image

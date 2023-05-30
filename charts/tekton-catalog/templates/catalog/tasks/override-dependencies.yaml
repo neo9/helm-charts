@@ -33,9 +33,9 @@ spec:
           cat <<EOF > override-script.mjs
           #!/usr/bin/env zx
 
-          const branchPrefix = (
-            await $\`(cat package.json | jq -r '.buildDependencies."branch-prefix"') || echo ""\`
-          ).stdout.trim();
+          const packageJson = await fs.readJson("./package.json");
+          const buildDependencies = packageJson.buildDependencies;
+          const branchPrefix = buildDependencies ? buildDependencies["branch-prefix"] : "";
 
           const gitCurrentBranch = (await $\`git branch --show-current\`).stdout.trim();
           let branch;
@@ -74,12 +74,8 @@ spec:
           }
 
           async function buildBranchDependencies(branch, targetPath) {
-            const projectPrefix = (
-              await $\`(cat package.json | jq -r '.buildDependencies."project-prefix"') || echo ""\`
-            ).stdout.trim();
-            const repositoryPrefix = (
-              await $\`(cat package.json | jq -r '.buildDependencies."repository-prefix-template"') || echo ""\`
-            ).stdout.trim();
+            const projectPrefix = buildDependencies ? buildDependencies["project-prefix"] : "";
+            const repositoryTemplate = buildDependencies ? buildDependencies["repository-template"] : "";
             const projectLibraries = (await $\`cat yarn.lock | grep \${projectPrefix} || true\`).stdout
               .split('\n')
               .filter((dependencyName) => dependencyName.startsWith(projectPrefix))
@@ -90,7 +86,7 @@ spec:
                 for (const libraryFullName of projectLibraries) {
               echo\`START \${libraryFullName}\`;
               const library = libraryFullName.replace(projectPrefix, '');
-              const ssh = repositoryPrefix.replace('{{"{{NAME}}"}}', library);
+              const ssh = repositoryTemplate.replace('{{"{{NAME}}"}}', library);
               const doesBranchExists = (await $\`git ls-remote --heads \${ssh} \${branch}\`).stdout;
 
               if (doesBranchExists) {

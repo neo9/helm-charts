@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: npm
+  name: npm-with-high-ressources
   labels:
     app.kubernetes.io/version: "0.1"
   annotations:
@@ -35,6 +35,13 @@ spec:
   steps:
     - name: npm-run
       image: $(params.IMAGE)
+      resources:
+        requests:
+          memory: 500m
+          cpu: 500m
+        limits:
+          memory: 2Gi
+          cpu: 800m
       script: |
         #!/bin/sh
         $(params.COMMAND) $(params.ARGS)
