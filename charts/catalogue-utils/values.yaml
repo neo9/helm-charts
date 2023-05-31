@@ -377,7 +377,10 @@ eck-managed:
 
 external-secrets:
   enabled: false
-
+  # Fill namespace for rabbitMQ if is deployed separately
+  rabbitmqNamespace: ""
+  # Fill namespace for mongoDB if is deployed separately
+  mongodbNamespace: ""
   bucketName:
     # -- Set bucket name to use for desired api
     media-api: "example"
