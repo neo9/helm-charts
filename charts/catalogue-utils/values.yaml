@@ -379,6 +379,11 @@ external-secrets:
   enabled: false
   # Fill namespace for rabbitMQ if is deployed separately
   rabbitmqNamespace: ""
+  rabbitmqSecretStore:
+    enabled: false
+    serviceAccount:
+          name: external-secrets-operator
+          namespace: external-secrets-operator
   # Fill namespace for mongoDB if is deployed separately
   mongodbNamespace: ""
   bucketName:
