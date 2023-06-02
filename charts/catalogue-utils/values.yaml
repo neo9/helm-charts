@@ -377,6 +377,7 @@ eck-managed:
 
 external-secrets:
   enabled: false
+  secretPrefix: catalogue
   # Fill namespace for rabbitMQ if is deployed separately
   rabbitmqNamespace: ""
   rabbitmqSecretStore:
