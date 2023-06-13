@@ -1,9 +1,21 @@
 {{- range $user := .Values.users }}
+{{- if not (($user.importCredentialsSecret).name) }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "rabbitmq-managed.fullname" $ }}-user-{{ $user.name }}-source
+  namespace: {{ $.Release.Namespace }}
+type: Opaque
+stringData:
+  username: {{ $user.name }}
+{{- end }}
 ---
 apiVersion: rabbitmq.com/v1beta1
 kind: User
 metadata:
   name: {{ include "rabbitmq-managed.fullname" $ }}-user-{{ $user.name }}
+  namespace: {{ $.Release.Namespace }}
   labels:
     {{- include "rabbitmq-managed.labels" $ | nindent 4 }}
 spec:
@@ -16,5 +28,8 @@ spec:
   {{- if (($user.importCredentialsSecret).name) }}
   importCredentialsSecret:
     name: {{ (($user.importCredentialsSecret).name) }}
+  {{- else }}
+  importCredentialsSecret:
+    name: {{ include "rabbitmq-managed.fullname" $ }}-user-{{ $user.name }}-source
   {{- end }}
 {{- end }}

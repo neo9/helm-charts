@@ -1,5 +1,9 @@
 {{ if .Values.hpa.enabled -}}
+{{- if semverCompare ">=1.23-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: autoscaling/v2
+{{- else -}}
 apiVersion: autoscaling/v2beta2
+{{- end }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "n9-api.fullname" . }}
@@ -16,14 +20,6 @@ spec:
   {{- if .Values.hpa.customMetrics }}
   {{ toYaml .Values.hpa.customMetrics | indent 2 | trim }}
   {{- end }}
-  {{- if .Values.hpa.cpu }}
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: {{ .Values.hpa.cpu }}
-  {{- end }}
   {{- if .Values.hpa.memory }}
   - type: Resource
     resource:
@@ -31,6 +27,14 @@ spec:
       target:
         type: Utilization
         averageUtilization: {{ .Values.hpa.memory }}
+  {{- end }}
+  {{- if .Values.hpa.cpu }}
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: {{ .Values.hpa.cpu }}
   {{- end }}
   {{- if .Values.hpa.rabbitmq.enabled }}
   - type: Object
