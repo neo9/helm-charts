@@ -821,6 +821,8 @@ spec:
         value: $(params.build-extra-args)
       - name: CONTAINER-IMAGES-REPOSITORY
         value: "$(params.container-images-repository)"
+      - name: BUILDER_IMAGE
+        value: ihebchakroun/buildah-ssh:1.30
     workspaces:
       - name: source
         workspace: ws

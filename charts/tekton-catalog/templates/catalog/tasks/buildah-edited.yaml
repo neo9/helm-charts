@@ -24,7 +24,7 @@ spec:
     description: Reference of the image buildah will produce.
   - name: BUILDER_IMAGE
     description: The location of the buildah builder image.
-    default: quay.io/buildah/stable:v1.28.0
+    default: quay.io/buildah/stable:v1.30.0
   - name: STORAGE_DRIVER
     description: Set buildah storage driver
     default: overlay
@@ -64,13 +64,13 @@ spec:
     image: $(params.BUILDER_IMAGE)
     workingDir: $(workspaces.source.path)/$(params.DIRECTORY)
     script: |
+      eval $(ssh-agent) 1> /dev/null && ssh-add ~/.ssh/id_git-ssh 1> /dev/null && \
       [[ "$(workspaces.sslcertdir.bound)" == "true" ]] && CERT_DIR_FLAG="--cert-dir $(workspaces.sslcertdir.path)"
       buildah ${CERT_DIR_FLAG} --storage-driver=$(params.STORAGE_DRIVER) bud \
         $(params.BUILD_EXTRA_ARGS) --format=$(params.FORMAT) \
         --tls-verify=$(params.TLSVERIFY) --no-cache \
         -f $(params.DOCKERFILE) -t $(params.IMAGE) \
-        --layers --cache-to $(params.CONTAINER-IMAGES-REPOSITORY)/$(params.DIRECTORY)/cache \
-        --cache-from $(params.CONTAINER-IMAGES-REPOSITORY)/$(params.DIRECTORY)/cache $(params.CONTEXT)
+        --ssh=default
     volumeMounts:
     - name: varlibcontainers
       mountPath: /var/lib/containers
