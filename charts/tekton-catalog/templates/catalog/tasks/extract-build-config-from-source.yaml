@@ -34,6 +34,7 @@ spec:
     - name: deploy-enabled
       description: Whether or not to deploy
       type: string
+      default: ""
     - name: directory
       description: The directory containing the app, relative to the source repository
         root
