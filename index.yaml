@@ -608,6 +608,21 @@ entries:
     version: 0.2.1
   mongodb-managed:
   - apiVersion: v2
+    created: "2023-07-05T15:33:46.522080226Z"
+    dependencies:
+    - alias: mongodb-exporter
+      condition: mongodb-exporter.enabled
+      name: prometheus-mongodb-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 3.1.2
+    description: A Helm chart to manage mongodbcommunity cluster
+    digest: ce762dd9f80fe72483d69194388d6413634ac5bb9d6e9299f9030de9ac45c602
+    name: mongodb-managed
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/mongodb-managed-0.7.0/mongodb-managed-0.7.0.tgz
+    version: 0.7.0
+  - apiVersion: v2
     created: "2023-05-02T14:15:17.224753684Z"
     dependencies:
     - alias: mongodb-exporter
@@ -702,6 +717,16 @@ entries:
     - https://github.com/neo9/helm-charts/releases/download/privatebin-0.9.0/privatebin-0.9.0.tgz
     version: 0.9.0
   rabbitmq-managed:
+  - apiVersion: v2
+    appVersion: "3.10"
+    created: "2023-07-05T15:33:47.500153525Z"
+    description: A Helm chart to manage RabbitmqCluster & typology
+    digest: 9a836b61f3ae823537f4c62904120f0a0413557f91c3bcd65efee212e35d0188
+    name: rabbitmq-managed
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/rabbitmq-managed-0.5.0/rabbitmq-managed-0.5.0.tgz
+    version: 0.5.0
   - apiVersion: v2
     appVersion: "3.10"
     created: "2023-05-02T14:15:18.422125748Z"
@@ -806,4 +831,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-06-13T14:07:56.577363064Z"
+generated: "2023-07-05T15:33:48.532092522Z"
