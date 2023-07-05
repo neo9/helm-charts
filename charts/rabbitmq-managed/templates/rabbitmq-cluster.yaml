@@ -20,6 +20,11 @@ spec:
     {{- toYaml .Values.cluster.resources.requests | nindent 6 }}
   {{- end }}
 {{- end }}
+  persistence:
+    storage: {{ .Values.cluster.storage.size }}
+    {{- if .Values.cluster.storage.storageClass }}
+    storageClassName: {{ .Values.cluster.storage.storageClass }}
+    {{- end }}
   {{- if .Values.cluster.rabbitmqConf }}
   rabbitmq:
     {{- toYaml .Values.cluster.rabbitmqConf | nindent 4 }}

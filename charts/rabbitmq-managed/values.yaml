@@ -19,10 +19,7 @@ cluster:
   replicaCount: 3
   # -- Specify an image to use if different from operator default
   image: ""
-  # -- Inject rabbitmq conf, which are under RabbitmqCluster.spec.rabbitmq
-  rabbitmqConf: {}
-  # -- Set value to override the templated statefulset by the operator
-  override: {}
+  # -- If using default memory_high_watermark, consider memory limits being ~3 times the requests
   resources:
     # -- Define rabbitmq cluster container limits.
     limits: {}
@@ -32,7 +29,16 @@ cluster:
     requests: {}
       # cpu: "1"
       # memory: 2G
-
+  # -- VolumeClaimTemplate can't be edited on a statefulset, those values only permit instance configuration at creation
+  storage:
+    # -- If edited it will recreate the rabbitmq statefulset
+    size: 10Gi
+    # -- Can only be set on creation, later edit require whole cluster replacement or pvc/data migration
+    storageClass: ""
+  # -- Inject rabbitmq conf, which are under RabbitmqCluster.spec.rabbitmq
+  rabbitmqConf: {}
+  # -- Set value to override the templated statefulset by the operator
+  override: {}
   # -- Inject values directly into .spec of RabbitmqCluster manifests
   extraSpec: {}
 

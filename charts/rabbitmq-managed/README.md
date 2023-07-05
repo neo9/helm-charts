@@ -1,6 +1,6 @@
 # rabbitmq-managed
 
-![Version: 0.4.1](https://img.shields.io/badge/Version-0.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.10](https://img.shields.io/badge/AppVersion-3.10-informational?style=flat-square)
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.10](https://img.shields.io/badge/AppVersion-3.10-informational?style=flat-square)
 
 A Helm chart to manage RabbitmqCluster & typology
 
@@ -19,10 +19,14 @@ A Helm chart to manage RabbitmqCluster & typology
 | ingress.tls.customSecretName | string | `""` | Specify an existing secret if not automatically provisionned |
 | cluster.replicaCount | int | `3` | Configure number of rabbitmq replicas (should be an odd numbers) |
 | cluster.image | string | `""` | Specify an image to use if different from operator default |
-| cluster.rabbitmqConf | object | `{}` | Inject rabbitmq conf, which are under RabbitmqCluster.spec.rabbitmq |
-| cluster.override | object | `{}` | Set value to override the templated statefulset by the operator |
+| cluster.resources | object | `{"limits":{},"requests":{}}` | If using default memory_high_watermark, consider memory limits being ~3 times the requests |
 | cluster.resources.limits | object | `{}` | Define rabbitmq cluster container limits. |
 | cluster.resources.requests | object | `{}` | Define rabbitmq cluster container requests. |
+| cluster.storage | object | `{"size":"10Gi","storageClass":""}` | VolumeClaimTemplate can't be edited on a statefulset, those values only permit instance configuration at creation |
+| cluster.storage.size | string | `"10Gi"` | If edited it will recreate the rabbitmq statefulset |
+| cluster.storage.storageClass | string | `""` | Can only be set on creation, later edit require whole cluster replacement or pvc/data migration |
+| cluster.rabbitmqConf | object | `{}` | Inject rabbitmq conf, which are under RabbitmqCluster.spec.rabbitmq |
+| cluster.override | object | `{}` | Set value to override the templated statefulset by the operator |
 | cluster.extraSpec | object | `{}` | Inject values directly into .spec of RabbitmqCluster manifests |
 | vhosts | list | `[]` | The default vhost (`/`) is automatically created |
 | users | list | `[]` | Define the list of users, assigned vhosts and corresponding permissions |
