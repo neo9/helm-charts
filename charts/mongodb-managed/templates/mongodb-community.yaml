@@ -74,6 +74,37 @@ spec:
               {{- end }}
             {{- end }}         
           {{- end }}
+      volumeClaimTemplates:
+      - apiVersion: v1
+        kind: PersistentVolumeClaim
+        metadata:
+          name: data-volume
+        spec:
+          {{- if .Values.storage.dataVolume.storageClass }}
+          storageClassName: {{ .Values.storage.dataVolume.storageClass }}
+          {{- end }}
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: {{ .Values.storage.dataVolume.size }}
+          volumeMode: Filesystem
+      {{- if .Values.storage.logsVolume.enabled }}
+      - apiVersion: v1
+        kind: PersistentVolumeClaim
+        metadata:
+          name: logs-volume
+        spec:
+          {{- if .Values.storage.logsVolume.storageClass }}
+          storageClassName: {{ .Values.storage.logsVolume.storageClass }}
+          {{- end }}
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: {{ .Values.storage.logsVolume.size }}
+          volumeMode: Filesystem
+      {{- end }}
   users:
     {{- range $user := .Values.users }}
     - name: {{ $user.name }}

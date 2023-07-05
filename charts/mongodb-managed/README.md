@@ -1,6 +1,6 @@
 # mongodb-managed
 
-![Version: 0.6.3](https://img.shields.io/badge/Version-0.6.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.7.0](https://img.shields.io/badge/Version-0.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart to manage mongodbcommunity cluster
 
@@ -34,6 +34,12 @@ A Helm chart to manage mongodbcommunity cluster
 | serviceAccount.create | bool | `true` | Specifiy whether a service account should be created |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.name | string | `""` | Name of k8s serviceAccount to create or to use if not created by chart |
+| storage | object | `{"dataVolume":{"size":"10Gi","storageClass":""},"logsVolume":{"enabled":false,"size":"2Gi","storageClass":""}}` | VolumeClaimTemplate can't be edited on a statefulset, those values only permit instance configuration at creation |
+| storage.dataVolume.size | string | `"10Gi"` | Can only be set on creation, later edit should be made on the pvc directly |
+| storage.dataVolume.storageClass | string | `""` | Can only be set on creation, later edit require pvc/data migration |
+| storage.logsVolume.enabled | bool | `false` | Can be disabled on new mongodb instances creation, since the default logs output became stdout |
+| storage.logsVolume.size | string | `"2Gi"` | Can only be set on creation, later edit should be made on the pvc directly |
+| storage.logsVolume.storageClass | string | `""` | Can only be set on creation, later edit require pvc/data migration |
 | rbac | object | `{"role":{"autoBindRole":true,"create":true,"name":"","rules":{}}}` | Create Role and bind it to the service account |
 | rbac.role.create | bool | `true` | Specifies whether a role should be created, also require to set rules. |
 | rbac.role.name | string | `""` | Name of k8s role to create or to use if not created by chart |
@@ -50,7 +56,7 @@ A Helm chart to manage mongodbcommunity cluster
 | mongodb-exporter.tolerations | list | `[]` |  |
 | mongodb-exporter.affinity | object | `{}` |  |
 | mongodb-exporter.nodeSelector | object | `{}` |  |
-| mongodb-exporter.resources.limits | object | `{"cpu":"100m","memory":"50M"}` | Define mongodb-exporter container limits. |
+| mongodb-exporter.resources.limits | object | `{"cpu":"100m","memory":"100M"}` | Define mongodb-exporter container limits. |
 | mongodb-exporter.resources.requests | object | `{"cpu":"20m","memory":"50M"}` | Define mongodb-exporter container requests. |
 | mongodb-exporter.serviceMonitor.enabled | bool | `false` |  |
 | mongodb-exporter.serviceMonitor.interval | string | `"30s"` |  |

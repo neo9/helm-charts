@@ -58,6 +58,22 @@ serviceAccount:
   # -- Name of k8s serviceAccount to create or to use if not created by chart
   name: ""
 
+# -- VolumeClaimTemplate can't be edited on a statefulset, those values only permit instance configuration at creation
+storage:
+  dataVolume:
+    # -- Can only be set on creation, later edit should be made on the pvc directly
+    size: 10Gi
+    # -- Can only be set on creation, later edit require pvc/data migration
+    storageClass: ""
+## https://github.com/mongodb/mongodb-kubernetes-operator/issues/608#issuecomment-875505647
+  logsVolume:
+    # -- Can be disabled on new mongodb instances creation, since the default logs output became stdout
+    enabled: false
+    # -- Can only be set on creation, later edit should be made on the pvc directly
+    size: 2Gi
+    # -- Can only be set on creation, later edit require pvc/data migration
+    storageClass: ""
+
 # -- Create Role and bind it to the service account
 rbac:
   role:
@@ -97,7 +113,7 @@ mongodb-exporter:
     # -- Define mongodb-exporter container limits.
     limits:
       cpu: 100m
-      memory: 50M
+      memory: 100M
     # -- Define mongodb-exporter container requests.
     requests:
       cpu: 20m
