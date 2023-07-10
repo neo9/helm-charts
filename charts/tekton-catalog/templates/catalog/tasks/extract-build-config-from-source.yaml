@@ -49,6 +49,8 @@ spec:
       type: string
       default: neo9sas/build-detector:latest
   results:
+    - name: CNB_RUN_IMAGE
+      description: The detected CNB run image to use
     - name: CNB_BUILDER
       description: The detected CNB builder to use
       type: string
@@ -121,7 +123,7 @@ spec:
         - name: PARAMS_CHART_VERSION_OVERRIDE
           value: $(params.chart-version-override)
         - name: PARAMS_DEPLOY_ENABLED
-          value: $(params.chart-version-override)
+          value: $(params.deploy-enabled)
         - name: PARAMS_DIRECTORY
           value: $(params.directory)
         - name: PARAMS_DOCKERFILE_OVERRIDE
@@ -137,6 +139,7 @@ spec:
 
         build-detector
 
+        cat "build-detector.json" | jq ."detectedCnbRunImage" > $(results.CNB_RUN_IMAGE.path)
         cat "build-detector.json" | jq ."detectedCnbBuilder" > $(results.CNB_BUILDER.path)
         cat "build-detector.json" | jq ."detectedBuildTool" > $(results.BUILD_TOOL.path)
         cat "build-detector.json" | jq ."detectedBuildToolToo" > $(results.BUILD_TOOL_TOO.path)
