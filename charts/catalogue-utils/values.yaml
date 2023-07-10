@@ -9,6 +9,8 @@ catalogue:
   export-api: true
   # -- Condition to enable and deploy catalogue-import-api
   import-api: true
+  # -- Condition to enable and deploy catalogue-internal-live-api
+  internal-live-api: true
   # -- Condition to enable and deploy catalogue-jobs-api
   jobs-api: true
   # -- Condition to enable and deploy catalogue-live-api
@@ -50,6 +52,15 @@ mongodb:
     featureCompatibilityVersion: "6.0"
 
   replicaCount: 3
+  tolerations: []
+  affinity: {}
+  nodeSelector: {}
+  storage:
+    dataVolume:
+      size: 10Gi
+      storageClass: ""
+    logsVolume:
+      enabled: false
   resources:
     limits:
       cpu: "1"
@@ -153,6 +164,9 @@ rabbitmq:
   cluster:
     image: docker.io/bitnami/rabbitmq:3.10.8-debian-11-r7
     replicaCount: 3
+    storage:
+      size: 10Gi
+      storageClass: ""
     resources:
       limits:
         cpu: 500m

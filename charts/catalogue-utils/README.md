@@ -1,6 +1,6 @@
 # catalogue-utils
 
-![Version: 0.9.0](https://img.shields.io/badge/Version-0.9.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.10.0](https://img.shields.io/badge/Version-0.10.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -10,8 +10,8 @@ A Helm chart for Kubernetes
 |------------|------|---------|
 | https://charts.neo9.pro | crossplane-buckets | 0.3.1 |
 | https://charts.neo9.pro | eck-managed(eck-managed) | 0.1.0 |
-| https://charts.neo9.pro | mongodb(mongodb-managed) | 0.6.3 |
-| https://charts.neo9.pro | rabbitmq(rabbitmq-managed) | 0.4.1 |
+| https://charts.neo9.pro | mongodb(mongodb-managed) | 0.7.0 |
+| https://charts.neo9.pro | rabbitmq(rabbitmq-managed) | 0.5.0 |
 | https://helm.min.io | minio | 8.0.10 |
 
 ## Values
@@ -23,6 +23,7 @@ A Helm chart for Kubernetes
 | catalogue.cms-api | bool | `true` | Condition to enable and deploy catalogue-cms-api |
 | catalogue.export-api | bool | `true` | Condition to enable and deploy catalogue-export-api |
 | catalogue.import-api | bool | `true` | Condition to enable and deploy catalogue-import-api |
+| catalogue.internal-live-api | bool | `true` | Condition to enable and deploy catalogue-internal-live-api |
 | catalogue.jobs-api | bool | `true` | Condition to enable and deploy catalogue-jobs-api |
 | catalogue.live-api | bool | `true` | Condition to enable and deploy catalogue-live-api |
 | catalogue.master-api | bool | `true` | Condition to enable and deploy catalogue-master-api |
@@ -42,6 +43,12 @@ A Helm chart for Kubernetes
 | mongodb.mongodb.version | string | `"6.0.5"` |  |
 | mongodb.mongodb.featureCompatibilityVersion | string | `"6.0"` |  |
 | mongodb.replicaCount | int | `3` |  |
+| mongodb.tolerations | list | `[]` |  |
+| mongodb.affinity | object | `{}` |  |
+| mongodb.nodeSelector | object | `{}` |  |
+| mongodb.storage.dataVolume.size | string | `"10Gi"` |  |
+| mongodb.storage.dataVolume.storageClass | string | `""` |  |
+| mongodb.storage.logsVolume.enabled | bool | `false` |  |
 | mongodb.resources.limits.cpu | string | `"1"` |  |
 | mongodb.resources.limits.memory | string | `"2G"` |  |
 | mongodb.resources.requests.cpu | string | `"500m"` |  |
@@ -90,6 +97,8 @@ A Helm chart for Kubernetes
 | rabbitmq.fullnameOverride | string | `"catalogue-rabbitmq"` |  |
 | rabbitmq.cluster.image | string | `"docker.io/bitnami/rabbitmq:3.10.8-debian-11-r7"` |  |
 | rabbitmq.cluster.replicaCount | int | `3` |  |
+| rabbitmq.cluster.storage.size | string | `"10Gi"` |  |
+| rabbitmq.cluster.storage.storageClass | string | `""` |  |
 | rabbitmq.cluster.resources.limits.cpu | string | `"500m"` |  |
 | rabbitmq.cluster.resources.limits.memory | string | `"750M"` |  |
 | rabbitmq.cluster.resources.requests.cpu | string | `"100m"` |  |
