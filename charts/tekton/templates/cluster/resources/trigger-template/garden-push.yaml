@@ -23,9 +23,10 @@ spec:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      generateName: garden-push-$(tt.params.git-branch-sanitized)-$(tt.params.git-project-name)-
+      generateName: {{ .Values.cluster.delivery.config.run.nameTemplate | quote }}
+      namespace: {{ .Values.cluster.delivery.config.run.namespace | quote }}
     spec:
-      serviceAccountName: tekton
+      serviceAccountName: $(tt.params.run-service-account)
       workspaces:
       - name: ws
         volumeClaimTemplate:
@@ -34,7 +35,7 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: 10Gi
+                storage: {{ coalesce .Values.cluster.delivery.config.run.storage.gardenPush .Values.cluster.delivery.config.run.storage.requests | quote }}
       pipelineRef:
         name:  {{ .Values.tekton.config.templates.gardenPushDevelop.pipelineRef }}
       params:
