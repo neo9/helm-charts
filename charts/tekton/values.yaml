@@ -60,7 +60,7 @@ cluster:
           clusterPush: 3Gi
           coreTag: 3Gi
           gardenPush: 3Gi
-          # requests: 10Gi
+          requests: 5Gi
         serviceAccount: tekton
         nameTemplate: $(tt.params.git-project-name)-$(tt.params.git-branch-sanitized)-
         namespace: tekton-pipelines

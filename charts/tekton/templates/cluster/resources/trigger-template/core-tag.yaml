@@ -54,6 +54,9 @@ spec:
       workspaces:
       - name: ws
         volumeClaimTemplate:
+          metadata:
+            labels:
+              tekton.dev/pipeline: core-tag
           spec:
             accessModes:
               - ReadWriteOnce

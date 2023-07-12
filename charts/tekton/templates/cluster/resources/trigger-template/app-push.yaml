@@ -49,6 +49,9 @@ spec:
       workspaces:
       - name: ws
         volumeClaimTemplate:
+          metadata:
+            labels:
+              tekton.dev/pipeline: app-push
           spec:
             accessModes:
               - ReadWriteOnce
