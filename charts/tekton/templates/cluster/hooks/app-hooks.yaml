@@ -75,6 +75,8 @@ spec:
               expression: "requestURL.parseURL().rawQuery.contains('BuildImageOnly=') ? requestURL.parseURL().query['BuildImageOnly'] : 'false'"
             - key: build-extra-args
               expression: "requestURL.parseURL().rawQuery.contains('BuildExtraArgs=') ? requestURL.parseURL().query['BuildExtraArgs'] : ''"
+            - key: git_project_name_sanitized
+              expression: "body.repository.name.replace('_', '-')"
       bindings:
         - ref: parse-gitlab-push-hook
         - ref: parse-gitlab-push-hook-extensions

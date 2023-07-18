@@ -8,6 +8,7 @@ spec:
   - name: build-tool
   - name: git-url
   - name: git-project-name
+  - name: git-project-name-sanitized
   - name: git-branch
   - name: git-branch-sanitized
   - name: git-sha

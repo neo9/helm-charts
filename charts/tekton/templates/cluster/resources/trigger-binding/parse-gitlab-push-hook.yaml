@@ -13,3 +13,5 @@ spec:
     value: $(body.checkout_sha)
   - name: project-id
     value: $(body.project_id)
+  - name: git-project-name-sanitized
+    value: $(extensions.git_project_name_sanitized)

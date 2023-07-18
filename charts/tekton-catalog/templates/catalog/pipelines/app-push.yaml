@@ -15,6 +15,10 @@ spec:
     description: The git project name which is at the origin of the push
     type: string
     default: ""
+  - name: git-project-name-sanitized
+    description: The git project name sanitized which is at the origin of the push
+    type: string
+    default: ""
   - name: git-sha
     description: The git sha which is at the origin of the push
     type: string
@@ -860,10 +864,6 @@ spec:
       operator: in
       values:
       - "true"
-    - input: $(params.build-image-only)
-      operator: in
-      values:
-        - "false"
     taskRef:
       name: helm-deployment
     workspaces:
@@ -871,7 +871,7 @@ spec:
       workspace: ws
     params:
     - name: release_name
-      value: $(params.git-project-name)
+      value: $(params.git-project-name-sanitized)
     - name: release_namespace
       value: $(params.continuous-delivery-namespace)
     - name: overwrite_values
@@ -908,10 +908,6 @@ spec:
       operator: in
       values:
       - "true"
-    - input: $(params.build-image-only)
-      operator: in
-      values:
-        - "false"
     taskRef:
       name: helm-deployment
     workspaces:
@@ -919,7 +915,7 @@ spec:
       workspace: ws
     params:
     - name: release_name
-      value: $(params.git-project-name)
+      value: $(params.git-project-name-sanitized)
     - name: release_namespace
       value: {{ $value.namespace }}
     - name: overwrite_values

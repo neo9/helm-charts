@@ -8,6 +8,7 @@ spec:
   - name: build-tool
   - name: git-url
   - name: git-project-name
+  - name: git-project-name-sanitized
   - name: git-branch
   - name: git-branch-sanitized
   - name: git-sha
@@ -69,6 +70,8 @@ spec:
         value: $(tt.params.git-url)
       - name: git-project-name
         value: $(tt.params.git-project-name)
+      - name: git-project-name-sanitized
+        value: $(tt.params.git-project-name-sanitized)
       - name: git-branch
         value: $(tt.params.git-branch)
       - name: git-sha

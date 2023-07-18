@@ -62,7 +62,7 @@ cluster:
           gardenPush: 3Gi
           requests: 5Gi
         serviceAccount: tekton
-        nameTemplate: $(tt.params.git-project-name)-$(tt.params.git-branch-sanitized)-
+        nameTemplate: $(tt.params.git-project-name-sanitized)-$(tt.params.git-branch-sanitized)-
         namespace: tekton-pipelines
     node:
       version: "14.15.4"
