@@ -68,8 +68,10 @@ spec:
       [[ "$(workspaces.sslcertdir.bound)" == "true" ]] && CERT_DIR_FLAG="--cert-dir $(workspaces.sslcertdir.path)"
       buildah ${CERT_DIR_FLAG} --storage-driver=$(params.STORAGE_DRIVER) bud \
         $(params.BUILD_EXTRA_ARGS) --format=$(params.FORMAT) \
-        --tls-verify=$(params.TLSVERIFY) --no-cache \
+        --tls-verify=$(params.TLSVERIFY) \
         -f $(params.DOCKERFILE) -t $(params.IMAGE) \
+        --layers --cache-to $(params.CONTAINER-IMAGES-REPOSITORY)/$(params.DIRECTORY)/cache \
+        --cache-from $(params.CONTAINER-IMAGES-REPOSITORY)/$(params.DIRECTORY)/cache \
         --ssh=default
     volumeMounts:
     - name: varlibcontainers
