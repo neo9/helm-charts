@@ -15,7 +15,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.0
+version: 0.2.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -27,5 +27,5 @@ dependencies:
   - name: prometheus-elasticsearch-exporter
     alias: es-exporter
     repository: https://prometheus-community.github.io/helm-charts
-    version: 4.11.1
+    version: 5.2.0
     condition: es-exporter.enabled

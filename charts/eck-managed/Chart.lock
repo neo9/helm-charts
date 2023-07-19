@@ -1,6 +1,6 @@
 dependencies:
 - name: prometheus-elasticsearch-exporter
   repository: https://prometheus-community.github.io/helm-charts
-  version: 4.11.1
-digest: sha256:eae0d356bb17fcc863001e0302c8a2ecaa54e231b56cf75480467b46da952298
-generated: "2022-05-18T16:38:03.799460063+02:00"
+  version: 5.2.0
+digest: sha256:99d0c4b0e4f1da29257e3b1a4c46482df07c6e048bdb9bed1e750ca8d40d166a
+generated: "2023-07-19T17:44:36.976429107+02:00"
