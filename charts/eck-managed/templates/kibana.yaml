@@ -17,17 +17,28 @@ spec:
           password: "anonymous"
   podTemplate:
     metadata:
-      labels: {{ toYaml .Values.elasticsearch.labels | nindent 8 }}
-      annotations: {{ toYaml .Values.elasticsearch.annotations | nindent 8 }}
+      labels: {{ toYaml .Values.kibana.labels | nindent 8 }}
+      annotations: {{ toYaml .Values.kibana.annotations | nindent 8 }}
     spec:
-      {{- if .Values.elasticsearch.affinity }}
+      {{- if .Values.kibana.affinity }}
+      affinity: {{ toYaml .Values.kibana.affinity | nindent 8 }}
+      {{- else if .Values.elasticsearch.affinity }}
       affinity: {{ toYaml .Values.elasticsearch.affinity | nindent 8 }}
       {{- end }}
-      {{- if .Values.elasticsearch.nodeSelector }}
+      {{- if .Values.kibana.nodeSelector }}
+      nodeSelector: {{ toYaml .Values.kibana.nodeSelector | nindent 8 }}
+      {{- else if .Values.elasticsearch.nodeSelector }}
       nodeSelector: {{ toYaml .Values.elasticsearch.nodeSelector | nindent 8 }}
       {{- end }}
-      {{- if .Values.elasticsearch.tolerations}}
+      {{- if .Values.kibana.tolerations}}
+      tolerations: {{ toYaml .Values.kibana.tolerations | nindent 8 }}
+      {{- else if .Values.elasticsearch.tolerations}}
       tolerations: {{ toYaml .Values.elasticsearch.tolerations | nindent 8 }}
+      {{- end }}
+      {{- if .Values.kibana.topologySpreadConstraints}}
+      topologySpreadConstraints: {{ toYaml .Values.kibana.topologySpreadConstraints | nindent 8 }}
+      {{- else if .Values.elasticsearch.topologySpreadConstraints}}
+      topologySpreadConstraints: {{ toYaml .Values.elasticsearch.topologySpreadConstraints | nindent 8 }}
       {{- end }}
       containers:
       - name: kibana

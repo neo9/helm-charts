@@ -7,8 +7,11 @@ fullnameOverride: eck
 elasticsearch:
   enabled: true
   replicaCount: 2
-  labels: {}
+  labels: {}  
   annotations: {}
+  service:
+    annotations: {}
+    labels: {}
   resources:
     limits:
       cpu: 2
@@ -24,6 +27,11 @@ elasticsearch:
   volumeClaim:
     spec:
       storageClassName: gcp-sc-retain-wait-ssd
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
   config:
     node.master: true
     node.data: true
@@ -63,6 +71,8 @@ kibana:
       memory: 1Gi
       cpu: 1
 
+  labels: {}
+  annotations: {}
   # Define a node selector.
   #
   nodeSelector:
@@ -81,3 +91,7 @@ kibana:
     tls:
       selfSignedCertificate:
         disabled: true
+    service:
+      metadata:
+        annotations: {}
+        labels: {}

@@ -48,17 +48,17 @@ spec:
           command: ['sh', '-c', 'ulimit -n 65536']
           securityContext:
             privileged: true
-
         {{- if .Values.elasticsearch.affinity }}
         affinity: {{ toYaml .Values.elasticsearch.affinity | nindent 12 }}
         {{- end }}
-
         {{- if .Values.elasticsearch.nodeSelector }}
         nodeSelector: {{ toYaml .Values.elasticsearch.nodeSelector | nindent 12 }}
         {{- end }}
-
         {{- if .Values.elasticsearch.tolerations}}
         tolerations: {{ toYaml .Values.elasticsearch.tolerations | nindent 12 }}
+        {{- end }}
+        {{- if .Values.elasticsearch.topologySpreadConstraints}}
+        topologySpreadConstraints: {{ toYaml .Values.elasticsearch.topologySpreadConstraints | nindent 12 }}
         {{- end }}
     volumeClaimTemplates:
     - metadata:
