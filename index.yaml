@@ -544,6 +544,22 @@ entries:
   eck-managed:
   - apiVersion: v2
     appVersion: 7.16.2
+    created: "2023-07-21T09:12:43.856325441Z"
+    dependencies:
+    - alias: es-exporter
+      condition: es-exporter.enabled
+      name: prometheus-elasticsearch-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 5.2.0
+    description: A Helm chart for Kubernetes
+    digest: 69c9b7a50a28e9e624a5fe246df212ee26ba716794fa9eaad4d61444e2770a4f
+    name: eck-managed
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/eck-managed-0.3.0/eck-managed-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: 7.16.2
     created: "2023-05-02T14:15:15.160923149Z"
     dependencies:
     - alias: es-exporter
@@ -897,4 +913,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-07-10T12:57:37.660856838Z"
+generated: "2023-07-21T09:12:47.943130525Z"
