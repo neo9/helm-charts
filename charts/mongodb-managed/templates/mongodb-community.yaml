@@ -45,6 +45,9 @@ spec:
           {{- if .Values.affinity }}
           affinity: {{ toYaml .Values.affinity | nindent 12 }}
           {{- end }}
+          {{- if .Values.topologySpreadConstraints}}
+          topologySpreadConstraints: {{ toYaml .Values.topologySpreadConstraints | nindent 12 }}
+          {{- end }}
           serviceAccount: {{ include "mongodb-managed.serviceAccountName" . }}
           serviceAccountName: {{ include "mongodb-managed.serviceAccountName" . }}
           {{- if or (or .Values.resources.limits .Values.resources.requests) (or .Values.mongodbAgent.resources.limits .Values.mongodbAgent.resources.requests) }}

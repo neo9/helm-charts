@@ -29,6 +29,7 @@ users: []
 tolerations: []
 affinity: {}
 nodeSelector: {}
+topologySpreadConstraints: []
 
 resources:
   # -- Define mongodb container limits.
