@@ -85,6 +85,18 @@ rules:
       - "watch"
       - "delete"
 
+   # Volumes cleanup
+  - apiGroups:
+      - ""
+    resources:
+      - "persistentvolumes"
+      - "persistentvolumeclaims"
+    verbs:
+      - "list"
+      - "get"
+      - "watch"
+      - "delete"
+
 
 {{- end }}
 
