@@ -62,6 +62,14 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if and .Values.scheduling.onePerNode.enabled (not .Values.scheduling.topologySpreadConstraints) }}
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule 
+      {{- else if .Values.topologySpreadConstraints }}
+      topologySpreadConstraints: {{ toYaml .Values.scheduling.topologySpreadConstraints | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ include "n9-api.fullname" . }}
           securityContext:

@@ -147,6 +147,10 @@ scheduling:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  topologySpreadConstraints:  []
+  # -- Enforce that there is only one pod per node.
+  onePerNode:
+    enabled: true
 
 ## Define endpoints and service to expose metrics
 metrics:
@@ -488,3 +492,7 @@ scaling:
   #     metricName: "my_metric"
   #     threshold: "1"
   #     query: "my_prom_query"
+
+## Enforce that there is only one pod per node.
+onePerNode:
+  enabled: true
