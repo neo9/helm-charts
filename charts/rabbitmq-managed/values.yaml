@@ -76,3 +76,13 @@ policies: []
   #   definition:
   #     ha-mode: all
   #     ha-sync-mode: automatic
+affinity: []
+tolerations: []
+nodeSelector: []
+topologySpreadConstraints: []
+  # - maxSkew: 1
+  #   topologyKey: kubernetes.io/hostname
+  #   whenUnsatisfiable: DoNotSchedule
+# -- Enforce that there is only one pod per node.
+onePerNode:
+  enabled: true
