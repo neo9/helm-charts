@@ -30,6 +30,12 @@ tolerations: []
 affinity: {}
 nodeSelector: {}
 topologySpreadConstraints: []
+# - maxSkew: 1
+#   topologyKey: kubernetes.io/hostname
+#   whenUnsatisfiable: DoNotSchedule
+# -- Enforce that there is only one pod per node.
+onePerNode:
+    enabled: true
 
 resources:
   # -- Define mongodb container limits.

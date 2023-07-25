@@ -45,7 +45,12 @@ spec:
           {{- if .Values.affinity }}
           affinity: {{ toYaml .Values.affinity | nindent 12 }}
           {{- end }}
-          {{- if .Values.topologySpreadConstraints}}
+          {{- if and .Values.onePerNode.enabled (not .Values.topologySpreadConstraints) }}
+          topologySpreadConstraints:
+          - maxSkew: 1
+            topologyKey: kubernetes.io/hostname
+            whenUnsatisfiable: DoNotSchedule 
+          {{- else if .Values.topologySpreadConstraints }}
           topologySpreadConstraints: {{ toYaml .Values.topologySpreadConstraints | nindent 12 }}
           {{- end }}
           serviceAccount: {{ include "mongodb-managed.serviceAccountName" . }}
