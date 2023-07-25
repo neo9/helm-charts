@@ -816,6 +816,16 @@ entries:
   rabbitmq-managed:
   - apiVersion: v2
     appVersion: "3.10"
+    created: "2023-07-25T13:20:27.190207069Z"
+    description: A Helm chart to manage RabbitmqCluster & typology
+    digest: 6316b5ffce4e3e8a706463b07a19def088c99a1c832e5382467eece7323e68ad
+    name: rabbitmq-managed
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/rabbitmq-managed-0.6.0/rabbitmq-managed-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
+    appVersion: "3.10"
     created: "2023-07-05T15:33:47.500153525Z"
     description: A Helm chart to manage RabbitmqCluster & typology
     digest: 9a836b61f3ae823537f4c62904120f0a0413557f91c3bcd65efee212e35d0188
@@ -928,4 +938,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-07-24T14:04:11.511887324Z"
+generated: "2023-07-25T13:20:28.307018696Z"
