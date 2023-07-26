@@ -1,6 +1,6 @@
 # n9-api
 
-![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 1.4.1](https://img.shields.io/badge/Version-1.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 Neo9 standard API chart
 
@@ -160,8 +160,8 @@ Neo9 standard API chart
 | scaling.serviceAccessFreq.enabled | bool | `true` |  |
 | scaling.serviceAccessFreq.threshold | int | `100` |  |
 | scheduling.affinity | object | `{}` |  |
+| scheduling.maxSkewPerNode | int | `1` | Max difference of number of pods between nodes using topologySpreadConstraints |
 | scheduling.nodeSelector | object | `{}` |  |
-| scheduling.onePerNode | object | `{"enabled":true}` | Enforce that there is only one pod per node. |
 | scheduling.tolerations | list | `[]` |  |
 | scheduling.topologySpreadConstraints | list | `[]` |  |
 | service.additionalPorts | list | `[]` | Create additional pods endpoints and relative service |

@@ -147,10 +147,9 @@ scheduling:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-  topologySpreadConstraints:  []
-  # -- Enforce that there is only one pod per node.
-  onePerNode:
-    enabled: true
+  topologySpreadConstraints: []
+  # -- Max difference of number of pods between nodes using topologySpreadConstraints
+  maxSkewPerNode: 1
 
 ## Define endpoints and service to expose metrics
 metrics:
