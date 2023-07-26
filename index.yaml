@@ -706,6 +706,21 @@ entries:
     version: 0.2.1
   mongodb-managed:
   - apiVersion: v2
+    created: "2023-07-26T13:46:43.23868203Z"
+    dependencies:
+    - alias: mongodb-exporter
+      condition: mongodb-exporter.enabled
+      name: prometheus-mongodb-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 3.1.3
+    description: A Helm chart to manage mongodbcommunity cluster
+    digest: a74277445dfd4f51fc0b414e04914719fcb08b5c88ae9dc77ba167897fa66c31
+    name: mongodb-managed
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/mongodb-managed-0.8.2/mongodb-managed-0.8.2.tgz
+    version: 0.8.2
+  - apiVersion: v2
     created: "2023-07-25T13:42:58.811896641Z"
     dependencies:
     - alias: mongodb-exporter
@@ -980,4 +995,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-07-26T13:01:32.816216417Z"
+generated: "2023-07-26T13:46:45.533997095Z"
