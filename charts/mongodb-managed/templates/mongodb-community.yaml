@@ -45,13 +45,17 @@ spec:
           {{- if .Values.affinity }}
           affinity: {{ toYaml .Values.affinity | nindent 12 }}
           {{- end }}
-          {{- if and .Values.onePerNode.enabled (not .Values.topologySpreadConstraints) }}
           topologySpreadConstraints:
-          - maxSkew: 1
+          {{- if .Values.scheduling.maxSkewPerNode }}
+          - maxSkew: {{ .Values.scheduling.maxSkewPerNode }}
             topologyKey: kubernetes.io/hostname
             whenUnsatisfiable: DoNotSchedule 
-          {{- else if .Values.topologySpreadConstraints }}
-          topologySpreadConstraints: {{ toYaml .Values.topologySpreadConstraints | nindent 12 }}
+            labelSelector:
+              matchLabels:
+                {{- include "mongodb-managed.selectorLabels" . | nindent 16 }}
+          {{- if .Values.topologySpreadConstraints }}
+          {{- toYaml .Values.topologySpreadConstraints | nindent 10 }}
+          {{- end }}
           {{- end }}
           serviceAccount: {{ include "mongodb-managed.serviceAccountName" . }}
           serviceAccountName: {{ include "mongodb-managed.serviceAccountName" . }}

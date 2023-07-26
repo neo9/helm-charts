@@ -1,6 +1,6 @@
 # mongodb-managed
 
-![Version: 0.8.1](https://img.shields.io/badge/Version-0.8.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.8.2](https://img.shields.io/badge/Version-0.8.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart to manage mongodbcommunity cluster
 
@@ -48,7 +48,6 @@ A Helm chart to manage mongodbcommunity cluster
 | mongodbMonitoring.user.create | bool | `true` | Create a dedicated mongodb user with monitoring roles to be used by mongodb-exporter |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
-| onePerNode | object | `{"enabled":true}` | Enforce that there is only one pod per node. |
 | rbac | object | `{"role":{"autoBindRole":true,"create":true,"name":"","rules":{}}}` | Create Role and bind it to the service account |
 | rbac.role.autoBindRole | bool | `true` | Bind role to service account created/named in chart values |
 | rbac.role.create | bool | `true` | Specifies whether a role should be created, also require to set rules. |
@@ -57,6 +56,7 @@ A Helm chart to manage mongodbcommunity cluster
 | replicaCount | int | `3` |  |
 | resources.limits | object | `{}` | Define mongodb container limits. |
 | resources.requests | object | `{}` | Define mongodb container requests. |
+| scheduling.maxSkewPerNode | int | `1` | Max difference of number of pods between nodes using topologySpreadConstraints |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` | Specifiy whether a service account should be created |
 | serviceAccount.name | string | `""` | Name of k8s serviceAccount to create or to use if not created by chart |
