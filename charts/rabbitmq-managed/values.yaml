@@ -79,10 +79,10 @@ policies: []
 affinity: []
 tolerations: []
 nodeSelector: []
-topologySpreadConstraints: []
-  # - maxSkew: 1
-  #   topologyKey: kubernetes.io/hostname
-  #   whenUnsatisfiable: DoNotSchedule
-# -- Enforce that there is only one pod per node.
-onePerNode:
-  enabled: true
+topologySpreadConstraints: 
+# - maxSkew: 1
+#   topologyKey: kubernetes.io/hostname
+#   whenUnsatisfiable: DoNotSchedule
+scheduling:
+  # -- Max difference of number of pods between nodes using topologySpreadConstraints
+  maxSkewPerNode: 1

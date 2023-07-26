@@ -44,13 +44,17 @@ spec:
             {{- if .Values.nodeSelector }}
             nodeSelector: {{ toYaml .Values.nodeSelector | nindent 12 }}
             {{- end }}
-            {{- if and .Values.onePerNode.enabled (not .Values.topologySpreadConstraints) }}
             topologySpreadConstraints:
-            - maxSkew: 1
+            {{- if .Values.scheduling.maxSkewPerNode }}
+            - maxSkew: {{ .Values.scheduling.maxSkewPerNode }}
               topologyKey: kubernetes.io/hostname
               whenUnsatisfiable: DoNotSchedule 
-            {{- else if .Values.topologySpreadConstraints }}
-            topologySpreadConstraints: {{ toYaml .Values.topologySpreadConstraints | nindent 12 }}
+              labelSelector:
+                matchLabels:
+                  {{- include "rabbitmq-managed.selectorLabels" . | nindent 18 }}
+            {{- if .Values.topologySpreadConstraints }}
+            {{- toYaml .Values.topologySpreadConstraints | nindent 12 }}
+            {{- end }}
             {{- end }}
     {{- if .Values.cluster.override }}
     {{- toYaml .Values.cluster.override | nindent 4 }}
