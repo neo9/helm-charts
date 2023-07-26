@@ -35,10 +35,32 @@ spec:
       {{- else if .Values.elasticsearch.tolerations}}
       tolerations: {{ toYaml .Values.elasticsearch.tolerations | nindent 8 }}
       {{- end }}
-      {{- if .Values.kibana.topologySpreadConstraints}}
-      topologySpreadConstraints: {{ toYaml .Values.kibana.topologySpreadConstraints | nindent 8 }}
-      {{- else if .Values.elasticsearch.topologySpreadConstraints}}
-      topologySpreadConstraints: {{ toYaml .Values.elasticsearch.topologySpreadConstraints | nindent 8 }}
+      {{- if or .Values.kibana.topologySpreadConstraints .Values.kibana.scheduling.maxSkewPerNode }}
+      topologySpreadConstraints: 
+      {{- if .Values.kibana.scheduling.maxSkewPerNode }}
+      - maxSkew: {{ .Values.kibana.scheduling.maxSkewPerNode }}
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule 
+        labelSelector:
+          matchLabels:
+            {{- include "eck-managed.selectorLabels" . | nindent 12 }}
+      {{- if .Values.kibana.topologySpreadConstraints }}
+      {{- toYaml .Values.kibana.topologySpreadConstraints | nindent 8 }}
+      {{- end }}
+      {{- end }}
+      {{- else if or .Values.elasticsearch.topologySpreadConstraints .Values.elasticsearch.maxSkewPerNode }}
+      topologySpreadConstraints: 
+      {{- if .Values.elasticsearch.scheduling.maxSkewPerNode }}
+      - maxSkew: {{ .Values.elasticsearch.scheduling.maxSkewPerNode }}
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule 
+        labelSelector:
+          matchLabels:
+            {{- include "eck-managed.selectorLabels" . | nindent 12 }}
+      {{- if .Values.elasticsearch.topologySpreadConstraints }}
+      {{- toYaml .Values.elasticsearch.topologySpreadConstraints | nindent 8 }}
+      {{- end }}
+      {{- end }}
       {{- end }}
       containers:
       - name: kibana

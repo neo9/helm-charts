@@ -42,6 +42,13 @@ elasticsearch:
         username: anonymous
         roles: superuser
         authz_exception: false
+  affinity: {}
+  nodeSelector: {}
+  tolerations: []
+  topologySpreadConstraints: []
+  scheduling:
+    # -- Max difference of number of pods between nodes using topologySpreadConstraints
+    maxSkewPerNode: 1
 
 ################################################################################
 # ES exporter configuration.
@@ -75,8 +82,14 @@ kibana:
   annotations: {}
   # Define a node selector.
   #
-  nodeSelector:
+  affinity: {}
+  nodeSelector: {}
     # type: main
+  tolerations: []
+  topologySpreadConstraints: []
+  scheduling:
+    # -- Max difference of number of pods between nodes using topologySpreadConstraints
+    maxSkewPerNode: 1
 
   # By default, this property is empty. When empty, the chart will fetch the value specified into
   # `.Values.elasticsearch.fullnameOverride` automatically.

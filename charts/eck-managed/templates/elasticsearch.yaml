@@ -57,8 +57,17 @@ spec:
         {{- if .Values.elasticsearch.tolerations}}
         tolerations: {{ toYaml .Values.elasticsearch.tolerations | nindent 12 }}
         {{- end }}
-        {{- if .Values.elasticsearch.topologySpreadConstraints}}
-        topologySpreadConstraints: {{ toYaml .Values.elasticsearch.topologySpreadConstraints | nindent 12 }}
+        topologySpreadConstraints:
+        {{- if .Values.elasticsearch.scheduling.maxSkewPerNode }}
+        - maxSkew: {{ .Values.elasticsearch.scheduling.maxSkewPerNode }}
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule 
+          labelSelector:
+            matchLabels:
+              {{- include "eck-managed.selectorLabels" . | nindent 14 }}
+        {{- if .Values.elasticsearch.topologySpreadConstraints }}
+        {{- toYaml .Values.elasticsearch.topologySpreadConstraints | nindent 8 }}
+        {{- end }}
         {{- end }}
     volumeClaimTemplates:
     - metadata:
