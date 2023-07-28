@@ -377,6 +377,39 @@ entries:
     version: 6.0.0
   catalogue-utils:
   - apiVersion: v2
+    created: "2023-07-28T10:32:50.932010848Z"
+    dependencies:
+    - alias: mongodb
+      condition: mongodb.enabled
+      name: mongodb-managed
+      repository: https://charts.neo9.pro
+      version: 0.8.2
+    - alias: rabbitmq
+      condition: rabbitmq.enabled
+      name: rabbitmq-managed
+      repository: https://charts.neo9.pro
+      version: 0.6.2
+    - alias: eck-managed
+      condition: eck-managed.enabled
+      name: eck-managed
+      repository: https://charts.neo9.pro
+      version: 0.3.1
+    - condition: crossplane-buckets.enabled
+      name: crossplane-buckets
+      repository: https://charts.neo9.pro
+      version: 0.3.1
+    - condition: minio.enabled
+      name: minio
+      repository: https://helm.min.io
+      version: 8.0.10
+    description: A Helm chart for Kubernetes
+    digest: 574cbc37e016df43e42a3b9e893079939a71e945b89bce66b7034e4b84fea6c0
+    name: catalogue-utils
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/catalogue-utils-0.10.3/catalogue-utils-0.10.3.tgz
+    version: 0.10.3
+  - apiVersion: v2
     created: "2023-07-28T08:40:54.736885814Z"
     dependencies:
     - alias: mongodb
@@ -1059,4 +1092,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-07-28T10:27:45.373101855Z"
+generated: "2023-07-28T10:32:56.495926259Z"
