@@ -4,7 +4,7 @@ dependencies:
   version: 0.8.2
 - name: rabbitmq-managed
   repository: https://charts.neo9.pro
-  version: 0.6.1
+  version: 0.6.2
 - name: eck-managed
   repository: https://charts.neo9.pro
   version: 0.3.1
@@ -14,5 +14,5 @@ dependencies:
 - name: minio
   repository: https://helm.min.io
   version: 8.0.10
-digest: sha256:ee56e12d740993a8d70b30e7604aa4346de68434230e9276f0d0279a5d6f28c8
-generated: "2023-07-27T17:45:06.424350626+02:00"
+digest: sha256:f3e0d59b91bf9fd3f4a424f327556aae35a4e16815b0125eca0e8ed700bc48b0
+generated: "2023-07-28T12:27:28.000375076+02:00"

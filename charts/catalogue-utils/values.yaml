@@ -180,16 +180,11 @@ rabbitmq:
         - rabbitmq_delayed_message_exchange
       additionalConfig: |
         consumer_timeout = 10800000
-    override:
-      statefulSet:
-        spec:
-          template:
-            spec:
-              containers:
-                - name: rabbitmq
-                  env:
-                    - name: RABBITMQ_COMMUNITY_PLUGINS
-                      value: "https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/3.10.2/rabbitmq_delayed_message_exchange-3.10.2.ez"
+    overrideContainers:
+      - name: rabbitmq
+        env:
+          - name: RABBITMQ_COMMUNITY_PLUGINS
+            value: "https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/3.10.2/rabbitmq_delayed_message_exchange-3.10.2.ez"
 
   vhosts:
     - catalogue
