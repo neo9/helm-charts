@@ -39,9 +39,12 @@ spec:
     statefulSet:
       spec:
         template:
+          metadata:
+            labels:
+            {{ toYaml .Values.cluster.podLabels | indent 2 }}
           spec:
             {{- if .Values.cluster.overrideContainers }}
-            containers: {{- toYaml .Values.cluster.overrideContainers | nindent 12}}
+            containers: {{- toYaml .Values.cluster.overrideContainers | nindent 12 }}
             {{- else }}
             containers: []
             {{- end }}

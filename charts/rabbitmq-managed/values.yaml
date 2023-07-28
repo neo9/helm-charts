@@ -43,6 +43,9 @@ cluster:
   extraSpec: {}
   # -- Set value to override the templated containers spec by the operator
   overrideContainers: []
+  # -- Set statefulSet podTemplate labels
+  podLabels: {}
+    # logging.kube-core.io/flow-name: app
 
 
 # -- The default vhost (`/`) is automatically created
