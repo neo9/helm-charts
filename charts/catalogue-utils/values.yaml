@@ -390,7 +390,7 @@ eck-managed:
 ################################################################################
 
 external-secrets:
-  enabled: false
+  enabled: true
 
   bucketName:
     # -- Set bucket name to use for desired api

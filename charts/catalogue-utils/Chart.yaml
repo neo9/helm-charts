@@ -15,23 +15,23 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.10.1
+version: 0.10.2
 
 dependencies:
   - name: mongodb-managed
     alias: mongodb
     repository: https://charts.neo9.pro
-    version: 0.7.0
+    version: 0.8.2
     condition: mongodb.enabled
   - name: rabbitmq-managed
     alias: rabbitmq
     repository: https://charts.neo9.pro
-    version: 0.5.0
+    version: 0.6.1
     condition: rabbitmq.enabled
   - name: eck-managed
     alias: eck-managed
     repository: https://charts.neo9.pro
-    version: 0.1.0
+    version: 0.3.1
     condition: eck-managed.enabled
   - name: crossplane-buckets
     repository: https://charts.neo9.pro

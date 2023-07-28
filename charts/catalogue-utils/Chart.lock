@@ -1,18 +1,18 @@
 dependencies:
 - name: mongodb-managed
   repository: https://charts.neo9.pro
-  version: 0.7.0
+  version: 0.8.2
 - name: rabbitmq-managed
   repository: https://charts.neo9.pro
-  version: 0.5.0
+  version: 0.6.1
 - name: eck-managed
   repository: https://charts.neo9.pro
-  version: 0.1.0
+  version: 0.3.1
 - name: crossplane-buckets
   repository: https://charts.neo9.pro
   version: 0.3.1
 - name: minio
   repository: https://helm.min.io
   version: 8.0.10
-digest: sha256:f9a7e36d56a6f530ad0a17840639c2fe41934b3771ae94c88a8d512fe672893e
-generated: "2023-07-10T13:54:34.362178001+02:00"
+digest: sha256:ee56e12d740993a8d70b30e7604aa4346de68434230e9276f0d0279a5d6f28c8
+generated: "2023-07-27T17:45:06.424350626+02:00"
