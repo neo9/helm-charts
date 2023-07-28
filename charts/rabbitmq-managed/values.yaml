@@ -41,6 +41,8 @@ cluster:
   override: {}
   # -- Inject values directly into .spec of RabbitmqCluster manifests
   extraSpec: {}
+  # -- Set value to override the templated containers spec by the operator
+  overrideContainers: []
 
 
 # -- The default vhost (`/`) is automatically created

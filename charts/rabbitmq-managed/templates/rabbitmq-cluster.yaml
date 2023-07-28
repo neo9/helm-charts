@@ -40,7 +40,11 @@ spec:
       spec:
         template:
           spec:
+            {{- if .Values.cluster.overrideContainers }}
+            containers: {{- toYaml .Values.cluster.overrideContainers | nindent 12}}
+            {{- else }}
             containers: []
+            {{- end }}
             {{- if .Values.nodeSelector }}
             nodeSelector: {{ toYaml .Values.nodeSelector | nindent 12 }}
             {{- end }}
