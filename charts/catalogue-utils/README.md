@@ -1,6 +1,6 @@
 # catalogue-utils
 
-![Version: 0.10.2](https://img.shields.io/badge/Version-0.10.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.10.4](https://img.shields.io/badge/Version-0.10.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -11,7 +11,7 @@ A Helm chart for Kubernetes
 | https://charts.neo9.pro | crossplane-buckets | 0.3.1 |
 | https://charts.neo9.pro | eck-managed(eck-managed) | 0.3.1 |
 | https://charts.neo9.pro | mongodb(mongodb-managed) | 0.8.2 |
-| https://charts.neo9.pro | rabbitmq(rabbitmq-managed) | 0.6.1 |
+| https://charts.neo9.pro | rabbitmq(rabbitmq-managed) | 0.6.3 |
 | https://helm.min.io | minio | 8.0.10 |
 
 ## Values
@@ -189,9 +189,9 @@ A Helm chart for Kubernetes
 | mongodb.users[9].name | string | `"catalogue-mirakl-api"` |  |
 | mongodb.users[9].roles[0].name | string | `"readWrite"` |  |
 | rabbitmq.cluster.image | string | `"docker.io/bitnami/rabbitmq:3.10.8-debian-11-r7"` |  |
-| rabbitmq.cluster.override.statefulSet.spec.template.spec.containers[0].env[0].name | string | `"RABBITMQ_COMMUNITY_PLUGINS"` |  |
-| rabbitmq.cluster.override.statefulSet.spec.template.spec.containers[0].env[0].value | string | `"https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/3.10.2/rabbitmq_delayed_message_exchange-3.10.2.ez"` |  |
-| rabbitmq.cluster.override.statefulSet.spec.template.spec.containers[0].name | string | `"rabbitmq"` |  |
+| rabbitmq.cluster.overrideContainers[0].env[0].name | string | `"RABBITMQ_COMMUNITY_PLUGINS"` |  |
+| rabbitmq.cluster.overrideContainers[0].env[0].value | string | `"https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/3.10.2/rabbitmq_delayed_message_exchange-3.10.2.ez"` |  |
+| rabbitmq.cluster.overrideContainers[0].name | string | `"rabbitmq"` |  |
 | rabbitmq.cluster.rabbitmqConf.additionalConfig | string | `"consumer_timeout = 10800000\n"` |  |
 | rabbitmq.cluster.rabbitmqConf.additionalPlugins[0] | string | `"rabbitmq_consistent_hash_exchange"` |  |
 | rabbitmq.cluster.rabbitmqConf.additionalPlugins[1] | string | `"rabbitmq_delayed_message_exchange"` |  |
