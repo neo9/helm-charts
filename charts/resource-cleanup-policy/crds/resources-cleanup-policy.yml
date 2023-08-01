@@ -44,10 +44,18 @@ spec:
                     Delay between every scan to find resource to cleanup
                   type: string
                 history:
-                  description: >-
-                    Nomber of most recent resource to keep
-                  type: integer
-                  default: 0
+                  type: object
+                  properties:
+                    age:
+                      description: >-
+                        Age of resource to target
+                      type: string
+                      default: "0s"
+                    toKeep:
+                      description: >-
+                        Number of most recent resource to keep
+                      type: integer
+                      default: 0
                 selector:
                   description: >-
                     List of labels to match resources containing only those labels
