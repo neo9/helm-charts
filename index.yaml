@@ -1106,6 +1106,16 @@ entries:
   tekton-catalog:
   - apiVersion: v2
     appVersion: 0.1.1
+    created: "2023-08-02T13:00:17.948371159Z"
+    description: A Helm chart for Kubernetes
+    digest: a43b210176b9cd368a25bbda3073fc8740725f977d7279843902d04bca9912c4
+    name: tekton-catalog
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/tekton-catalog-0.1.3/tekton-catalog-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 0.1.1
     created: "2023-05-31T14:48:34.249222616Z"
     description: A Helm chart for Kubernetes
     digest: a94020e56b95145c799bc92f75ba9c535a99454d54712e7cefc8f672ce92fdfa
@@ -1135,4 +1145,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-07-28T12:11:52.747673024Z"
+generated: "2023-08-02T13:00:18.169187348Z"
