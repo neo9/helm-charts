@@ -55,7 +55,7 @@ spec:
                       description: >-
                         Number of most recent resource to keep
                       type: integer
-                      default: 0
+                      default: -1
                 selector:
                   description: >-
                     List of labels to match resources containing only those labels
