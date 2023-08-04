@@ -1076,6 +1076,17 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/resource-cleanup-policy-1.0.0/resource-cleanup-policy-1.0.0.tgz
     version: 1.0.0
+  resources-cleanup-operator:
+  - apiVersion: v2
+    appVersion: v2.1.0
+    created: "2023-08-04T15:11:13.819033476Z"
+    description: Helm chart for the resources cleanup operator
+    digest: 77d032a77bbd00cf330d73eb8117a3c9ba4082de80cbfccda7bd663ab810ef25
+    name: resources-cleanup-operator
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/resources-cleanup-operator-1.0.0/resources-cleanup-operator-1.0.0.tgz
+    version: 1.0.0
   sloop:
   - apiVersion: v1
     appVersion: "1.0"
@@ -1155,4 +1166,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-08-04T14:53:21.673222001Z"
+generated: "2023-08-04T15:11:14.468341404Z"
