@@ -1057,6 +1057,16 @@ entries:
     version: 0.1.0
   resource-cleanup-policy:
   - apiVersion: v2
+    appVersion: v2.1.0
+    created: "2023-08-04T14:53:21.000101937Z"
+    description: A Helm chart for Kubernetes
+    digest: 38a627bc44b93a935e02fbf177b37e3c0359039a4c6ab9fa97bb9c9329ddbab8
+    name: resource-cleanup-policy
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/resource-cleanup-policy-2.0.0/resource-cleanup-policy-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
     appVersion: v2.0.2
     created: "2023-05-02T14:15:18.766800327Z"
     description: A Helm chart for Kubernetes
@@ -1145,4 +1155,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-08-02T13:00:18.169187348Z"
+generated: "2023-08-04T14:53:21.673222001Z"
