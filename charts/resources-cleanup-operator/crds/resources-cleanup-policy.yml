@@ -10,7 +10,7 @@ spec:
     kind: ResourceCleanupPolicy
     listKind: ResourcesCleanupPolicy
     plural: resources-cleanup-policy
-    singular: resource-cleanup-policy
+    singular: resources-cleanup-operator
     shortNames:
       - rcp
       - rcps

@@ -3,7 +3,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "resource-cleanup-policy.serviceAccountName" . }}
+  name: {{ include "resources-cleanup-operator.serviceAccountName" . }}
 rules:
 
   # Framework: runtime observation of namespaces & CRDs (addition/deletion).
@@ -105,13 +105,13 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "resource-cleanup-policy.serviceAccountName" . }}
+  name: {{ include "resources-cleanup-operator.serviceAccountName" . }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "resource-cleanup-policy.serviceAccountName" . }}
+  name: {{ include "resources-cleanup-operator.serviceAccountName" . }}
 subjects:
   - kind: ServiceAccount
-    name: {{ include "resource-cleanup-policy.serviceAccountName" . }}
+    name: {{ include "resources-cleanup-operator.serviceAccountName" . }}
     namespace: "{{ .Release.Namespace}}"
 {{- end }}

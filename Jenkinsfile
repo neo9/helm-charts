@@ -138,8 +138,8 @@ def commonCharts = [
       helmVersion: 3
     ],
     [
-      name: "resource-cleanup-policy",
-      path: "charts/resource-cleanup-policy",
+      name: "resources-cleanup-operator",
+      path: "charts/resources-cleanup-operator",
       helmVersion: 3
     ],
     [

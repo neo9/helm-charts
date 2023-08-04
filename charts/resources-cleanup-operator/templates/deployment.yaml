@@ -2,16 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "resource-cleanup-policy.fullname" . }}
+  name: {{ include "resources-cleanup-operator.fullname" . }}
   labels:
-    {{- include "resource-cleanup-policy.labels" . | nindent 4 }}
+    {{- include "resources-cleanup-operator.labels" . | nindent 4 }}
 spec:
   replicas: 1
   strategy:
       type: Recreate
   selector:
     matchLabels:
-      {{- include "resource-cleanup-policy.selectorLabels" . | nindent 6 }}
+      {{- include "resources-cleanup-operator.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -19,13 +19,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "resource-cleanup-policy.selectorLabels" . | nindent 8 }}
+        {{- include "resources-cleanup-operator.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "resource-cleanup-policy.serviceAccountName" . }}
+      serviceAccountName: {{ include "resources-cleanup-operator.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
