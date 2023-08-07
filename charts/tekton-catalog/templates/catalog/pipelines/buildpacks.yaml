@@ -4,11 +4,12 @@ kind: Pipeline
 metadata:
   name: buildpacks
   labels:
-    app.kubernetes.io/version: "0.1"
+    app.kubernetes.io/version: "0.2"
   annotations:
     tekton.dev/pipelines.minVersion: "0.17.0"
     tekton.dev/tags: image-build
     tekton.dev/displayName: "Buildpacks"
+    tekton.dev/platforms: "linux/amd64"
 spec:
   description: >-
     The Buildpacks pipeline builds source from a Git repository into a container image and pushes it to a registry, using Cloud Native Buildpacks.
@@ -41,7 +42,7 @@ spec:
     - name: ENV_VARS
       type: array
       description: Environment variables to set during _build-time_.
-      default: []
+      default: [""]
     - name: PROCESS_TYPE
       description: The default process type to set on the image.
       default: "web"

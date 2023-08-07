@@ -4,11 +4,13 @@ kind: Task
 metadata:
   name: buildpacks
   labels:
-    app.kubernetes.io/version: "0.3"
+    app.kubernetes.io/version: "0.4"
   annotations:
+    tekton.dev/categories: Image Build
     tekton.dev/pipelines.minVersion: "0.17.0"
     tekton.dev/tags: image-build
     tekton.dev/displayName: "Buildpacks"
+    tekton.dev/platforms: "linux/amd64"
 spec:
   description: >-
     The Buildpacks task builds source into a container image and pushes it to a registry,
@@ -58,6 +60,8 @@ spec:
   results:
     - name: APP_IMAGE_DIGEST
       description: The digest of the built `APP_IMAGE`.
+    - name: APP_IMAGE_URL
+      description: The URL of the built `APP_IMAGE`.
 
   stepTemplate:
     env:
@@ -103,7 +107,7 @@ spec:
         mkdir -p "$ENV_DIR"
 
         for env in "${envs[@]}"; do
-            IFS='=' read -r key value string <<< "$env"
+            IFS='=' read -r key value <<< "$env"
             if [[ "$key" != "" && "$value" != "" ]]; then
                 path="${ENV_DIR}/${key}"
                 echo "--> Writing ${path}..."
@@ -120,7 +124,7 @@ spec:
 
     - name: create
       image: $(params.BUILDER_IMAGE)
-      imagePullPolicy: IfNotPresent
+      imagePullPolicy: Always
       command: ["/cnb/lifecycle/creator"]
       args:
         - "-app=$(workspaces.source.path)/$(params.SOURCE_SUBPATH)"
@@ -150,7 +154,11 @@ spec:
       script: |
         #!/usr/bin/env bash
         set -e
-        cat /layers/report.toml | grep "digest" | cut -d'"' -f2 | cut -d'"' -f2 | tr -d '\n' | tee $(results.APP_IMAGE_DIGEST.path)
+        grep "digest" /layers/report.toml | cut -d'"' -f2 | cut -d'"' -f2 | tr -d '\n' | tee "$(results.APP_IMAGE_DIGEST.path)"
+
+        # Disable shellcheck here since $() is use for variable substitution and not command execution.
+        # shellcheck disable=SC2005
+        echo "$(params.APP_IMAGE)" | tee "$(results.APP_IMAGE_URL.path)"
       volumeMounts:
         - name: layers-dir
           mountPath: /layers

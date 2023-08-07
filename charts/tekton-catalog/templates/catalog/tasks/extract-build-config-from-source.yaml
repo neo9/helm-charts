@@ -54,6 +54,9 @@ spec:
     - name: CNB_BUILDER
       description: The detected CNB builder to use
       type: string
+    - name: CNB_RUN_IMAGE
+      description: The detected CNB run image to use
+      type: string
     - name: BUILD_TOOL
       description: The build tool to use (docker, npm, gradle, maven)
       type: string

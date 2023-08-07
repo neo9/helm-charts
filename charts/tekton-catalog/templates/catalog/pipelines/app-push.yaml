@@ -332,7 +332,7 @@ spec:
     - name: PATH_CONTEXT
       value: $(params.git-project-name)
     - name: ARGS
-      value: ["install"]
+      value: ["install", "--force"]
 
 ######################################################
 
@@ -781,6 +781,8 @@ spec:
         value: $(params.git-project-name)
       - name: BUILDER_IMAGE
         value: $(tasks.extract-build-config-from-source.results.CNB_BUILDER)
+      - name: RUN_IMAGE
+        value: $(tasks.extract-build-config-from-source.results.CNB_RUN_IMAGE)
       - name: ENV_VARS
         value: []
       - name: PROCESS_TYPE
