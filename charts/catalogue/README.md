@@ -1,6 +1,6 @@
 # catalogue
 
-![Version: 6.1.0](https://img.shields.io/badge/Version-6.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.34.0](https://img.shields.io/badge/AppVersion-2.34.0-informational?style=flat-square)
+![Version: 6.2.0](https://img.shields.io/badge/Version-6.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.34.0](https://img.shields.io/badge/AppVersion-2.34.0-informational?style=flat-square)
 
 Neo9 catalogue global chart
 
@@ -8,55 +8,31 @@ Neo9 catalogue global chart
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.neo9.pro | backoffice(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | cms-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | import-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | jobs-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | media-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | metrics-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | mirakl-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | mock-backoffice(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | mock-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | live-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | internal-live-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | master-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | publication-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | export-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | scheduler-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | search-admin-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | web-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | merchandising-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | akeneo-api(n9-api) | 1.3.10 |
-| https://charts.neo9.pro | users-api(n9-api) | 1.3.10 |
+| https://charts.neo9.pro | backoffice(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | cms-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | import-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | jobs-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | media-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | metrics-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | mirakl-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | mock-backoffice(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | mock-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | live-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | internal-live-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | master-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | publication-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | export-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | scheduler-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | search-admin-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | web-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | merchandising-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | akeneo-api(n9-api) | 1.4.2 |
+| https://charts.neo9.pro | users-api(n9-api) | 1.4.2 |
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| catalogue.akeneo-api | bool | `false` | Condition to enable and deploy catalogue-akeneo-api |
-| catalogue.backoffice | bool | `false` | Condition to enable and deploy catalogue-backoffice |
-| catalogue.cms-api | bool | `true` | Condition to enable and deploy catalogue-cms-api |
-| catalogue.export-api | bool | `true` | Condition to enable and deploy catalogue-export-api |
-| catalogue.import-api | bool | `true` | Condition to enable and deploy catalogue-import-api |
-| catalogue.jobs-api | bool | `true` | Condition to enable and deploy catalogue-jobs-api |
-| catalogue.live-api | bool | `true` | Condition to enable and deploy catalogue-live-api |
-| catalogue.internal-live-api | bool | `true` | Condition to enable and deploy catalogue-live-api as an internal worker |
-| catalogue.master-api | bool | `true` | Condition to enable and deploy catalogue-master-api |
-| catalogue.media-api | bool | `true` | Condition to enable and deploy catalogue-media-api |
-| catalogue.merchandising-api | bool | `false` | Condition to enable and deploy catalogue-merchandising-api |
-| catalogue.metrics-api | bool | `false` | Condition to enable and deploy catalogue-metrics-api |
-| catalogue.mirakl-api | bool | `false` | Condition to enable and deploy catalogue-mirakl-api |
-| catalogue.mock-api | bool | `false` | Condition to enable and deploy catalogue-mock-api |
-| catalogue.mock-backoffice | bool | `false` | Condition to enable and deploy catalogue-mock-backoffice |
-| catalogue.publication-api | bool | `true` | Condition to enable and deploy catalogue-publication-api |
-| catalogue.scheduler-api | bool | `true` | Condition to enable and deploy catalogue-scheduler-api |
-| catalogue.search-admin-api | bool | `true` | Condition to enable and deploy catalogue-search-admin-api |
-| catalogue.users-api | bool | `true` | Condition to enable and deploy catalogue-users-api |
-| catalogue.web-api | bool | `true` | Condition to enable and deploy catalogue-web-api |
-| global.deployedEnv | string | `""` | For each app, override the release namespace value for env var sent to pod (development, integration, validation, preproduction, production) |
-| global.logLevel | string | `""` | For each app, set loglevel https://github.com/neo9/n9-node-log |
-| global.imagePullSecrets | list | `[]` | Pull secrets that can be used for all sub-charts |
-| global.istio.enabled | bool | `false` | For each app, enable istio virtual service |
 | akeneo-api.healthCheck.failureThreshold | int | `3` |  |
 | akeneo-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | akeneo-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -67,21 +43,22 @@ Neo9 catalogue global chart
 | akeneo-api.hpa.minReplicas | int | `1` |  |
 | akeneo-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/akeneo-api"` |  |
 | akeneo-api.image.tag | string | `"2.34.0"` |  |
-| akeneo-api.initContainer.enabled | bool | `false` |  |
 | akeneo-api.initContainer.command[0] | string | `"npm"` |  |
 | akeneo-api.initContainer.command[1] | string | `"run"` |  |
 | akeneo-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| akeneo-api.initContainer.enabled | bool | `false` |  |
 | akeneo-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | akeneo-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | akeneo-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| akeneo-api.initJob.enabled | bool | `true` |  |
-| akeneo-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | akeneo-api.initJob.command[0] | string | `"npm"` |  |
 | akeneo-api.initJob.command[1] | string | `"run"` |  |
 | akeneo-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| akeneo-api.initJob.enabled | bool | `true` |  |
+| akeneo-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | akeneo-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | akeneo-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | akeneo-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| akeneo-api.logging.enabled | bool | `true` |  |
 | akeneo-api.metrics.enabled | bool | `true` |  |
 | akeneo-api.name.appNameOverride | string | `"catalogue-akeneo-api"` |  |
 | akeneo-api.pdb.enabled | bool | `true` |  |
@@ -94,26 +71,13 @@ Neo9 catalogue global chart
 | akeneo-api.resources.requests.cpu | string | `"100m"` |  |
 | akeneo-api.resources.requests.memory | string | `"200M"` |  |
 | akeneo-api.service.port | int | `8030` |  |
-| akeneo-api.logging.enabled | bool | `true` |  |
 | backoffice.api.type | string | `"nginx"` |  |
 | backoffice.healthCheck.path | string | `"/"` |  |
 | backoffice.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/backoffice"` |  |
 | backoffice.image.tag | string | `"2.32.0"` |  |
-| backoffice.name.appNameOverride | string | `"catalogue-backoffice"` |  |
-| backoffice.pdb.enabled | bool | `true` |  |
-| backoffice.pod.command[0] | string | `"nginx"` |  |
-| backoffice.pod.command[1] | string | `"-g"` |  |
-| backoffice.pod.command[2] | string | `"daemon off;"` |  |
-| backoffice.pod.mounts.configMap[0].mountPath | string | `"/home/app/dist/conf/env/"` |  |
-| backoffice.pod.mounts.configMap[0].name | string | `"catalogue-conf"` |  |
-| backoffice.resources.limits.memory | string | `"50M"` |  |
-| backoffice.resources.requests.cpu | string | `"20m"` |  |
-| backoffice.resources.requests.memory | string | `"50M"` |  |
-| backoffice.service.port | int | `80` |  |
-| backoffice.logging.enabled | bool | `true` |  |
-| backoffice.ingress.enabled | bool | `false` |  |
-| backoffice.ingress.className | string | `"default-nginx"` |  |
 | backoffice.ingress.annotations."nginx.ingress.kubernetes.io/configuration-snippet" | string | `"rewrite ^/catalogue2/?(.*) $scheme://$host/catalogue$1;\n"` |  |
+| backoffice.ingress.className | string | `"default-nginx"` |  |
+| backoffice.ingress.enabled | bool | `false` |  |
 | backoffice.ingress.hosts[0].host | string | `"backoffice.tld"` |  |
 | backoffice.ingress.hosts[0].paths[0].path | string | `"/?(.*)"` |  |
 | backoffice.ingress.hosts[0].paths[0].svcName | string | `"catalogue-backoffice"` |  |
@@ -126,6 +90,38 @@ Neo9 catalogue global chart
 | backoffice.ingress.hosts[0].paths[3].svcName | string | `"catalogue-web-api"` |  |
 | backoffice.ingress.hosts[0].paths[3].svcPort | int | `8014` |  |
 | backoffice.ingress.tls | list | `[]` |  |
+| backoffice.logging.enabled | bool | `true` |  |
+| backoffice.name.appNameOverride | string | `"catalogue-backoffice"` |  |
+| backoffice.pdb.enabled | bool | `true` |  |
+| backoffice.pod.command[0] | string | `"nginx"` |  |
+| backoffice.pod.command[1] | string | `"-g"` |  |
+| backoffice.pod.command[2] | string | `"daemon off;"` |  |
+| backoffice.pod.mounts.configMap[0].mountPath | string | `"/home/app/dist/conf/env/"` |  |
+| backoffice.pod.mounts.configMap[0].name | string | `"catalogue-conf"` |  |
+| backoffice.resources.limits.memory | string | `"50M"` |  |
+| backoffice.resources.requests.cpu | string | `"20m"` |  |
+| backoffice.resources.requests.memory | string | `"50M"` |  |
+| backoffice.service.port | int | `80` |  |
+| catalogue.akeneo-api | bool | `false` | Condition to enable and deploy catalogue-akeneo-api |
+| catalogue.backoffice | bool | `false` | Condition to enable and deploy catalogue-backoffice |
+| catalogue.cms-api | bool | `true` | Condition to enable and deploy catalogue-cms-api |
+| catalogue.export-api | bool | `true` | Condition to enable and deploy catalogue-export-api |
+| catalogue.import-api | bool | `true` | Condition to enable and deploy catalogue-import-api |
+| catalogue.internal-live-api | bool | `true` | Condition to enable and deploy catalogue-live-api as an internal worker |
+| catalogue.jobs-api | bool | `true` | Condition to enable and deploy catalogue-jobs-api |
+| catalogue.live-api | bool | `true` | Condition to enable and deploy catalogue-live-api |
+| catalogue.master-api | bool | `true` | Condition to enable and deploy catalogue-master-api |
+| catalogue.media-api | bool | `true` | Condition to enable and deploy catalogue-media-api |
+| catalogue.merchandising-api | bool | `false` | Condition to enable and deploy catalogue-merchandising-api |
+| catalogue.metrics-api | bool | `false` | Condition to enable and deploy catalogue-metrics-api |
+| catalogue.mirakl-api | bool | `false` | Condition to enable and deploy catalogue-mirakl-api |
+| catalogue.mock-api | bool | `false` | Condition to enable and deploy catalogue-mock-api |
+| catalogue.mock-backoffice | bool | `false` | Condition to enable and deploy catalogue-mock-backoffice |
+| catalogue.publication-api | bool | `true` | Condition to enable and deploy catalogue-publication-api |
+| catalogue.scheduler-api | bool | `true` | Condition to enable and deploy catalogue-scheduler-api |
+| catalogue.search-admin-api | bool | `true` | Condition to enable and deploy catalogue-search-admin-api |
+| catalogue.users-api | bool | `true` | Condition to enable and deploy catalogue-users-api |
+| catalogue.web-api | bool | `true` | Condition to enable and deploy catalogue-web-api |
 | cms-api.healthCheck.failureThreshold | int | `3` |  |
 | cms-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | cms-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -133,21 +129,22 @@ Neo9 catalogue global chart
 | cms-api.healthCheck.timeoutSeconds | int | `10` |  |
 | cms-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/cms-api"` |  |
 | cms-api.image.tag | string | `"2.34.0"` |  |
-| cms-api.initContainer.enabled | bool | `false` |  |
 | cms-api.initContainer.command[0] | string | `"npm"` |  |
 | cms-api.initContainer.command[1] | string | `"run"` |  |
 | cms-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| cms-api.initContainer.enabled | bool | `false` |  |
 | cms-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | cms-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | cms-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| cms-api.initJob.enabled | bool | `true` |  |
-| cms-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | cms-api.initJob.command[0] | string | `"npm"` |  |
 | cms-api.initJob.command[1] | string | `"run"` |  |
 | cms-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| cms-api.initJob.enabled | bool | `true` |  |
+| cms-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | cms-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | cms-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | cms-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| cms-api.logging.enabled | bool | `true` |  |
 | cms-api.metrics.enabled | bool | `true` |  |
 | cms-api.name.appNameOverride | string | `"catalogue-cms-api"` |  |
 | cms-api.pdb.enabled | bool | `true` |  |
@@ -160,7 +157,6 @@ Neo9 catalogue global chart
 | cms-api.resources.requests.cpu | string | `"100m"` |  |
 | cms-api.resources.requests.memory | string | `"150M"` |  |
 | cms-api.service.port | int | `8016` |  |
-| cms-api.logging.enabled | bool | `true` |  |
 | export-api.healthCheck.failureThreshold | int | `3` |  |
 | export-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | export-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -171,21 +167,22 @@ Neo9 catalogue global chart
 | export-api.hpa.minReplicas | int | `1` |  |
 | export-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/export-api"` |  |
 | export-api.image.tag | string | `"2.34.0"` |  |
-| export-api.initContainer.enabled | bool | `false` |  |
 | export-api.initContainer.command[0] | string | `"npm"` |  |
 | export-api.initContainer.command[1] | string | `"run"` |  |
 | export-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| export-api.initContainer.enabled | bool | `false` |  |
 | export-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | export-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | export-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| export-api.initJob.enabled | bool | `true` |  |
-| export-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | export-api.initJob.command[0] | string | `"npm"` |  |
 | export-api.initJob.command[1] | string | `"run"` |  |
 | export-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| export-api.initJob.enabled | bool | `true` |  |
+| export-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | export-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | export-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | export-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| export-api.logging.enabled | bool | `true` |  |
 | export-api.metrics.enabled | bool | `true` |  |
 | export-api.name.appNameOverride | string | `"catalogue-export-api"` |  |
 | export-api.pdb.enabled | bool | `true` |  |
@@ -198,7 +195,10 @@ Neo9 catalogue global chart
 | export-api.resources.requests.cpu | string | `"100m"` |  |
 | export-api.resources.requests.memory | string | `"150M"` |  |
 | export-api.service.port | int | `8031` |  |
-| export-api.logging.enabled | bool | `true` |  |
+| global.deployedEnv | string | `""` | For each app, override the release namespace value for env var sent to pod (development, integration, validation, preproduction, production) |
+| global.imagePullSecrets | list | `[]` | Pull secrets that can be used for all sub-charts |
+| global.istio.enabled | bool | `false` | For each app, enable istio virtual service |
+| global.logLevel | string | `""` | For each app, set loglevel https://github.com/neo9/n9-node-log |
 | import-api.healthCheck.failureThreshold | int | `3` |  |
 | import-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | import-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -209,21 +209,22 @@ Neo9 catalogue global chart
 | import-api.hpa.minReplicas | int | `1` |  |
 | import-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/import-api"` |  |
 | import-api.image.tag | string | `"2.34.0"` |  |
-| import-api.initContainer.enabled | bool | `false` |  |
 | import-api.initContainer.command[0] | string | `"npm"` |  |
 | import-api.initContainer.command[1] | string | `"run"` |  |
 | import-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| import-api.initContainer.enabled | bool | `false` |  |
 | import-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | import-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | import-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| import-api.initJob.enabled | bool | `true` |  |
-| import-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | import-api.initJob.command[0] | string | `"npm"` |  |
 | import-api.initJob.command[1] | string | `"run"` |  |
 | import-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| import-api.initJob.enabled | bool | `true` |  |
+| import-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | import-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | import-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | import-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| import-api.logging.enabled | bool | `true` |  |
 | import-api.metrics.enabled | bool | `true` |  |
 | import-api.name.appNameOverride | string | `"catalogue-import-api"` |  |
 | import-api.pdb.enabled | bool | `true` |  |
@@ -236,7 +237,45 @@ Neo9 catalogue global chart
 | import-api.resources.requests.cpu | string | `"300m"` |  |
 | import-api.resources.requests.memory | string | `"300M"` |  |
 | import-api.service.port | int | `8019` |  |
-| import-api.logging.enabled | bool | `true` |  |
+| internal-live-api.healthCheck.failureThreshold | int | `3` |  |
+| internal-live-api.healthCheck.initialDelaySeconds | int | `6` |  |
+| internal-live-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
+| internal-live-api.healthCheck.periodSeconds | int | `3` |  |
+| internal-live-api.healthCheck.timeoutSeconds | int | `10` |  |
+| internal-live-api.hpa.enabled | bool | `true` |  |
+| internal-live-api.hpa.maxReplicas | int | `4` |  |
+| internal-live-api.hpa.minReplicas | int | `2` |  |
+| internal-live-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/live-api"` |  |
+| internal-live-api.image.tag | string | `"2.34.0"` |  |
+| internal-live-api.initContainer.command[0] | string | `"npm"` |  |
+| internal-live-api.initContainer.command[1] | string | `"run"` |  |
+| internal-live-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| internal-live-api.initContainer.enabled | bool | `false` |  |
+| internal-live-api.initContainer.resources.limits.memory | string | `"300M"` |  |
+| internal-live-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
+| internal-live-api.initContainer.resources.requests.memory | string | `"300M"` |  |
+| internal-live-api.initJob.command[0] | string | `"npm"` |  |
+| internal-live-api.initJob.command[1] | string | `"run"` |  |
+| internal-live-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| internal-live-api.initJob.enabled | bool | `true` |  |
+| internal-live-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
+| internal-live-api.initJob.resources.limits.memory | string | `"300M"` |  |
+| internal-live-api.initJob.resources.requests.cpu | string | `"35m"` |  |
+| internal-live-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| internal-live-api.logging.enabled | bool | `true` |  |
+| internal-live-api.metrics.enabled | bool | `true` |  |
+| internal-live-api.name.appNameOverride | string | `"catalogue-internal-live-api"` |  |
+| internal-live-api.pdb.enabled | bool | `true` |  |
+| internal-live-api.pod.command[0] | string | `"node"` |  |
+| internal-live-api.pod.command[1] | string | `"/home/app/dist/index.js"` |  |
+| internal-live-api.pod.env.valuesMap.AMQP_IS_ENABLED | bool | `true` |  |
+| internal-live-api.pod.mounts.configMap[0].mountPath | string | `"/home/app/dist/conf/env/"` |  |
+| internal-live-api.pod.mounts.configMap[0].name | string | `"catalogue-conf"` |  |
+| internal-live-api.pod.workingDir | string | `"/home/app"` |  |
+| internal-live-api.resources.limits.memory | string | `"200M"` |  |
+| internal-live-api.resources.requests.cpu | string | `"100m"` |  |
+| internal-live-api.resources.requests.memory | string | `"200M"` |  |
+| internal-live-api.service.port | int | `8032` |  |
 | jobs-api.healthCheck.failureThreshold | int | `3` |  |
 | jobs-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | jobs-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -247,21 +286,22 @@ Neo9 catalogue global chart
 | jobs-api.hpa.minReplicas | int | `1` |  |
 | jobs-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/jobs-api"` |  |
 | jobs-api.image.tag | string | `"2.34.0"` |  |
-| jobs-api.initContainer.enabled | bool | `false` |  |
 | jobs-api.initContainer.command[0] | string | `"npm"` |  |
 | jobs-api.initContainer.command[1] | string | `"run"` |  |
 | jobs-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| jobs-api.initContainer.enabled | bool | `false` |  |
 | jobs-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | jobs-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | jobs-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| jobs-api.initJob.enabled | bool | `true` |  |
-| jobs-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | jobs-api.initJob.command[0] | string | `"npm"` |  |
 | jobs-api.initJob.command[1] | string | `"run"` |  |
 | jobs-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| jobs-api.initJob.enabled | bool | `true` |  |
+| jobs-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | jobs-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | jobs-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | jobs-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| jobs-api.logging.enabled | bool | `true` |  |
 | jobs-api.metrics.enabled | bool | `true` |  |
 | jobs-api.name.appNameOverride | string | `"catalogue-jobs-api"` |  |
 | jobs-api.pdb.enabled | bool | `true` |  |
@@ -274,7 +314,6 @@ Neo9 catalogue global chart
 | jobs-api.resources.requests.cpu | string | `"300m"` |  |
 | jobs-api.resources.requests.memory | string | `"300M"` |  |
 | jobs-api.service.port | int | `8018` |  |
-| jobs-api.logging.enabled | bool | `true` |  |
 | live-api.healthCheck.failureThreshold | int | `3` |  |
 | live-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | live-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -285,21 +324,22 @@ Neo9 catalogue global chart
 | live-api.hpa.minReplicas | int | `2` |  |
 | live-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/live-api"` |  |
 | live-api.image.tag | string | `"2.34.0"` |  |
-| live-api.initContainer.enabled | bool | `false` |  |
 | live-api.initContainer.command[0] | string | `"npm"` |  |
 | live-api.initContainer.command[1] | string | `"run"` |  |
 | live-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| live-api.initContainer.enabled | bool | `false` |  |
 | live-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | live-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | live-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| live-api.initJob.enabled | bool | `true` |  |
-| live-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | live-api.initJob.command[0] | string | `"npm"` |  |
 | live-api.initJob.command[1] | string | `"run"` |  |
 | live-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| live-api.initJob.enabled | bool | `true` |  |
+| live-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | live-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | live-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | live-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| live-api.logging.enabled | bool | `true` |  |
 | live-api.metrics.enabled | bool | `true` |  |
 | live-api.name.appNameOverride | string | `"catalogue-live-api"` |  |
 | live-api.pdb.enabled | bool | `true` |  |
@@ -312,46 +352,6 @@ Neo9 catalogue global chart
 | live-api.resources.requests.cpu | string | `"100m"` |  |
 | live-api.resources.requests.memory | string | `"200M"` |  |
 | live-api.service.port | int | `8032` |  |
-| live-api.logging.enabled | bool | `true` |  |
-| internal-live-api.healthCheck.failureThreshold | int | `3` |  |
-| internal-live-api.healthCheck.initialDelaySeconds | int | `6` |  |
-| internal-live-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
-| internal-live-api.healthCheck.periodSeconds | int | `3` |  |
-| internal-live-api.healthCheck.timeoutSeconds | int | `10` |  |
-| internal-live-api.hpa.enabled | bool | `true` |  |
-| internal-live-api.hpa.maxReplicas | int | `4` |  |
-| internal-live-api.hpa.minReplicas | int | `2` |  |
-| internal-live-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/live-api"` |  |
-| internal-live-api.image.tag | string | `"2.34.0"` |  |
-| internal-live-api.initContainer.enabled | bool | `false` |  |
-| internal-live-api.initContainer.command[0] | string | `"npm"` |  |
-| internal-live-api.initContainer.command[1] | string | `"run"` |  |
-| internal-live-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
-| internal-live-api.initContainer.resources.limits.memory | string | `"300M"` |  |
-| internal-live-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
-| internal-live-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| internal-live-api.initJob.enabled | bool | `true` |  |
-| internal-live-api.initJob.command[0] | string | `"npm"` |  |
-| internal-live-api.initJob.command[1] | string | `"run"` |  |
-| internal-live-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
-| internal-live-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
-| internal-live-api.initJob.resources.limits.memory | string | `"300M"` |  |
-| internal-live-api.initJob.resources.requests.cpu | string | `"35m"` |  |
-| internal-live-api.initJob.resources.requests.memory | string | `"300M"` |  |
-| internal-live-api.metrics.enabled | bool | `true` |  |
-| internal-live-api.name.appNameOverride | string | `"catalogue-internal-live-api"` |  |
-| internal-live-api.pdb.enabled | bool | `true` |  |
-| internal-live-api.pod.env.valuesMap.AMQP_IS_ENABLED | bool | `true` |  |
-| internal-live-api.pod.command[0] | string | `"node"` |  |
-| internal-live-api.pod.command[1] | string | `"/home/app/dist/index.js"` |  |
-| internal-live-api.pod.mounts.configMap[0].mountPath | string | `"/home/app/dist/conf/env/"` |  |
-| internal-live-api.pod.mounts.configMap[0].name | string | `"catalogue-conf"` |  |
-| internal-live-api.pod.workingDir | string | `"/home/app"` |  |
-| internal-live-api.resources.limits.memory | string | `"200M"` |  |
-| internal-live-api.resources.requests.cpu | string | `"100m"` |  |
-| internal-live-api.resources.requests.memory | string | `"200M"` |  |
-| internal-live-api.service.port | int | `8032` |  |
-| internal-live-api.logging.enabled | bool | `true` |  |
 | master-api.healthCheck.failureThreshold | int | `3` |  |
 | master-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | master-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -362,21 +362,22 @@ Neo9 catalogue global chart
 | master-api.hpa.minReplicas | int | `3` |  |
 | master-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/master-api"` |  |
 | master-api.image.tag | string | `"2.27.1"` |  |
-| master-api.initContainer.enabled | bool | `false` |  |
 | master-api.initContainer.command[0] | string | `"npm"` |  |
 | master-api.initContainer.command[1] | string | `"run"` |  |
 | master-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| master-api.initContainer.enabled | bool | `false` |  |
 | master-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | master-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | master-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| master-api.initJob.enabled | bool | `true` |  |
-| master-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | master-api.initJob.command[0] | string | `"npm"` |  |
 | master-api.initJob.command[1] | string | `"run"` |  |
 | master-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| master-api.initJob.enabled | bool | `true` |  |
+| master-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | master-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | master-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | master-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| master-api.logging.enabled | bool | `true` |  |
 | master-api.metrics.enabled | bool | `true` |  |
 | master-api.name.appNameOverride | string | `"catalogue-master-api"` |  |
 | master-api.pdb.enabled | bool | `true` |  |
@@ -389,7 +390,6 @@ Neo9 catalogue global chart
 | master-api.resources.requests.cpu | string | `"500m"` |  |
 | master-api.resources.requests.memory | string | `"350M"` |  |
 | master-api.service.port | int | `8011` |  |
-| master-api.logging.enabled | bool | `true` |  |
 | media-api.healthCheck.failureThreshold | int | `3` |  |
 | media-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | media-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -400,21 +400,22 @@ Neo9 catalogue global chart
 | media-api.hpa.minReplicas | int | `2` |  |
 | media-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/media-api"` |  |
 | media-api.image.tag | string | `"2.34.0"` |  |
-| media-api.initContainer.enabled | bool | `false` |  |
 | media-api.initContainer.command[0] | string | `"npm"` |  |
 | media-api.initContainer.command[1] | string | `"run"` |  |
 | media-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| media-api.initContainer.enabled | bool | `false` |  |
 | media-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | media-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | media-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| media-api.initJob.enabled | bool | `true` |  |
-| media-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | media-api.initJob.command[0] | string | `"npm"` |  |
 | media-api.initJob.command[1] | string | `"run"` |  |
 | media-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| media-api.initJob.enabled | bool | `true` |  |
+| media-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | media-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | media-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | media-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| media-api.logging.enabled | bool | `true` |  |
 | media-api.metrics.enabled | bool | `true` |  |
 | media-api.name.appNameOverride | string | `"catalogue-media-api"` |  |
 | media-api.pdb.enabled | bool | `true` |  |
@@ -427,7 +428,6 @@ Neo9 catalogue global chart
 | media-api.resources.requests.cpu | string | `"200m"` |  |
 | media-api.resources.requests.memory | string | `"250M"` |  |
 | media-api.service.port | int | `8013` |  |
-| media-api.logging.enabled | bool | `true` |  |
 | merchandising-api.healthCheck.failureThreshold | int | `3` |  |
 | merchandising-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | merchandising-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -438,21 +438,22 @@ Neo9 catalogue global chart
 | merchandising-api.hpa.minReplicas | int | `1` |  |
 | merchandising-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/merchandising-api"` |  |
 | merchandising-api.image.tag | string | `"2.34.0"` |  |
-| merchandising-api.initContainer.enabled | bool | `false` |  |
 | merchandising-api.initContainer.command[0] | string | `"npm"` |  |
 | merchandising-api.initContainer.command[1] | string | `"run"` |  |
 | merchandising-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| merchandising-api.initContainer.enabled | bool | `false` |  |
 | merchandising-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | merchandising-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | merchandising-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| merchandising-api.initJob.enabled | bool | `true` |  |
-| merchandising-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | merchandising-api.initJob.command[0] | string | `"npm"` |  |
 | merchandising-api.initJob.command[1] | string | `"run"` |  |
 | merchandising-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| merchandising-api.initJob.enabled | bool | `true` |  |
+| merchandising-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | merchandising-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | merchandising-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | merchandising-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| merchandising-api.logging.enabled | bool | `true` |  |
 | merchandising-api.metrics.enabled | bool | `true` |  |
 | merchandising-api.name.appNameOverride | string | `"catalogue-merchandising-api"` |  |
 | merchandising-api.pdb.enabled | bool | `true` |  |
@@ -465,7 +466,6 @@ Neo9 catalogue global chart
 | merchandising-api.resources.requests.cpu | string | `"100m"` |  |
 | merchandising-api.resources.requests.memory | string | `"150M"` |  |
 | merchandising-api.service.port | int | `8034` |  |
-| merchandising-api.logging.enabled | bool | `true` |  |
 | metrics-api.healthCheck.failureThreshold | int | `3` |  |
 | metrics-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | metrics-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -473,6 +473,7 @@ Neo9 catalogue global chart
 | metrics-api.healthCheck.timeoutSeconds | int | `10` |  |
 | metrics-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/metrics-api"` |  |
 | metrics-api.image.tag | string | `"2.34.0"` |  |
+| metrics-api.logging.enabled | bool | `true` |  |
 | metrics-api.metrics.enabled | bool | `true` |  |
 | metrics-api.name.appNameOverride | string | `"catalogue-metrics-api"` |  |
 | metrics-api.pdb.enabled | bool | `true` |  |
@@ -484,7 +485,6 @@ Neo9 catalogue global chart
 | metrics-api.resources.requests.cpu | string | `"100m"` |  |
 | metrics-api.resources.requests.memory | string | `"200M"` |  |
 | metrics-api.service.port | int | `8035` |  |
-| metrics-api.logging.enabled | bool | `true` |  |
 | mirakl-api.healthCheck.failureThreshold | int | `3` |  |
 | mirakl-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | mirakl-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -495,21 +495,22 @@ Neo9 catalogue global chart
 | mirakl-api.hpa.minReplicas | int | `1` |  |
 | mirakl-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/mirakl-api"` |  |
 | mirakl-api.image.tag | string | `"2.34.0"` |  |
-| mirakl-api.initContainer.enabled | bool | `false` |  |
 | mirakl-api.initContainer.command[0] | string | `"npm"` |  |
 | mirakl-api.initContainer.command[1] | string | `"run"` |  |
 | mirakl-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| mirakl-api.initContainer.enabled | bool | `false` |  |
 | mirakl-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | mirakl-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | mirakl-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| mirakl-api.initJob.enabled | bool | `true` |  |
-| mirakl-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | mirakl-api.initJob.command[0] | string | `"npm"` |  |
 | mirakl-api.initJob.command[1] | string | `"run"` |  |
 | mirakl-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| mirakl-api.initJob.enabled | bool | `true` |  |
+| mirakl-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | mirakl-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | mirakl-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | mirakl-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| mirakl-api.logging.enabled | bool | `true` |  |
 | mirakl-api.metrics.enabled | bool | `true` |  |
 | mirakl-api.name.appNameOverride | string | `"catalogue-mirakl-api"` |  |
 | mirakl-api.pdb.enabled | bool | `true` |  |
@@ -522,7 +523,6 @@ Neo9 catalogue global chart
 | mirakl-api.resources.requests.cpu | string | `"100m"` |  |
 | mirakl-api.resources.requests.memory | string | `"200M"` |  |
 | mirakl-api.service.port | int | `8012` |  |
-| mirakl-api.logging.enabled | bool | `true` |  |
 | mock-api.healthCheck.failureThreshold | int | `3` |  |
 | mock-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | mock-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -530,21 +530,22 @@ Neo9 catalogue global chart
 | mock-api.healthCheck.timeoutSeconds | int | `10` |  |
 | mock-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/mock-api"` |  |
 | mock-api.image.tag | string | `"2.34.0"` |  |
-| mock-api.initContainer.enabled | bool | `false` |  |
 | mock-api.initContainer.command[0] | string | `"npm"` |  |
 | mock-api.initContainer.command[1] | string | `"run"` |  |
 | mock-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| mock-api.initContainer.enabled | bool | `false` |  |
 | mock-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | mock-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | mock-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| mock-api.initJob.enabled | bool | `true` |  |
-| mock-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | mock-api.initJob.command[0] | string | `"npm"` |  |
 | mock-api.initJob.command[1] | string | `"run"` |  |
 | mock-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| mock-api.initJob.enabled | bool | `true` |  |
+| mock-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | mock-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | mock-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | mock-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| mock-api.logging.enabled | bool | `true` |  |
 | mock-api.metrics.enabled | bool | `true` |  |
 | mock-api.name.appNameOverride | string | `"catalogue-mock-api"` |  |
 | mock-api.pdb.enabled | bool | `true` |  |
@@ -557,11 +558,11 @@ Neo9 catalogue global chart
 | mock-api.resources.requests.cpu | string | `"100m"` |  |
 | mock-api.resources.requests.memory | string | `"150M"` |  |
 | mock-api.service.port | int | `8015` |  |
-| mock-api.logging.enabled | bool | `true` |  |
 | mock-backoffice.api.type | string | `"nginx"` |  |
 | mock-backoffice.healthCheck.path | string | `"/"` |  |
 | mock-backoffice.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/mock-backoffice"` |  |
 | mock-backoffice.image.tag | string | `"2.34.0"` |  |
+| mock-backoffice.logging.enabled | bool | `true` |  |
 | mock-backoffice.name.appNameOverride | string | `"catalogue-mock-backoffice"` |  |
 | mock-backoffice.pdb.enabled | bool | `true` |  |
 | mock-backoffice.pod.command[0] | string | `"nginx"` |  |
@@ -572,7 +573,6 @@ Neo9 catalogue global chart
 | mock-backoffice.resources.requests.cpu | string | `"20m"` |  |
 | mock-backoffice.resources.requests.memory | string | `"50M"` |  |
 | mock-backoffice.service.port | int | `80` |  |
-| mock-backoffice.logging.enabled | bool | `true` |  |
 | publication-api.healthCheck.failureThreshold | int | `3` |  |
 | publication-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | publication-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -583,21 +583,22 @@ Neo9 catalogue global chart
 | publication-api.hpa.minReplicas | int | `1` |  |
 | publication-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/publication-api"` |  |
 | publication-api.image.tag | string | `"2.34.0"` |  |
-| publication-api.initContainer.enabled | bool | `false` |  |
 | publication-api.initContainer.command[0] | string | `"npm"` |  |
 | publication-api.initContainer.command[1] | string | `"run"` |  |
 | publication-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| publication-api.initContainer.enabled | bool | `false` |  |
 | publication-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | publication-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | publication-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| publication-api.initJob.enabled | bool | `true` |  |
-| publication-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | publication-api.initJob.command[0] | string | `"npm"` |  |
 | publication-api.initJob.command[1] | string | `"run"` |  |
 | publication-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| publication-api.initJob.enabled | bool | `true` |  |
+| publication-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | publication-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | publication-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | publication-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| publication-api.logging.enabled | bool | `true` |  |
 | publication-api.metrics.enabled | bool | `true` |  |
 | publication-api.name.appNameOverride | string | `"catalogue-publication-api"` |  |
 | publication-api.pdb.enabled | bool | `true` |  |
@@ -610,7 +611,6 @@ Neo9 catalogue global chart
 | publication-api.resources.requests.cpu | string | `"500m"` |  |
 | publication-api.resources.requests.memory | string | `"400M"` |  |
 | publication-api.service.port | int | `8017` |  |
-| publication-api.logging.enabled | bool | `true` |  |
 | scheduler-api.healthCheck.failureThreshold | int | `3` |  |
 | scheduler-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | scheduler-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -618,21 +618,22 @@ Neo9 catalogue global chart
 | scheduler-api.healthCheck.timeoutSeconds | int | `10` |  |
 | scheduler-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/scheduler-api"` |  |
 | scheduler-api.image.tag | string | `"2.34.0"` |  |
-| scheduler-api.initContainer.enabled | bool | `false` |  |
 | scheduler-api.initContainer.command[0] | string | `"npm"` |  |
 | scheduler-api.initContainer.command[1] | string | `"run"` |  |
 | scheduler-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| scheduler-api.initContainer.enabled | bool | `false` |  |
 | scheduler-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | scheduler-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | scheduler-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| scheduler-api.initJob.enabled | bool | `true` |  |
-| scheduler-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | scheduler-api.initJob.command[0] | string | `"npm"` |  |
 | scheduler-api.initJob.command[1] | string | `"run"` |  |
 | scheduler-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| scheduler-api.initJob.enabled | bool | `true` |  |
+| scheduler-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | scheduler-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | scheduler-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | scheduler-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| scheduler-api.logging.enabled | bool | `true` |  |
 | scheduler-api.metrics.enabled | bool | `true` |  |
 | scheduler-api.name.appNameOverride | string | `"catalogue-scheduler-api"` |  |
 | scheduler-api.pdb.enabled | bool | `true` |  |
@@ -645,7 +646,6 @@ Neo9 catalogue global chart
 | scheduler-api.resources.requests.cpu | string | `"50m"` |  |
 | scheduler-api.resources.requests.memory | string | `"150M"` |  |
 | scheduler-api.service.port | int | `8010` |  |
-| scheduler-api.logging.enabled | bool | `true` |  |
 | search-admin-api.healthCheck.failureThreshold | int | `3` |  |
 | search-admin-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | search-admin-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -656,21 +656,22 @@ Neo9 catalogue global chart
 | search-admin-api.hpa.minReplicas | int | `1` |  |
 | search-admin-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/search-admin-api"` |  |
 | search-admin-api.image.tag | string | `"2.34.0"` |  |
-| search-admin-api.initContainer.enabled | bool | `false` |  |
 | search-admin-api.initContainer.command[0] | string | `"npm"` |  |
 | search-admin-api.initContainer.command[1] | string | `"run"` |  |
 | search-admin-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| search-admin-api.initContainer.enabled | bool | `false` |  |
 | search-admin-api.initContainer.resources.limits.memory | string | `"300M"` |  |
 | search-admin-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
 | search-admin-api.initContainer.resources.requests.memory | string | `"300M"` |  |
-| search-admin-api.initJob.enabled | bool | `true` |  |
-| search-admin-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | search-admin-api.initJob.command[0] | string | `"npm"` |  |
 | search-admin-api.initJob.command[1] | string | `"run"` |  |
 | search-admin-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| search-admin-api.initJob.enabled | bool | `true` |  |
+| search-admin-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
 | search-admin-api.initJob.resources.limits.memory | string | `"300M"` |  |
 | search-admin-api.initJob.resources.requests.cpu | string | `"35m"` |  |
 | search-admin-api.initJob.resources.requests.memory | string | `"300M"` |  |
+| search-admin-api.logging.enabled | bool | `true` |  |
 | search-admin-api.metrics.enabled | bool | `true` |  |
 | search-admin-api.name.appNameOverride | string | `"catalogue-search-admin-api"` |  |
 | search-admin-api.pdb.enabled | bool | `true` |  |
@@ -683,7 +684,41 @@ Neo9 catalogue global chart
 | search-admin-api.resources.requests.cpu | string | `"100m"` |  |
 | search-admin-api.resources.requests.memory | string | `"150M"` |  |
 | search-admin-api.service.port | int | `8033` |  |
-| search-admin-api.logging.enabled | bool | `true` |  |
+| users-api.healthCheck.failureThreshold | int | `3` |  |
+| users-api.healthCheck.initialDelaySeconds | int | `6` |  |
+| users-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
+| users-api.healthCheck.periodSeconds | int | `3` |  |
+| users-api.healthCheck.timeoutSeconds | int | `10` |  |
+| users-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/users-api"` |  |
+| users-api.image.tag | string | `"2.34.0"` |  |
+| users-api.initContainer.command[0] | string | `"npm"` |  |
+| users-api.initContainer.command[1] | string | `"run"` |  |
+| users-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
+| users-api.initContainer.enabled | bool | `false` |  |
+| users-api.initContainer.resources.limits.memory | string | `"150M"` |  |
+| users-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
+| users-api.initContainer.resources.requests.memory | string | `"150M"` |  |
+| users-api.initJob.command[0] | string | `"npm"` |  |
+| users-api.initJob.command[1] | string | `"run"` |  |
+| users-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
+| users-api.initJob.enabled | bool | `true` |  |
+| users-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
+| users-api.initJob.resources.limits.memory | string | `"150M"` |  |
+| users-api.initJob.resources.requests.cpu | string | `"35m"` |  |
+| users-api.initJob.resources.requests.memory | string | `"150M"` |  |
+| users-api.logging.enabled | bool | `true` |  |
+| users-api.metrics.enabled | bool | `true` |  |
+| users-api.name.appNameOverride | string | `"catalogue-users-api"` |  |
+| users-api.pdb.enabled | bool | `true` |  |
+| users-api.pod.command[0] | string | `"node"` |  |
+| users-api.pod.command[1] | string | `"/home/app/dist/index.js"` |  |
+| users-api.pod.mounts.configMap[0].mountPath | string | `"/home/app/dist/conf/env/"` |  |
+| users-api.pod.mounts.configMap[0].name | string | `"catalogue-conf"` |  |
+| users-api.pod.workingDir | string | `"/home/app"` |  |
+| users-api.resources.limits.memory | string | `"300M"` |  |
+| users-api.resources.requests.cpu | string | `"300m"` |  |
+| users-api.resources.requests.memory | string | `"300M"` |  |
+| users-api.service.port | int | `8037` |  |
 | web-api.healthCheck.failureThreshold | int | `3` |  |
 | web-api.healthCheck.initialDelaySeconds | int | `6` |  |
 | web-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
@@ -691,6 +726,7 @@ Neo9 catalogue global chart
 | web-api.healthCheck.timeoutSeconds | int | `10` |  |
 | web-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/web-api"` |  |
 | web-api.image.tag | string | `"2.34.0"` |  |
+| web-api.logging.enabled | bool | `true` |  |
 | web-api.metrics.enabled | bool | `true` |  |
 | web-api.name.appNameOverride | string | `"catalogue-web-api"` |  |
 | web-api.pdb.enabled | bool | `true` |  |
@@ -702,41 +738,6 @@ Neo9 catalogue global chart
 | web-api.resources.requests.cpu | string | `"100m"` |  |
 | web-api.resources.requests.memory | string | `"150M"` |  |
 | web-api.service.port | int | `8014` |  |
-| web-api.logging.enabled | bool | `true` |  |
-| users-api.healthCheck.failureThreshold | int | `3` |  |
-| users-api.healthCheck.initialDelaySeconds | int | `6` |  |
-| users-api.healthCheck.liveness.tcpSocket | bool | `true` |  |
-| users-api.healthCheck.periodSeconds | int | `3` |  |
-| users-api.healthCheck.timeoutSeconds | int | `10` |  |
-| users-api.image.repository | string | `"eu.gcr.io/neo9-catalogue-259610/users-api"` |  |
-| users-api.image.tag | string | `"2.34.0"` |  |
-| users-api.initContainer.enabled | bool | `false` |  |
-| users-api.initContainer.command[0] | string | `"npm"` |  |
-| users-api.initContainer.command[1] | string | `"run"` |  |
-| users-api.initContainer.command[2] | string | `"mongodb-migrate:docker"` |  |
-| users-api.initContainer.resources.limits.memory | string | `"100M"` |  |
-| users-api.initContainer.resources.requests.cpu | string | `"35m"` |  |
-| users-api.initContainer.resources.requests.memory | string | `"100M"` |  |
-| users-api.initJob.enabled | bool | `false` | Should be activated in later version |
-| users-api.initJob.hookDeletionPolicy | string | `"before-hook-creation"` |  |
-| users-api.initJob.command[0] | string | `"npm"` |  |
-| users-api.initJob.command[1] | string | `"run"` |  |
-| users-api.initJob.command[2] | string | `"mongodb-migrate:docker"` |  |
-| users-api.initJob.resources.limits.memory | string | `"100M"` |  |
-| users-api.initJob.resources.requests.cpu | string | `"35m"` |  |
-| users-api.initJob.resources.requests.memory | string | `"100M"` |  |
-| users-api.metrics.enabled | bool | `true` |  |
-| users-api.name.appNameOverride | string | `"catalogue-users-api"` |  |
-| users-api.pdb.enabled | bool | `true` |  |
-| users-api.pod.command[0] | string | `"node"` |  |
-| users-api.pod.command[1] | string | `"/home/app/dist/index.js"` |  |
-| users-api.pod.mounts.configMap[0].mountPath | string | `"/home/app/dist/conf/env/"` |  |
-| users-api.pod.mounts.configMap[0].name | string | `"catalogue-conf"` |  |
-| users-api.resources.requests.cpu | string | `"300m"` |  |
-| users-api.resources.requests.memory | string | `"300M"` |  |
-| users-api.resources.limits.memory | string | `"300M"` |  |
-| users-api.service.port | int | `8037` |  |
-| users-api.logging.enabled | bool | `true` |  |
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.8.1](https://github.com/norwoodj/helm-docs/releases/v1.8.1)
+Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
