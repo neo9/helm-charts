@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  annotations:
+    workflows.argoproj.io/maintainer: '@ljuillard'
+    workflows.argoproj.io/version: '>= 2.9.0'
+  name: worflow-cli-templates
+spec:
+  archiveLogs: true
+  templates:
+  - name: jira-callback
+    inputs:
+      parameters:
+        - name: issue-key
+        - name: status
+    outputs:
+      parameters:
+        # export a global parameter. The parameter will be programatically available in the completed
+        # workflow object under: workflow.outputs.parameters
+        - name: issue-key
+          value: "{{`{{inputs.parameters.issue-key}}`}}"
+          globalName: issue-key-global
+    script:
+      imagePullPolicy: "Always"
+      image: {{ .Values.workflowCli.containerImage }}
+      command: ["python"] 
+      args: ["JiraCallbacks.py", "callback"]
+      env:
+        - name: USERNAME_ATLASSIAN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.workflowCli.jiraCli.credentials.secretName }}
+              key: {{ .Values.workflowCli.jiraCli.credentials.userNameKey }}
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.workflowCli.jiraCli.credentials.secretName }}
+              key: {{ .Values.workflowCli.jiraCli.credentials.tokenKey }}
+        - name: JIRA_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.workflowCli.jiraCli.credentials.secretName }}
+              key: {{ .Values.workflowCli.jiraCli.credentials.jiraUrlKey }}
+        - name: STATUS_NAME
+          value: "{{`{{inputs.parameters.status}}`}}"
+        - name: ISSUE_KEY
+          value: "{{`{{inputs.parameters.issue-key}}`}}"
+ 

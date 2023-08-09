@@ -1,0 +1,58 @@
+{{- if .Values.ingress.enabled }}
+---
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+apiVersion: networking.k8s.io/v1
+{{- else }}
+apiVersion: networking.k8s.io/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{.Values.appName}}
+    app.kubernetes.io/instance: argo-events
+  annotations:
+    {{- if .Values.ingress.tls }}
+    ingress.kubernetes.io/secure-backends: "true"
+    {{- end }}
+    {{- if .Values.ingress.annotations }}
+      {{- toYaml .Values.ingress.annotations | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.ingress.ingressClassName }}
+  {{- end }}
+  rules:
+  {{- range .Values.webhooks }}
+  {{- $webhookName :=  .name }}
+  - host: {{ .url }}
+    http:
+      paths:
+      {{- range .events }}
+        - path: {{ default "/*" .endpoint }}
+          {{- if $.Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ $webhookName }}-eventsource-svc
+              port:
+                number: {{ .port}}
+          {{- else }}
+          backend:
+            serviceName: {{ $webhookName }}-eventsource-svc
+            servicePort: {{ .port }}
+          {{- end }}
+      {{- end }}
+  {{- end }}
+  {{- if .Values.ingress.tls }}
+  tls: 
+  {{- range .Values.webhooks }}
+  - secretName: {{ .tls.secretName }}
+    hosts:
+    {{- range .tls.hosts }}
+    - {{- .  | indent 2}}
+    {{- end}}
+  {{- end }}
+
+  {{- end }}
+{{- end }}

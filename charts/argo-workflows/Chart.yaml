@@ -1,0 +1,9 @@
+apiVersion: v2
+type: application
+
+name: argo-workflows
+description: Neo9 argo workflows deployment
+icon: https://argoproj.github.io/argo-workflows/assets/logo.png
+
+version: 0.1.0
+appVersion: "latest"

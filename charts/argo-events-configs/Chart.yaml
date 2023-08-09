@@ -1,0 +1,9 @@
+apiVersion: v2
+type: application
+
+name: argo-events-configs
+description: Neo9 argo events deployment
+icon: https://argoproj.github.io/argo-events/assets/logo.png
+
+version: 0.1.0
+appVersion: "latest"

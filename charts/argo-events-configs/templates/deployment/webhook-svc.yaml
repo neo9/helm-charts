@@ -1,0 +1,18 @@
+{{- range .Values.webhooks }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.name}}-eventsource-svc
+spec:
+  type: LoadBalancer
+  ports:
+  {{- range .events }}
+  - name: "{{ .port}}-{{.event}}"
+    port: {{ .port}}
+    protocol: TCP
+    targetPort: {{ .port}}
+  {{- end }}
+  selector:
+    controller: eventsource-controller
+    eventsource-name: {{.name}}
+{{- end }}

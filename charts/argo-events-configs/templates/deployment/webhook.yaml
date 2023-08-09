@@ -1,0 +1,19 @@
+{{- range .Values.webhooks }}
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: {{.name}}
+spec:
+  eventBusName: {{$.Values.eventBus.name}}
+  webhook:
+    # event-source can run multiple HTTP servers. Simply define a unique port to start a new HTTP server
+  {{- range .events }}
+    {{ .event }}:
+      # port to run HTTP server on
+      port: "{{ .port}}"
+      # endpoint to listen to
+      endpoint: {{ .endpoint}}
+      # HTTP request method to allow. In this case, only POST requests are accepted
+      method: POST
+  {{- end }}
+{{- end }}

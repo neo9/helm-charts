@@ -1,0 +1,200 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  annotations:
+    # workflows.argoproj.io/description: This task comment a jira issue using a simple python script
+    workflows.argoproj.io/maintainer: '@ljuillard'
+    workflows.argoproj.io/version: '>= 2.9.0'
+  name: vpn-script-template
+spec:
+  archiveLogs: true
+  templates:
+  - name: vpn-script-runtime
+    inputs:
+      parameters:
+        - name: action
+          default : "apply-config-from-branch"
+        - name: name
+          default: "" 
+        - name: groups
+          default: "" 
+        - name: email
+          default: ""
+    steps: 
+      - - name: vpn-apply-config-from-branch
+          template: vpn-script-command
+          when: "'{{ `{{inputs.parameters.action}}`}}' == 'apply-config-from-branch'"
+          arguments:
+            parameters:
+              - name: command
+                value: "apply-config-from-branch"
+      - - name: vpn-remove-user-from-group
+          template: vpn-script-command
+          when: "'{{ `{{inputs.parameters.action}}`}}' == 'remove-user-from-group'"
+          arguments:
+            parameters:
+              - name: command
+                value: "remove-user-from-group --username {{ `{{inputs.parameters.name}}`}} --groups {{ `{{inputs.parameters.groups}}`}}"
+      - - name: vpn-add-user-to-group
+          template: vpn-script-command
+          when: "'{{ `{{inputs.parameters.action}}`}}' == 'add-user-to-group'"
+          arguments:
+            parameters:
+              - name: command
+                value: "add-user-to-group --username {{ `{{inputs.parameters.name}}`}} --groups {{ `{{inputs.parameters.groups}}`}}"
+      - - name: vpn-create-user
+          template: vpn-script-command
+          when: "'{{ `{{inputs.parameters.action}}`}}' == 'create-user'"
+          arguments:
+            parameters:
+              - name: command
+                value: "create-user --username {{ `{{inputs.parameters.name}}`}} --email {{ `{{inputs.parameters.email}}`}}"
+      - - name: vpn-revoke-user
+          template: vpn-script-command
+          when: "'{{ `{{inputs.parameters.action}}`}}' == 'revoke-user'"
+          arguments:
+            parameters:
+              - name: command
+                value: "revoke-user --username {{ `{{inputs.parameters.name}}`}}"
+  - name: vpn-script-command
+    inputs:
+      parameters:
+        - name: command
+    volumes:
+      - name: git-config-volume
+        secret:
+          secretName: {{ .Values.vpnScript.credentials.gitConfig.secretName }}
+      - name: ssh-config-volume
+        secret:
+          secretName: {{ .Values.vpnScript.credentials.sshKeys.secretName }}
+          defaultMode: 0600
+      - name: ssh-cnb-volume
+        emptyDir: {}
+      - name: gcloud-config-cnb-volume
+        emptyDir: {}
+      - name: gcloud-sa-token
+        secret:
+          secretName: {{ .Values.vpnScript.credentials.gcp.secretName }}
+    script:
+      imagePullPolicy: "Always"
+      image: {{ .Values.vpnScript.containerImage }}
+      command: ["bash"]
+      source: |
+        source ~/.bashrc && \
+        /cnb/process/cli {{ `{{inputs.parameters.command}}`}} 
+      env:
+        # - name: ARGO_DEBUG_PAUSE_AFTER
+        #   value: 'true'
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/home/cnb/.config/gcloud/application_default_credentials.json"
+        - name: ANSIBLE_CONFIG
+          value: /tmp/ansible-vpn/ansible.cfg
+        - name: GITLAB_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: gitlab_url
+        - name: PROJECT_NAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: project_name
+        - name: DEFAULT_BRANCH
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: default_branch
+        - name: REPO_SSH
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: repo_ssh
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: token
+        - name: REVIEWERS
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: reviewers
+        - name: OPENVPN_FILE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: openvpn_file
+        - name: TIMEOUT
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: timeout
+        - name: SMTP_HOST
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: smtp_host
+        - name: SMTP_HOST
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: smtp_host
+        - name: SMTP_PORT
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: smtp_host
+        - name: SMTP_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: smtp_username
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.vpnScript.credentials.configVpnCli.secretName }}
+              key: smtp_password
+      volumeMounts: 
+        - name: git-config-volume  
+          mountPath: /home/cnb/.gitconfig
+          subPath: .gitconfig
+          readOnly: true
+        - name: ssh-cnb-volume  
+          mountPath: /home/cnb/.ssh
+        - name: gcloud-config-cnb-volume
+          mountPath: /home/cnb/.config/gcloud
+          readOnly: false
+    initContainers:
+    - name: gcloud-auth
+      image: google/cloud-sdk:423.0.0-alpine
+      command: ["bash", "-c", "gcloud auth activate-service-account --key-file=/root/cred.json && cp /root/cred.json /root/.config/gcloud/application_default_credentials.json"]
+      volumeMounts:
+        - name: gcloud-config-cnb-volume
+          mountPath: /root/.config/gcloud
+          readOnly: false
+        - name: gcloud-sa-token
+          mountPath: /root/ 
+    - name: volume-mount-cp
+      image: busybox
+      command: ["sh", "-c", "cp -Lr /home/cnb/ssh-secrets/* /home/cnb/.ssh/"]
+      volumeMounts:
+        - name: ssh-config-volume
+          mountPath: /home/cnb/ssh-secrets
+          readOnly: true
+        - name: ssh-cnb-volume
+          mountPath: /home/cnb/.ssh
+          readOnly: false        
+    - name: volume-mount-chown
+      image: busybox
+      command: ["sh", "-c", "chown -R 1000:1000 /home/cnb && chmod -R 700 /home/cnb/.ssh && chmod 600 /home/cnb/.ssh/git_key* && chmod 600 /home/cnb/.ssh/id_*"]
+      volumeMounts:
+        - name: ssh-cnb-volume
+          mountPath: /home/cnb/.ssh
+          readOnly: false
+        - name: gcloud-config-cnb-volume
+          mountPath: /home/cnb/.config/gcloud
+          readOnly: false
+
+        
+
+      

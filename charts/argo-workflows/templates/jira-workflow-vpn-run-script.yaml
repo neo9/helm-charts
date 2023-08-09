@@ -1,0 +1,115 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  annotations:
+    workflows.argoproj.io/description: This task comment a jira issue using a simple python script
+    workflows.argoproj.io/maintainer: '@ljuillard'
+    workflows.argoproj.io/version: '>= 2.9.0'
+  name: jira-vpn-script
+spec:
+  entrypoint: vpn-script
+  onExit: exit-handler
+  templates:
+  - name: vpn-script
+    inputs:
+      parameters:
+        - name: action
+        - name: name
+          default: "" 
+        - name: groups
+          default: "" 
+        - name: email
+          default: ""
+        - name: issue-key
+    steps:
+    - - name: jira-callback-in-progress
+        templateRef:                
+          name: worflow-cli-templates 
+          template: jira-callback 
+          clusterScope: true 
+        arguments:
+          parameters:
+            - name: issue-key
+              value: "{{`{{inputs.parameters.issue-key}}`}}"
+            - name: status
+              value: "InProgress"
+    - - name: vpn-script-runtime
+        # template: vpn-script-runtime
+        templateRef:                  # You can reference a "template" from another "WorkflowTemplate or ClusterWorkflowTemplate" using this field
+          name: vpn-script-template   # This is the name of the "WorkflowTemplate or ClusterWorkflowTemplate" CRD that contains the "template" you want
+          template: vpn-script-runtime # This is the name of the "template" you want to reference
+          clusterScope: true   
+        arguments:
+          parameters:
+            - name: action
+              value: "{{`{{inputs.parameters.action}}`}}"
+            - name: name
+              value: "{{`{{inputs.parameters.name}}`}}"
+            - name: groups
+              value: "{{`{{inputs.parameters.groups}}`}}"
+            - name: email
+              value: "{{`{{inputs.parameters.email}}`}}"
+  - name: jira-callback
+    inputs:
+      parameters:
+        - name: issue-key
+        - name: status
+    outputs:
+      parameters:
+        # export a global parameter. The parameter will be programatically available in the completed
+        # workflow object under: workflow.outputs.parameters
+        - name: issue-key
+          value: "{{`{{inputs.parameters.issue-key}}`}}"
+          globalName: issue-key-global
+    script:
+      imagePullPolicy: "Always"
+      image: eu.gcr.io/neokube/jira-cli:latest 
+      command: ["python"] 
+      args: ["JiraCallbacks.py", "callback"]
+      env:
+        - name: USERNAME_ATLASSIAN
+          valueFrom:
+            secretKeyRef:
+              name: "jira-credentials"
+              key: user
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: "jira-credentials"
+              key: token
+        - name: JIRA_URL
+          valueFrom:
+            secretKeyRef:
+              name: "jira-credentials"
+              key: jira_url
+        - name: EXIT_CODE_APPLI
+          value: "{{`{{inputs.parameters.status}}`}}"
+        - name: ISSUE_KEY
+          value: "{{`{{inputs.parameters.issue-key}}`}}"
+
+  - name: exit-handler
+    steps:
+    - - name: Success
+        templateRef:                
+          name: worflow-cli-templates 
+          template: jira-callback 
+          clusterScope: true 
+        when: "{{`{{workflow.status}}`}} == Succeeded"
+        arguments:
+          parameters:
+            - name: issue-key
+              value: "{{`{{workflow.outputs.parameters.issue-key-global}}`}}"
+            - name: status
+              value: "Success"
+      - name: Failure
+        templateRef:                
+          name: worflow-cli-templates 
+          template: jira-callback 
+          clusterScope: true 
+        when: "{{`{{workflow.status}}`}} != Succeeded"
+        arguments:
+          parameters:
+            - name: issue-key
+              value: "{{`{{workflow.outputs.parameters.issue-key-global}}`}}"
+            - name: status
+              value: "Pending"

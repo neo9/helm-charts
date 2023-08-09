@@ -1,0 +1,21 @@
+{{- range .Values.webhooks }}
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: vpn-worflows-sensor
+spec:
+  eventBusName: {{$.Values.eventBus.name}}
+  template:
+    serviceAccountName: {{$.Values.rbac.serviceAccountName}}
+  dependencies:
+  {{- $webhook_name :=  .name }}
+  {{- range .events }}
+  - name: {{ .event }}
+    eventSourceName: {{ $webhook_name }}
+    eventName: {{ .event }}
+  {{- end }}
+  triggers: 
+{{- range .triggers }}
+  - template: {{ .template | toYaml | nindent 6 }}
+{{- end}}
+{{- end}}

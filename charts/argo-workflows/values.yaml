@@ -1,0 +1,28 @@
+workflowCli:
+  containerImage: eu.gcr.io/neokube/workflow-cli:latest
+  jiraCli:
+    credentials:
+      # -- name of the secret containing jira credentials with keys (user, token, jira-url)
+      secretName: jira-credentials
+      # userNameKey: user
+      # tokenKey: token
+      # jiraUrlKey: jira-url
+vpnScript:
+  # -- container image used by vpn script
+  containerImage: eu.gcr.io/neokube/vpn-script:latest
+  credentials:
+    sshKeys:
+      # -- name of the secret containing ssh config (config, private and public keys)
+      secretName: ssh-key
+    configVpnCli:
+      # -- name of the secret containing vpn script cli config (env parameters)
+      secretName: config-vpn-cli
+    gitConfig:
+      # -- name of the secret containing .gitconfig
+      secretName: git-config
+    gcp:
+      # -- name of the secret containing gcp service account token (key cred.json, mandatory to mount file with the same name)
+      secretName: argo-gcloud-credendtials
+    
+      
+    
