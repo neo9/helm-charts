@@ -33,6 +33,30 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/apprise-0.1.0/apprise-0.1.0.tgz
     version: 0.1.0
+  argo-events-configs:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2023-08-09T09:21:34.939800155Z"
+    description: Neo9 argo events deployment
+    digest: f694575ea898344f50d87cb97a4944b21f0f79604442b109536cb336405d85e7
+    icon: https://argoproj.github.io/argo-events/assets/logo.png
+    name: argo-events-configs
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/argo-events-configs-0.1.0/argo-events-configs-0.1.0.tgz
+    version: 0.1.0
+  argo-workflows:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2023-08-09T09:21:35.202577871Z"
+    description: Neo9 argo workflows deployment
+    digest: d5d228cc56bf5ca70c62da1370f1f549be56a934097d5c3ee2d59a49038c2eb3
+    icon: https://argoproj.github.io/argo-workflows/assets/logo.png
+    name: argo-workflows
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/argo-workflows-0.1.0/argo-workflows-0.1.0.tgz
+    version: 0.1.0
   catalogue:
   - apiVersion: v2
     appVersion: 2.34.0
@@ -1166,4 +1190,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-08-04T15:11:14.468341404Z"
+generated: "2023-08-09T09:21:41.513656324Z"
