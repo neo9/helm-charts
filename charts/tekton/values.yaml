@@ -167,3 +167,7 @@ tekton:
         secretRef:
           key: known_hosts
           name: docker-registry
+
+scheduling:
+  nodeSelector: {}
+  tolerations: []

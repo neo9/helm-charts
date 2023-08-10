@@ -61,6 +61,13 @@ spec:
                 storage: {{ (coalesce .Values.cluster.delivery.config.run.storage.appPush .Values.cluster.delivery.config.run.storage.requests) | quote }}
       pipelineRef:
         name: {{ .Values.tekton.config.templates.appPushDevelop.pipelineRef }}
+      podTemplate:
+      {{- if  .Values.scheduling.nodeSelector }}
+        nodeSelector: {{ toYaml .Values.scheduling.nodeSelector | nindent 10 }}
+      {{ end }}
+      {{- if .Values.scheduling.tolerations}}
+        tolerations: {{ toYaml .Values.scheduling.tolerations | nindent 10 }}
+      {{ end }}
       params:
       - name: debug
         value: "true"
