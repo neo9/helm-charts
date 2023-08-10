@@ -52,7 +52,7 @@ cluster:
 vhosts: []
 
 # -- Define the list of users, assigned vhosts and corresponding permissions
-users: []
+users: 
   # - name: admin
   #   tags: ["administrator"] # (optional)
   #   importCredentialsSecret: # This will simply import credentials into `{release-name}-user-{user}-user-credentials` (optional)

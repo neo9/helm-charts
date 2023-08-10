@@ -16,5 +16,8 @@ spec:
   {{- if (($user.importCredentialsSecret).name) }}
   importCredentialsSecret:
     name: {{ (($user.importCredentialsSecret).name) }}
+  {{- else }}
+  importCredentialsSecret:
+    name: {{ include "rabbitmq-managed.fullname" $ }}-user-{{ $user.name }}
   {{- end }}
 {{- end }}
