@@ -57,7 +57,7 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: {{ coalesce .Values.cluster.delivery.config.run.storage.clusterPush .Values.cluster.delivery.config.run.storage.requests | quote }}
+                storage: {{ (coalesce .Values.cluster.delivery.config.run.storage.clusterPush .Values.cluster.delivery.config.run.storage.requests) | quote }}
       pipelineRef:
         name: cluster-push
       params:

@@ -58,7 +58,7 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: {{ coalesce .Values.cluster.delivery.config.run.storage.appPush .Values.cluster.delivery.config.run.storage.requests | quote }}
+                storage: {{ (coalesce .Values.cluster.delivery.config.run.storage.appPush .Values.cluster.delivery.config.run.storage.requests) | quote }}
       pipelineRef:
         name: {{ .Values.tekton.config.templates.appPushDevelop.pipelineRef }}
       params:

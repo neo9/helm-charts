@@ -6,7 +6,7 @@ metadata:
 spec:
   params:
   - name: container-images-repository
-    value: {{ .Values.cloud.registry.hostname }}/{{ or .Values.cloud.registry.project .Values.cloud.project }}
+    value: {{ .Values.cloud.registry.hostname }}/{{ coalesce .Values.cloud.registry.project .Values.cloud.project }}
 
   - name: git-api-endpoint
     value: {{ .Values.git.api.url }}

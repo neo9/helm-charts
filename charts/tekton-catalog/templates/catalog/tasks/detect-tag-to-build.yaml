@@ -71,7 +71,7 @@ spec:
           baseImage="${imageRepository}/${projectName}:${inputTag}"
 
           # accepts X.Y.Z-XXX or vX.Y.Z-XXX
-          regexVersion='^([0-9]+\.){2}(\*|[0-9]+)([-,a-z,0-9]*)$|^v([0-9]+\.){2}(\*|[0-9]+)([-,a-z,0-9]*)$'
+          regexVersion='^v?([0-9]+\.){2}(\*|[0-9]+)([-,a-z,0-9]*)$'
           targetImage=""
           targetTag="${inputTag}"
           isTag="false"

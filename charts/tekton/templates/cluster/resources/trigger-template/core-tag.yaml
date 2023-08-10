@@ -63,7 +63,7 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: {{ coalesce .Values.cluster.delivery.config.run.storage.coreTag .Values.cluster.delivery.config.run.storage.requests | quote }}
+                storage: {{ (coalesce .Values.cluster.delivery.config.run.storage.coreTag .Values.cluster.delivery.config.run.storage.requests) | quote }}
       pipelineRef:
         name: core-tag
       params:
