@@ -37,11 +37,11 @@ spec:
       image: $(params.IMAGE)
       resources:
         requests:
-          memory: 500m
-          cpu: 500m
-        limits:
           memory: 2Gi
-          cpu: 800m
+          cpu: 750m
+        limits:
+          memory: 4Gi
+          cpu: 1500m
       script: |
         #!/bin/sh
         $(params.COMMAND) $(params.ARGS)
@@ -49,3 +49,5 @@ spec:
       env:
         - name: CI
           value: "true"
+        - name: NODE_OPTIONS
+          value: "--max_old_space_size=3072"

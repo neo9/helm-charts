@@ -62,6 +62,13 @@ spec:
   steps:
   - name: build
     image: $(params.BUILDER_IMAGE)
+    resources:
+        requests:
+          memory: 1Gi
+          cpu: 700m
+        limits:
+          memory: 2Gi
+          cpu: 1500m
     workingDir: $(workspaces.source.path)/$(params.DIRECTORY)
     script: |
       eval $(ssh-agent) 1> /dev/null && ssh-add ~/.ssh/id_git-ssh 1> /dev/null && \

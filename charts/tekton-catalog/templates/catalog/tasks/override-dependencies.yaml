@@ -25,6 +25,13 @@ spec:
   steps:
     - name: run-script
       image: $(params.image)
+      resources:
+        requests:
+          memory: 500m
+          cpu: 500m
+        limits:
+          memory: 1Gi
+          cpu: 800m
       workingDir: $(workspaces.source.path)/$(params.directory)
       command: ["/bin/bash"]
       args:

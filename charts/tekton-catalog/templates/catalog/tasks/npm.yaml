@@ -35,6 +35,13 @@ spec:
   steps:
     - name: npm-run
       image: $(params.IMAGE)
+      resources:
+        requests:
+          memory: 300m
+          cpu: 300m
+        limits:
+          memory: 1Gi
+          cpu: 800m
       script: |
         #!/bin/sh
         $(params.COMMAND) $(params.ARGS)
@@ -42,3 +49,5 @@ spec:
       env:
         - name: CI
           value: "true"
+        - name: NODE_OPTIONS
+          value: "--max_old_space_size=750"

@@ -34,6 +34,13 @@ spec:
   steps:
     - name: yarn-run
       image: $(params.IMAGE)
+      resources:
+        requests:
+          memory: 500m
+          cpu: 500m
+        limits:
+          memory: 1Gi
+          cpu: 800m
       command:
         - "yarn"
       args:

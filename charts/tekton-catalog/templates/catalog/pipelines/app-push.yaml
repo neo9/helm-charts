@@ -161,7 +161,6 @@ spec:
           echo "chart-version: $(params.chart-version)"
           echo "deploy-enabled: $(params.deploy-enabled)"
           echo "build-image-only: $(params.build-image-only)"
-
     workspaces:
       - name: input
         workspace: ws
@@ -381,7 +380,7 @@ spec:
         values:
           - "false"
     taskRef:
-      name: npm
+      name: npm-with-high-ressources
     workspaces:
     - name: source
       workspace: ws
@@ -411,7 +410,8 @@ spec:
         values:
           - "false"
     runAfter:
-      - npm-run-lint
+      - override-dependencies
+      - yarn-install-dependencies
     taskRef:
       name: npm-with-high-ressources
     workspaces:
@@ -808,7 +808,7 @@ spec:
         values:
           - "image"
     runAfter:
-      - override-dependencies
+      # - override-dependencies
       - setup-project
     taskRef:
       name: buildah-edited
