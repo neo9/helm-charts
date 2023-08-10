@@ -767,6 +767,16 @@ entries:
     version: 0.1.0
   container-registry-operator:
   - apiVersion: v2
+    appVersion: v0.1.5
+    created: "2023-08-10T13:46:35.256326475Z"
+    description: A Helm chart for Kubernetes
+    digest: 8ddf8a980d7ccbb865dc54a4cbba54b22cf2c32e22231bafc857403a7a2e8c04
+    name: container-registry-operator
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/container-registry-operator-0.1.1/container-registry-operator-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: v0.1.4
     created: "2023-05-02T14:15:14.967144785Z"
     description: A Helm chart for Kubernetes
@@ -1324,4 +1334,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-08-10T11:54:54.648604096Z"
+generated: "2023-08-10T13:46:40.916861531Z"
