@@ -93,8 +93,3 @@ spec:
           echo -n "${targetTag}" > $(results.TARGET_IMAGE_TAG.path)
           echo -n "${isBranch}" > $(results.IS_BRANCH.path)
           echo -n "${isTag}" > $(results.IS_TAG.path)
-  workspaces:
-    - name: input
-    - name: output
-    - name: source
-    - name: data

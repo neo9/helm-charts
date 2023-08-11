@@ -3,6 +3,7 @@ cluster:
     namespace: integration
     branch: develop
     config:
+      parallel: true
       autoMerge: "false"
       trivy:
         enabled: false

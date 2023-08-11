@@ -12,12 +12,6 @@ metadata:
 spec:
   description: >-
     This task notify gitlab with the pipeline status
-  workspaces:
-    - name: input
-    - name: output
-    - name: source
-    - name: data
-
   params:
     - name: ref
       description: The ref (branch or tag) to which the status refers

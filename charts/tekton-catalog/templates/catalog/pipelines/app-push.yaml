@@ -128,6 +128,7 @@ spec:
 ################                 ################
 #################################################
 
+{{ if .Values.cluster.delivery.config.parallel }}
   - name: init
     taskRef:
       name: devops-tools
@@ -170,7 +171,7 @@ spec:
         workspace: ws
       - name: data
         workspace: ws
-
+{{ end }}
 #################################################
 
   - name: detect-tag-to-build
@@ -187,15 +188,6 @@ spec:
         value: "$(params.git-branch)"
     taskRef:
       name: detect-tag-to-build
-    workspaces:
-      - name: input
-        workspace: ws
-      - name: output
-        workspace: ws
-      - name: source
-        workspace: ws
-      - name: data
-        workspace: ws
 
 #################################################
 
@@ -218,15 +210,6 @@ spec:
         value: $(params.tekton-url)
       - name: ref
         value: $(params.git-branch)
-    workspaces:
-        - name: input
-          workspace: ws
-        - name: output
-          workspace: ws
-        - name: source
-          workspace: ws
-        - name: data
-          workspace: ws
 
 #################################################
 
@@ -410,8 +393,12 @@ spec:
         values:
           - "false"
     runAfter:
+    {{ if .Values.cluster.delivery.config.parallel }}
       - override-dependencies
       - yarn-install-dependencies
+    {{ else }}
+      - npm-run-lint
+    {{ end }}
     taskRef:
       name: npm-with-high-ressources
     workspaces:
@@ -456,7 +443,11 @@ spec:
 
   - name: npm-build
     runAfter:
+    {{ if .Values.cluster.delivery.config.parallel }}
       - npm-run-tests
+    {{ else }}
+      - npm-generate-code-coverage
+    {{ end }}
     when:
     - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
       operator: in
@@ -584,7 +575,12 @@ spec:
       values:
         - "image"
     runAfter:
+    {{ if .Values.cluster.delivery.config.parallel }}
     - gradle-build-and-tests
+    {{ else }}
+    - sonarqube-code-analysis
+    - gradle-publish-on-nexus
+    {{ end }}
     taskRef:
       name: jib-gradle
     params:
@@ -602,7 +598,11 @@ spec:
 
   - name: gradle-publish-on-nexus
     runAfter:
+    {{ if .Values.cluster.delivery.config.parallel }}
     - gradle-build-and-tests
+    {{ else }}
+    - sonarqube-code-analysis
+    {{ end }}
     when:
     - input: $(tasks.extract-build-config-from-source.results.BUILD_TOOL)
       operator: in
@@ -693,7 +693,11 @@ spec:
       values:
         - "image"
     runAfter:
+    {{ if .Values.cluster.delivery.config.parallel }}
     - maven-compile-and-tests
+    {{ else }}
+    - sonarqube-code-analysis
+    {{end }}
     taskRef:
       name: jib-maven
     params:
@@ -727,6 +731,10 @@ spec:
       - npm-generate-code-coverage
       - gradle-build-and-tests
       - maven-compile-and-tests
+    {{ if not .Values.cluster.delivery.config.parallel }}
+      - npm-build
+      - npm-publish-on-nexus
+    {{ end }}
     when:
       - input: $(params.build-image-only)
         operator: in
@@ -776,6 +784,10 @@ spec:
     runAfter:
       - override-dependencies
       - setup-project
+    {{ if not .Values.cluster.delivery.config.parallel }}
+      - sonarqube-code-analysis
+      - gradle-publish-on-nexus
+    {{ end }}
     taskRef:
       name: buildpacks
     params:
@@ -808,8 +820,12 @@ spec:
         values:
           - "image"
     runAfter:
-      # - override-dependencies
+      - override-dependencies
       - setup-project
+    {{ if not .Values.cluster.delivery.config.parallel }}
+      - sonarqube-code-analysis
+      - gradle-publish-on-nexus
+    {{ end }}
     taskRef:
       name: buildah-edited
     params:
@@ -960,6 +976,14 @@ spec:
     - maven-build-container-image
     - builpack-build
     - buildah-build
+    {{ if not .Values.cluster.delivery.config.parallel }}
+    - continuous-delivery-deploy
+    {{ if .Values.cluster.delivery.additonalEnvs }}
+    {{- range $key, $value := .Values.cluster.delivery.additonalEnvs }}
+    -  continuous-delivery-deploy-{{ $value.namespace }}
+    {{- end }}
+    {{ end }}
+    {{ end }}
     params:
       - name: IMAGE_PATH
         value: $(tasks.detect-tag-to-build.results.TARGET_IMAGE)
@@ -987,6 +1011,20 @@ spec:
   - name: run-lighthouse-benchmarks
     runAfter:
     - override-dependencies
+{{ if not .Values.cluster.delivery.config.parallel }}
+{{ if .Values.cluster.delivery.config.trivy.enabled }}
+    - scan-vulnerabilities
+{{ end }}
+    - continuous-delivery-deploy
+{{ if .Values.cluster.delivery.additonalEnvs }}
+  {{- range $key, $value := .Values.cluster.delivery.additonalEnvs }}
+    -  continuous-delivery-deploy-{{ $value.namespace }}
+  {{- end }}
+{{ end }}
+    - builpack-build
+    - buildah-build
+    - sonarqube-code-analysis
+{{ end }}
     when:
       - input: $(tasks.extract-build-config-from-source.results.LIGHTHOUSE_CI)
         operator: in
@@ -1058,7 +1096,22 @@ spec:
 
   - name: run-cypress-ti
     runAfter:
-      - override-dependencies
+    - override-dependencies
+    {{ if not .Values.cluster.delivery.config.parallel }}
+    - upload-lighthouse-benchmarks-report
+    {{ if .Values.cluster.delivery.config.trivy.enabled }}
+    - scan-vulnerabilities
+    {{ end }}
+    - continuous-delivery-deploy
+    {{ if .Values.cluster.delivery.additonalEnvs }}
+    {{- range $key, $value := .Values.cluster.delivery.additonalEnvs }}
+    -  continuous-delivery-deploy-{{ $value.namespace }}
+    {{- end }}
+    {{ end }}
+    - builpack-build
+    - buildah-build
+    - sonarqube-code-analysis
+    {{ end }}
     when:
       - input: $(tasks.extract-build-config-from-source.results.CYPRESS_TI)
         operator: in
