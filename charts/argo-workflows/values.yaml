@@ -22,7 +22,5 @@ vpnScript:
       secretName: git-config
     gcp:
       # -- name of the secret containing gcp service account token (key cred.json, mandatory to mount file with the same name)
-      secretName: argo-gcloud-credendtials
-    
-      
+      secretName: argo-gcloud-credentials
     
