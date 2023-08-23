@@ -14,6 +14,22 @@ entries:
   akeneo:
   - apiVersion: v2
     appVersion: "5.0"
+    created: "2023-08-23T17:37:18.401023284Z"
+    dependencies:
+    - alias: minio
+      condition: minio.enabled
+      name: minio
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.7.0
+    description: Helm chart to deploy a demo of akeneo PIM
+    digest: e86266f31b51afafc331b856911cd87b6490a17d3bbe260d04c4c87962f3769e
+    name: akeneo
+    type: application
+    urls:
+    - https://github.com/neo9/helm-charts/releases/download/akeneo-1.3.0/akeneo-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
+    appVersion: "5.0"
     created: "2023-05-02T14:15:13.862310105Z"
     description: Helm chart to deploy a demo of akeneo PIM
     digest: 5d5a973d6542d7378b9fdc15b6082d8026e6f3fc5387fc234b18dd5498aa4f4c
@@ -1410,4 +1426,4 @@ entries:
     urls:
     - https://github.com/neo9/helm-charts/releases/download/tekton-logging-0.1.1/tekton-logging-0.1.1.tgz
     version: 0.1.1
-generated: "2023-08-23T15:33:26.478914947Z"
+generated: "2023-08-23T17:37:23.634298075Z"
