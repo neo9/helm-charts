@@ -411,7 +411,7 @@ external-secrets:
     live-api: ["elasticsearch"]
     master-api: ["rabbitmq", "mongodb", "elasticsearch"]
     merchandising-api: ["mongodb", "rabbitmq"]
-    media-api: ["rabbitmq", "mongodb", "google_service_account", "bucket"]
+    media-api: ["rabbitmq", "mongodb", "google_service_account", "gcs_bucket"]
     mirakl-api: ["rabbitmq", "mongodb"]
     mock-api: ["rabbitmq", "mongodb"]
     publication-api: ["elasticsearch", "rabbitmq"]

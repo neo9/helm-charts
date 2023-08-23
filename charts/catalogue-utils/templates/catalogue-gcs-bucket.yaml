@@ -1,0 +1,12 @@
+{{- if index $.Values "external-secrets" "bucketName" }}
+{{- range $api, $value := index $.Values "external-secrets" "bucketName"}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: catalogue-{{ $api }}-gcs-bucket
+type: Opaque
+## Currently required, as for externalsecret with only this shared value directly into template, it won't trigger an update of the corresponding secret. Thus requiring this intermediate secret
+stringData:
+  GCS_BUCKET_NAME: {{ $value }}
+{{- end }}
+{{- end }}

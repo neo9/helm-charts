@@ -15,4 +15,4 @@ dependencies:
   repository: https://helm.min.io
   version: 8.0.10
 digest: sha256:ea5996aed8587523312b2aacb644cd3a1ec517e14c665345a8dc280c784f31a9
-generated: "2023-07-28T14:08:26.708251719+02:00"
+generated: "2023-08-23T10:18:14.514442674+02:00"

@@ -1,6 +1,6 @@
 # catalogue-utils
 
-![Version: 0.10.4](https://img.shields.io/badge/Version-0.10.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.11.0](https://img.shields.io/badge/Version-0.11.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -108,7 +108,7 @@ A Helm chart for Kubernetes
 | external-secrets.schema.media-api[0] | string | `"rabbitmq"` |  |
 | external-secrets.schema.media-api[1] | string | `"mongodb"` |  |
 | external-secrets.schema.media-api[2] | string | `"google_service_account"` |  |
-| external-secrets.schema.media-api[3] | string | `"bucket"` |  |
+| external-secrets.schema.media-api[3] | string | `"gcs_bucket"` |  |
 | external-secrets.schema.merchandising-api[0] | string | `"mongodb"` |  |
 | external-secrets.schema.merchandising-api[1] | string | `"rabbitmq"` |  |
 | external-secrets.schema.mirakl-api[0] | string | `"rabbitmq"` |  |
