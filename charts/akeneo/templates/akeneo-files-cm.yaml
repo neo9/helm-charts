@@ -8,32 +8,31 @@ data:
   oneup_flysystem.yml: |
     services:
       akeneo.s3_client:
-          class: Aws\S3\S3Client
-          arguments:
-              -
-                  version: 'latest'
-                  region: {{ .Values.objectStorage.region }}
-                  endpoint: http://{{ include "akeneo.fullname" . }}-minio-service.{{ .Release.Namespace }}.svc.cluster.local:9000
-                  use_path_style_endpoint: true
-                  credentials:
-                      key: {{ .Values.objectStorage.minio.username }}
-                      secret: {{ .Values.objectStorage.minio.password }}
+        class: Aws\S3\S3Client
+        arguments:
+          - version: 'latest'
+            region: 'region-id'
+            endpoint: http://{{ .Values.minio.fullnameOverride }}.{{ .Release.Namespace }}.svc.cluster.local:9000
+            use_path_style_endpoint: true
+            credentials:
+              key: {{ .Values.minio.auth.rootUser }}
+              secret: {{ .Values.minio.auth.rootPassword }}
     oneup_flysystem:
       adapters:
-          asset_storage_adapter:
-              nulladapter: ~
-          catalog_storage_adapter:
-              awss3v3:
-                  client: akeneo.s3_client
-                  bucket: {{ .Values.objectStorage.bucket }}
-                  prefix: catalog
-          jobs_storage_adapter:
-              awss3v3:
-                  client: akeneo.s3_client
-                  bucket: {{ .Values.objectStorage.bucket }}
-                  prefix: jobs
-          archivist_adapter:
-              awss3v3:
-                  client: akeneo.s3_client
-                  bucket: {{ .Values.objectStorage.bucket }}
-                  prefix: archive
+        asset_storage_adapter:
+          nulladapter: ~
+        catalog_storage_adapter:
+          awss3v3:
+            client: akeneo.s3_client
+            bucket: {{ .Values.minio.defaultBuckets }}
+            prefix: catalog
+        jobs_storage_adapter:
+          awss3v3:
+            client: akeneo.s3_client
+            bucket: {{ .Values.minio.defaultBuckets }}
+            prefix: jobs
+        archivist_adapter:
+          awss3v3:
+            client: akeneo.s3_client
+            bucket: {{ .Values.minio.defaultBuckets }}
+            prefix: archive
