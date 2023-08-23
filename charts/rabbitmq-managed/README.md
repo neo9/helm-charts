@@ -1,6 +1,6 @@
 # rabbitmq-managed
 
-![Version: 0.7.0](https://img.shields.io/badge/Version-0.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.10](https://img.shields.io/badge/AppVersion-3.10-informational?style=flat-square)
+![Version: 0.7.1](https://img.shields.io/badge/Version-0.7.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.10](https://img.shields.io/badge/AppVersion-3.10-informational?style=flat-square)
 
 A Helm chart to manage RabbitmqCluster & typology
 
@@ -36,7 +36,7 @@ A Helm chart to manage RabbitmqCluster & typology
 | scheduling.maxSkewPerNode | int | `1` | Max difference of number of pods between nodes using topologySpreadConstraints |
 | tolerations | list | `[]` |  |
 | topologySpreadConstraints | string | `nil` |  |
-| users | string | `nil` | Define the list of users, assigned vhosts and corresponding permissions |
+| users | list | `[]` | Define the list of users, assigned vhosts and corresponding permissions |
 | vhosts | list | `[]` | The default vhost (`/`) is automatically created |
 
 ----------------------------------------------
