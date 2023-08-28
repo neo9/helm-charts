@@ -43,6 +43,10 @@ catalogue:
   users-api: true
   # -- Condition to enable and deploy catalogue-web-api
   web-api: true
+  # -- Generate and define content of one or multiple configmap
+  configMap: []
+  # - name: catalogue-config-map # name of a config map
+  #   content: "" # content of a config map
 
 ################################################################################
 ## Values shared between all charts
