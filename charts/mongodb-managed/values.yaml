@@ -54,6 +54,9 @@ mongodbAgent:
     requests:
       cpu: 50m
       memory: 50M
+      
+# -- Define additional containers
+additionalContainers: []
 
 serviceAccount:
   # -- Specifiy whether a service account should be created

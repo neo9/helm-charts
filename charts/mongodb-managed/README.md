@@ -1,6 +1,6 @@
 # mongodb-managed
 
-![Version: 0.8.2](https://img.shields.io/badge/Version-0.8.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.9.0](https://img.shields.io/badge/Version-0.9.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart to manage mongodbcommunity cluster
 
@@ -14,6 +14,7 @@ A Helm chart to manage mongodbcommunity cluster
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| additionalContainers | list | `[]` | Define additional containers |
 | affinity | object | `{}` |  |
 | annotations | object | `{}` | Additionnal annotations to add to the metadata of mongodb statefulset |
 | fullnameOverride | string | `""` |  |

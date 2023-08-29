@@ -59,7 +59,7 @@ spec:
           {{- end }}
           serviceAccount: {{ include "mongodb-managed.serviceAccountName" . }}
           serviceAccountName: {{ include "mongodb-managed.serviceAccountName" . }}
-          {{- if or (or .Values.resources.limits .Values.resources.requests) (or .Values.mongodbAgent.resources.limits .Values.mongodbAgent.resources.requests) }}
+          {{- if or (or .Values.resources.limits .Values.resources.requests) (or .Values.mongodbAgent.resources.limits .Values.mongodbAgent.resources.requests) .Values.additionalContainers }}
           containers:
             {{- if or .Values.resources.limits .Values.resources.requests }}
             - name: "mongod"
@@ -84,6 +84,9 @@ spec:
                 requests:
                 {{- toYaml .Values.mongodbAgent.resources.requests | nindent 18 }}
               {{- end }}
+            {{- end }}
+            {{- if .Values.additionalContainers }}
+              {{- toYaml .Values.additionalContainers | nindent 12 }}
             {{- end }}         
           {{- end }}
       volumeClaimTemplates:
