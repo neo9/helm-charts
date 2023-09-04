@@ -1,6 +1,6 @@
 # catalogue-utils
 
-![Version: 0.11.1](https://img.shields.io/badge/Version-0.11.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.12.0](https://img.shields.io/badge/Version-0.12.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -10,8 +10,8 @@ A Helm chart for Kubernetes
 |------------|------|---------|
 | https://charts.neo9.pro | crossplane-buckets | 0.3.1 |
 | https://charts.neo9.pro | eck-managed(eck-managed) | 0.3.1 |
-| https://charts.neo9.pro | mongodb(mongodb-managed) | 0.8.2 |
-| https://charts.neo9.pro | rabbitmq(rabbitmq-managed) | 0.6.3 |
+| https://charts.neo9.pro | mongodb(mongodb-managed) | 0.9.0 |
+| https://charts.neo9.pro | rabbitmq(rabbitmq-managed) | 0.7.3 |
 | https://helm.min.io | minio | 8.0.10 |
 
 ## Values
@@ -133,6 +133,7 @@ A Helm chart for Kubernetes
 | minio.persistence.size | string | `"20Gi"` |  |
 | minio.persistence.storageClass | string | `"gcp-sc-retain-wait-ssd"` |  |
 | minio.resources.requests.memory | string | `"1Gi"` |  |
+| mongodb.additionalContainers | list | `[]` |  |
 | mongodb.affinity | object | `{}` |  |
 | mongodb.enabled | bool | `false` |  |
 | mongodb.fullnameOverride | string | `"catalogue-mongodb"` |  |
