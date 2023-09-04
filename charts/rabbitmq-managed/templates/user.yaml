@@ -18,6 +18,6 @@ spec:
     name: {{ (($user.importCredentialsSecret).name) }}
   {{- else }}
   importCredentialsSecret:
-    name: {{ include "rabbitmq-managed.fullname" $ }}-user-{{ $user.name }}
+    name: {{ include "rabbitmq-managed.fullname" $ }}-user-{{ $user.name }}-user-credentials
   {{- end }}
 {{- end }}
