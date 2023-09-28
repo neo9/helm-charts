@@ -190,15 +190,6 @@ spec:
         value: $(params.tekton-url)
       - name: ref
         value: $(params.apps-branch)
-    workspaces:
-        - name: input
-          workspace: ws
-        - name: output
-          workspace: ws
-        - name: source
-          workspace: ws
-        - name: data
-          workspace: ws
 
   - name: git-clone-cluster
     taskRef:
@@ -804,15 +795,6 @@ spec:
             value: $(params.tekton-url)
           - name: ref
             value: $(params.apps-branch)
-        workspaces:
-          - name: input
-            workspace: ws
-          - name: output
-            workspace: ws
-          - name: source
-            workspace: ws
-          - name: data
-            workspace: ws
 
       - name: notify-slack
         taskRef:

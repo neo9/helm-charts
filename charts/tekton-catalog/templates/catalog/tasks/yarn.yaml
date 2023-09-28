@@ -39,8 +39,8 @@ spec:
           memory: 500m
           cpu: 500m
         limits:
-          memory: 1Gi
-          cpu: 800m
+          memory: 2Gi
+          cpu: 1000m
       command:
         - "yarn"
       args:

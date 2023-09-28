@@ -43,6 +43,8 @@ spec:
               expression: "body.ref.replace('refs/heads/', '').replace('refs/tags/', '').replace('/', '-').lowerAscii()"
             - key: container_image_tag
               expression: "body.ref.startsWith('refs/tags/') ? body.ref.replace('refs/tags/', '') : 'v-' + body.checkout_sha"
+            - key: git_project_name_sanitized
+              expression: "body.repository.name.replace('_', '-')"
       bindings:
         - ref: parse-gitlab-push-hook
         - ref: parse-gitlab-push-hook-extensions

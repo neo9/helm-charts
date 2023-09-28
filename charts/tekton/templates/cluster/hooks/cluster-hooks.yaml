@@ -63,6 +63,8 @@ spec:
               #used to specify the chart name. default: latest
             - key: chart-version
               expression: "requestURL.parseURL().rawQuery.contains('chartVersion=') ? requestURL.parseURL().query['chartVersion'] : ''"
+            - key: git_project_name_sanitized
+              expression: "body.repository.name.replace('_', '-')"
       bindings:
         - ref: parse-gitlab-push-hook
         - ref: parse-gitlab-push-hook-extensions

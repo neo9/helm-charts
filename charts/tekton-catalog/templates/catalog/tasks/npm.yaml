@@ -40,8 +40,8 @@ spec:
           memory: 300m
           cpu: 300m
         limits:
-          memory: 1Gi
-          cpu: 800m
+          memory: 2Gi
+          cpu: 1000m
       script: |
         #!/bin/sh
         $(params.COMMAND) $(params.ARGS)

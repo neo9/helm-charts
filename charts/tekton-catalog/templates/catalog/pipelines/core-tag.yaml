@@ -168,15 +168,6 @@ spec:
         value: "$(params.git-branch)"
     taskRef:
       name: detect-tag-to-build
-    workspaces:
-      - name: input
-        workspace: ws
-      - name: output
-        workspace: ws
-      - name: source
-        workspace: ws
-      - name: data
-        workspace: ws
 
   - name: notify-build-running
     taskRef:
@@ -192,15 +183,7 @@ spec:
         value: $(params.tekton-url)
       - name: ref
         value: $(params.git-branch)
-    workspaces:
-      - name: input
-        workspace: ws
-      - name: output
-        workspace: ws
-      - name: source
-        workspace: ws
-      - name: data
-        workspace: ws
+
 
   # - name: clone-projet
   #   runAfter:
@@ -437,15 +420,6 @@ spec:
             value: $(params.tekton-url)
           - name: ref
             value: $(params.git-branch)
-        workspaces:
-          - name: input
-            workspace: ws
-          - name: output
-            workspace: ws
-          - name: source
-            workspace: ws
-          - name: data
-            workspace: ws
 
       # - name: notify-slack
       #   taskRef:

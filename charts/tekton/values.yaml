@@ -45,6 +45,9 @@ cluster:
     namespace: integration
     branch: develop
     config:
+      buildahBuildCache:
+        enabled: false
+      parallel: true
       apply:
         enabled: false
         dry: ""

@@ -3,6 +3,8 @@ cluster:
     namespace: integration
     branch: develop
     config:
+      buildahBuildCache:
+        enabled: false
       parallel: true
       autoMerge: "false"
       trivy:

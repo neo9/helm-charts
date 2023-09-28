@@ -77,8 +77,10 @@ spec:
         $(params.BUILD_EXTRA_ARGS) --format=$(params.FORMAT) \
         --tls-verify=$(params.TLSVERIFY) \
         -f $(params.DOCKERFILE) -t $(params.IMAGE) \
+{{- if .Values.cluster.delivery.config.buildahBuildCache.enabled }}
         --layers --cache-to $(params.CONTAINER-IMAGES-REPOSITORY)/$(params.DIRECTORY)/cache \
         --cache-from $(params.CONTAINER-IMAGES-REPOSITORY)/$(params.DIRECTORY)/cache \
+{{- end }}
         --ssh=default
     volumeMounts:
     - name: varlibcontainers
