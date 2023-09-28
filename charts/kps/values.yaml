@@ -56,6 +56,14 @@ kps:
 
   prometheus:
     prometheusSpec:
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: standard
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 25Gi      
       externalLabels:
         cluster: cluster-name
       ruleSelectorNilUsesHelmValues: false
@@ -124,7 +132,7 @@ kps:
         datasources:
           - name: Thanos
             type: prometheus
-            url: http://kps-thanos-query.monitoring.svc:9090
+            url: http://kps-thanos-query-frontend.monitoring.svc:9090
             access: proxy
             editable: false
           # - name: Prometheus
