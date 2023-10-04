@@ -36,7 +36,11 @@ spec:
   tolerations: {{ toYaml .Values.tolerations | nindent 4 }}
   {{- end }}
   override:
+    {{- if not .Values.cluster.override }}
     statefulSet:
+      metadata:
+        labels:
+        {{ toYaml .Values.cluster.statefulSetLabels | indent 2 }}
       spec:
         template:
           metadata:
@@ -49,7 +53,7 @@ spec:
             containers: []
             {{- end }}
             {{- if .Values.nodeSelector }}
-            nodeSelector: {{ toYaml .Values.nodeSelector | nindent 12 }}
+            nodeSelector: {{ toYaml .Values.nodeSelector | nindent 14 }}
             {{- end }}
             topologySpreadConstraints:
             {{- if .Values.scheduling.maxSkewPerNode }}
@@ -63,7 +67,7 @@ spec:
             {{- toYaml .Values.topologySpreadConstraints | nindent 12 }}
             {{- end }}
             {{- end }}
-    {{- if .Values.cluster.override }}
+    {{- else }}
     {{- toYaml .Values.cluster.override | nindent 4 }}
     {{- end }}
   {{- with .Values.cluster.extraSpec }}

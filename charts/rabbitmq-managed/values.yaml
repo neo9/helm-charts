@@ -46,6 +46,8 @@ cluster:
   # -- Set statefulSet podTemplate labels
   podLabels: {}
     # logging.kube-core.io/flow-name: app
+  statefulSetLabels: {}
+    # node.kube-core.io/selector: integration
 
 
 # -- The default vhost (`/`) is automatically created
@@ -83,7 +85,7 @@ policies: []
   #     ha-sync-mode: automatic
 affinity: []
 tolerations: []
-nodeSelector: []
+nodeSelector: {}
 topologySpreadConstraints: 
 # - maxSkew: 1
 #   topologyKey: kubernetes.io/hostname
