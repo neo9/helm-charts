@@ -5,7 +5,7 @@ name: kps
 description: Neo9 monitoring stack (kps+thanos+minio+robusta)
 icon: https://neo9.fr/assets/images/neo9-logo-baseline.svg
 
-version: 1.1.1
+version: 1.1.2
 appVersion: 0.63.0
 kubeVersion: ">=1.22.0-0"
 
