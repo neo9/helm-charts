@@ -4,15 +4,15 @@ dependencies:
   version: 0.9.0
 - name: rabbitmq-managed
   repository: https://charts.neo9.pro
-  version: 0.7.3
+  version: 0.7.4
 - name: eck-managed
   repository: https://charts.neo9.pro
-  version: 0.3.1
+  version: 0.3.2
 - name: crossplane-buckets
   repository: https://charts.neo9.pro
   version: 0.3.1
 - name: minio
   repository: https://helm.min.io
   version: 8.0.10
-digest: sha256:e2cc0fb2b113d61d71b4b20e0c21c28ea0b0c0898b662d47e9c9de5763685052
-generated: "2023-09-04T11:44:14.468919046+02:00"
+digest: sha256:7d278206be84b36e2ec14f115ec49f095af69fc74ec4ad726c290c9e0ada6059
+generated: "2023-10-23T15:41:08.428089079+02:00"
