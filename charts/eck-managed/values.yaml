@@ -6,6 +6,7 @@ fullnameOverride: eck
 
 elasticsearch:
   enabled: true
+  version: 7.16.2
   replicaCount: 2
   labels: {}  
   annotations: {}

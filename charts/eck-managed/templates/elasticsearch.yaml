@@ -18,7 +18,7 @@ spec:
         labels:
           {{- toYaml .Values.elasticsearch.service.labels | nindent 12 }}
         {{- end }}
-  version: {{ .Chart.AppVersion }}
+  version: {{ .Values.elasticsearch.version }}
   nodeSets:
   - name: default
     count: {{ .Values.elasticsearch.replicaCount }}
