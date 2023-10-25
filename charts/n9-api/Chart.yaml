@@ -5,7 +5,7 @@ name: n9-api
 description: Neo9 standard API chart
 icon: https://neo9.fr/assets/images/neo9-logo-baseline.svg
 
-version: 1.4.2
+version: 1.4.3
 appVersion: "latest"
 
-kubeVersion: ">= 1.23.0"
+kubeVersion: ">= 1.23.0-0"
