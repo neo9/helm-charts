@@ -5,8 +5,8 @@ name: catalogue
 description: Neo9 catalogue global chart
 icon: https://neo9.fr/assets/images/neo9-logo-baseline.svg
 
-version: 6.2.1
-appVersion: "2.34.0"
+version: 7.0.0
+appVersion: "2.39.0"
 
 dependencies:
   - name: n9-api

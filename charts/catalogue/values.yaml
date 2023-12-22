@@ -113,10 +113,10 @@ akeneo-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -149,7 +149,7 @@ backoffice:
       - daemon off;
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
   resources:
     limits:
@@ -230,10 +230,10 @@ cms-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -296,10 +296,10 @@ export-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -362,10 +362,10 @@ import-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -428,10 +428,10 @@ jobs-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -494,10 +494,10 @@ live-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -563,10 +563,10 @@ internal-live-api:
         AMQP_IS_ENABLED: true
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -629,10 +629,10 @@ master-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -695,10 +695,10 @@ media-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -761,10 +761,10 @@ merchandising-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -798,10 +798,10 @@ metrics-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
   resources:
     limits:
@@ -863,10 +863,10 @@ mirakl-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -1020,10 +1020,10 @@ publication-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -1082,10 +1082,10 @@ scheduler-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -1148,10 +1148,10 @@ search-admin-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
@@ -1185,10 +1185,10 @@ web-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
   resources:
     limits:
@@ -1246,10 +1246,10 @@ users-api:
   pod:
     command:
       - node
-      - /home/app/dist/index.js
+      - /home/app/index.js
     mounts:
       configMap:
-        - mountPath: /home/app/dist/conf/env/
+        - mountPath: /home/app/conf/env/
           name: catalogue-conf
     workingDir: /home/app
   resources:
