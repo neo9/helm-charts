@@ -6,7 +6,7 @@ fullnameOverride: eck
 
 elasticsearch:
   enabled: true
-  version: 7.16.2
+  version: 8.11.1
   replicaCount: 2
   labels: {}  
   annotations: {}
@@ -34,9 +34,8 @@ elasticsearch:
         requests:
           storage: 10Gi
   config:
-    node.master: true
-    node.data: true
-    node.ingest: true
+    xpack.security.enabled: false
+    node.roles: ["master", "data", "ingest"]
     node.store.allow_mmap: false
     xpack.security.authc:
       anonymous:
@@ -68,7 +67,7 @@ kibana:
   enabled: true
 
   # Define the Kibana version.
-  version: 7.16.2
+  version: 8.11.1
 
   # Configure pod resources.
   resources:
@@ -109,3 +108,14 @@ kibana:
       metadata:
         annotations: {}
         labels: {}
+  
+  config:
+    xpack.reporting.roles.enabled: false
+    xpack.security.authc.providers:
+      anonymous.anonymous1:
+        order: 0
+        description: "Continue as guest"
+        icon: "globe"
+        credentials:
+          username: "anonymous"
+          password: "anonymous"

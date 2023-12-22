@@ -6,15 +6,7 @@ metadata:
 spec:
   version: {{ .Values.kibana.version }}
   config:
-    xpack.security.enabled: false
-    xpack.security.authc.providers:
-      anonymous.anonymous1:
-        order: 0
-        description: "Continue as guest"
-        icon: "globe"
-        credentials:
-          username: "anonymous"
-          password: "anonymous"
+    {{- toYaml .Values.kibana.config | nindent 6 }}
   podTemplate:
     metadata:
       labels: {{ toYaml .Values.kibana.labels | nindent 8 }}
