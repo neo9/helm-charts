@@ -11,8 +11,5 @@ dependencies:
 - name: crossplane-buckets
   repository: https://charts.neo9.pro
   version: 0.3.1
-- name: minio
-  repository: https://helm.min.io
-  version: 8.0.10
-digest: sha256:7d278206be84b36e2ec14f115ec49f095af69fc74ec4ad726c290c9e0ada6059
-generated: "2023-10-23T15:41:08.428089079+02:00"
+digest: sha256:313d8b915325ff90f44bdbfa9f9eab3d35e8f7192af1636713a3102e7ca71308
+generated: "2023-12-22T17:01:54.33613656+01:00"
