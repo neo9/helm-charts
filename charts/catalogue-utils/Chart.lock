@@ -7,7 +7,7 @@ dependencies:
   version: 0.7.4
 - name: eck-managed
   repository: https://charts.neo9.pro
-  version: 0.3.2
+  version: 1.0.0
 - name: crossplane-buckets
   repository: https://charts.neo9.pro
   version: 0.3.1

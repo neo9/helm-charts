@@ -306,9 +306,7 @@ eck-managed:
           requests:
             storage: 10Gi
     config:
-      node.master: true
-      node.data: true
-      node.ingest: true
+      node.roles: ["master", "data", "ingest"]
       node.store.allow_mmap: false
       xpack.security.authc:
         anonymous:
@@ -335,7 +333,7 @@ eck-managed:
     enabled: false
 
     # Define the Kibana version.
-    version: 7.16.2
+    version: 8.11.1
 
     # Configure pod resources.
     resources:
