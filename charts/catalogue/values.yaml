@@ -925,7 +925,7 @@ mock-api:
   pod:
     command:
       - node
-      - /home/app/src/index.js
+      - /home/app/index.js
     mounts:
       configMap:
         - mountPath: /home/app/src/conf/env/
