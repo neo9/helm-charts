@@ -18,7 +18,14 @@ spec:
       labels:
         app.kubernetes.io/name: {{ .Values.name }}
         app.kubernetes.io/instance: "{{ .Release.Name }}"
+        {{- with .Values.podLabels -}}
+          {{ toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+{{ toYaml .Values.podAnnotations | indent 8 }}
     spec:
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
       containers:
       - args:
         - --config=/sloopconfig/sloop.json
@@ -59,6 +66,10 @@ spec:
           name: sloop-data
         - mountPath: /sloopconfig/
           name: sloopconfig
+      {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
       - emptyDir:
           sizeLimit: {{ .Values.persistentVolume.sizeLimit }}
@@ -67,6 +78,7 @@ spec:
           name: {{ .Values.name }}
         name: sloopconfig
       serviceAccountName: {{ .Values.serviceAccountName }}
+{{- if .Values.persistentVolume.enabled }}
   volumeClaimTemplates:
   - metadata:
      name: sloop-data
@@ -79,3 +91,4 @@ spec:
      resources:
        requests:
          storage: {{ .Values.persistentVolume.size }}
+{{- end }}
