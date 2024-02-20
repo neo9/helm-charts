@@ -148,7 +148,14 @@ scheduling:
   tolerations: []
   affinity: {}
   topologySpreadConstraints: []
-  # -- Max difference of number of pods between nodes using topologySpreadConstraints
+  # - maxSkew: 1
+  #   topologyKey: kubernetes.io/hostname
+  #   whenUnsatisfiable: DoNotSchedule 
+  #   labelSelector:
+  #     matchLabels:
+  #       app.kubernetes.io/instance: release-name
+  #       app.kubernetes.io/name: release-name
+  # -- Max difference of number of pods between nodes using topologySpreadConstraints, 0 to disable it 
   maxSkewPerNode: 1
 
 ## Define endpoints and service to expose metrics

@@ -164,7 +164,7 @@ Kubernetes: `>= 1.23.0-0`
 | scaling.serviceAccessFreq.enabled | bool | `true` |  |
 | scaling.serviceAccessFreq.threshold | int | `100` |  |
 | scheduling.affinity | object | `{}` |  |
-| scheduling.maxSkewPerNode | int | `1` | Max difference of number of pods between nodes using topologySpreadConstraints |
+| scheduling.maxSkewPerNode | int | `1` | Max difference of number of pods between nodes using topologySpreadConstraints 0 to disable it  |
 | scheduling.nodeSelector | object | `{}` |  |
 | scheduling.tolerations | list | `[]` |  |
 | scheduling.topologySpreadConstraints | list | `[]` |  |
