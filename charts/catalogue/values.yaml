@@ -129,6 +129,8 @@ akeneo-api:
     port: 8030
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 backoffice:
   api:
@@ -184,6 +186,8 @@ backoffice:
     #  - secretName: backoffice-tld-tls
     #    hosts:
     #      - backoffice.tld
+  scheduling:
+    maxSkewPerNode: 0
 
 cms-api:
   healthCheck:
@@ -246,6 +250,8 @@ cms-api:
     port: 8016
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 export-api:
   healthCheck:
@@ -312,6 +318,8 @@ export-api:
     port: 8031
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 import-api:
   healthCheck:
@@ -378,6 +386,8 @@ import-api:
     port: 8019
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 jobs-api:
   healthCheck:
@@ -444,6 +454,8 @@ jobs-api:
     port: 8018
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 live-api:
   healthCheck:
@@ -510,6 +522,8 @@ live-api:
     port: 8032
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 internal-live-api:
   healthCheck:
@@ -579,6 +593,8 @@ internal-live-api:
     port: 8032
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 master-api:
   healthCheck:
@@ -645,6 +661,8 @@ master-api:
     port: 8011
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 media-api:
   healthCheck:
@@ -711,6 +729,8 @@ media-api:
     port: 8013
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 merchandising-api:
   healthCheck:
@@ -777,6 +797,8 @@ merchandising-api:
     port: 8034
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 metrics-api:
   healthCheck:
@@ -813,6 +835,8 @@ metrics-api:
     port: 8035
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 mirakl-api:
   healthCheck:
@@ -879,6 +903,8 @@ mirakl-api:
     port: 8012
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 mock-api:
   healthCheck:
@@ -941,6 +967,8 @@ mock-api:
     port: 8015
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 mock-backoffice:
   api:
@@ -970,6 +998,8 @@ mock-backoffice:
     port: 80
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 publication-api:
   healthCheck:
@@ -1036,6 +1066,8 @@ publication-api:
     port: 8017
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 scheduler-api:
   healthCheck:
@@ -1098,6 +1130,8 @@ scheduler-api:
     port: 8010
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 search-admin-api:
   healthCheck:
@@ -1164,6 +1198,8 @@ search-admin-api:
     port: 8033
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 web-api:
   healthCheck:
@@ -1200,6 +1236,8 @@ web-api:
     port: 8014
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
 
 users-api:
   healthCheck:
@@ -1262,3 +1300,5 @@ users-api:
     port: 8037
   logging:
     enabled: true
+  scheduling:
+    maxSkewPerNode: 0
