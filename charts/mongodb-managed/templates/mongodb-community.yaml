@@ -11,7 +11,10 @@ spec:
   featureCompatibilityVersion: {{ .Values.mongodb.featureCompatibilityVersion | quote }}
   security:
     authentication:
-      modes: ["SCRAM"]
+      modes:
+      {{- range $mode := .Values.securityAuthModes }}
+      - {{ $mode }}
+      {{- end }}
   statefulSet:
     spec:
       metadata:

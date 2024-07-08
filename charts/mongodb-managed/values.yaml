@@ -16,6 +16,8 @@ mongodb:
   # -- Additionnal annotations to add to the metadata of mongodb pods
   annotations: {}
 
+securityAuthModes: ["SCRAM"]
+
 # -- Define the list of mongo users, their roles and attributed db
 users: []
   # - name: username
